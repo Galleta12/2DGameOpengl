@@ -41,7 +41,7 @@ void Player::update()
     position.x += motion.x * SDWINDOW::delta_time;
 
     // std::cout << "New position x" << position.x << std::endl;
-    std::cout << "delta time" << SDWINDOW::delta_time << std::endl;
+    //std::cout << "delta time" << SDWINDOW::delta_time << std::endl;
 
 
 

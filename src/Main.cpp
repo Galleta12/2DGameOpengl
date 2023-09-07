@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 	Uint32 frameStart;
 	int frameTime;
 	
-	Uint32 oldTime = SDL_GetTicks();	
+
 
 
 	//start sdl
@@ -45,8 +45,13 @@ int main(int argc, char *argv[])
 
 		//deltatime
 		//sdWindow->delta_time = (SDL_GetTicks() - frameStart)/1000.0f;
-		sdWindow->delta_time = (frameStart - oldTime)/100.0f;
 		
+		SDWINDOW::clock.tick();
+		
+		std::cout <<"deltatime in main: "<< SDWINDOW::clock.deltaTime << std::endl;
+		
+
+
 		//events of sdl2
 		sdWindow->handleEvents();
 		
@@ -69,7 +74,7 @@ int main(int argc, char *argv[])
 			SDL_Delay(frameDelay-frameTime);	
 		}
 
-		oldTime = frameStart;
+		
 	
 	
 	}

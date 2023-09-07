@@ -23,6 +23,9 @@ bool SDWINDOW::isRunning = false;
 
 float SDWINDOW::delta_time = 0.0f;
 
+SDWINDOW::Clock SDWINDOW::clock;
+
+
 //mousehandler class
 MouseHandler *mouseHandler = nullptr;
 
