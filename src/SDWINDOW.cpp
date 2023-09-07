@@ -79,7 +79,7 @@ void SDWINDOW::init(const char* title, int posX, int posY, int width, int height
 
             //start mouse class
             mouseHandler = new MouseHandler();
-            player = new Player(300.0f,300.0f,5);
+            player = new Player(300.0f,300.0f,20);
             //gun data
             player->gunData(20,50);
             

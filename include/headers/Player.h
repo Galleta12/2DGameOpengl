@@ -57,6 +57,8 @@ class Player:public Transform{
             playerPosX = x;
             playerPosY = y;        
             speed = newSpeed;
+            keydirX = 0.0f; // Initialize keydirX to 0
+            keydirY = 0.0f; // Initialize keydirY to 0
 
         }
 

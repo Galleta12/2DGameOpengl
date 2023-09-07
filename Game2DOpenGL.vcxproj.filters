@@ -9,24 +9,40 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\headers\MouseHandler.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\headers\Player.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="include\headers\SDWINDOW.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="include\headers\MouseHandler.h" />
-    <ClInclude Include="include\headers\Transform.h" />
-    <ClInclude Include="include\headers\Vector2D.h" />
-    <ClInclude Include="include\headers\Player.h" />
+    <ClInclude Include="include\headers\Transform.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\headers\Vector2D.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\MouseHandler.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Player.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="src\SDWINDOW.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\MouseHandler.cpp" />
-    <ClCompile Include="src\transform.cpp" />
-    <ClCompile Include="src\vector2D.cpp" />
-    <ClCompile Include="src\Player.cpp" />
+    <ClCompile Include="src\transform.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vector2D.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

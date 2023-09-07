@@ -29,7 +29,7 @@ Player::~Player()
 void Player::update()
 {
     //update the player motion
-    //motion.x = keydirX * speed;
+    motion.x = keydirX * speed;
     
     
     // std::cout << "keydir x" << keydirX << std::endl;
@@ -37,10 +37,11 @@ void Player::update()
     // std::cout << "Motion x" << motion.x << std::endl;
     //motion.y = 
     //update position
-    //position.x += motion.x * SDWINDOW::delta_time;
+    //position.x += motion.x;
+    position.x += motion.x * SDWINDOW::delta_time;
 
-    //std::cout << "New position x" << position.x << std::endl;
-    //std::cout << "delta time" << SDWINDOW::delta_time << std::endl;
+    // std::cout << "New position x" << position.x << std::endl;
+    std::cout << "delta time" << SDWINDOW::delta_time << std::endl;
 
 
 
@@ -51,6 +52,8 @@ void Player::draw()
 {
 
     glPushMatrix();
+    
+    //std::cout << "New position x" << position.x << std::endl;
     
     glTranslatef(position.x,position.y,0.0f);
 
@@ -127,7 +130,7 @@ void Player::keyboard()
         }
     }
 
-    std::cout << "keydir: " <<keydirX << std::endl;
+    //std::cout << "keydir: " <<keydirX << std::endl;
 
 }
 

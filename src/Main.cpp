@@ -30,6 +30,8 @@ int main(int argc, char *argv[])
 	Uint32 frameStart;
 	int frameTime;
 	
+	Uint32 oldTime = SDL_GetTicks();	
+
 
 	//start sdl
 	sdWindow = new SDWINDOW();
@@ -41,11 +43,14 @@ int main(int argc, char *argv[])
 	while(sdWindow->running()){
 		frameStart = SDL_GetTicks();
 
+		//deltatime
+		//sdWindow->delta_time = (SDL_GetTicks() - frameStart)/1000.0f;
+		sdWindow->delta_time = (frameStart - oldTime)/100.0f;
+		
 		//events of sdl2
 		sdWindow->handleEvents();
 		
-		//deltatime
-		sdWindow->delta_time = (SDL_GetTicks() - frameStart)/1000.0f;
+		//sdWindow->delta_time = SDL_GetTicks()/1000.0f;
 		
 		//the update of the game
 		sdWindow->update();
@@ -63,6 +68,8 @@ int main(int argc, char *argv[])
 		if(frameDelay > frameTime){
 			SDL_Delay(frameDelay-frameTime);	
 		}
+
+		oldTime = frameStart;
 	
 	
 	}

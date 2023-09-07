@@ -185,8 +185,8 @@
     <ClInclude Include="include\headers\Vector2D.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\MouseHandler.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\MouseHandler.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\SDWINDOW.cpp" />
     <ClCompile Include="src\transform.cpp" />
