@@ -11,6 +11,10 @@
 
 #include "Transform.h"
 #include "Player.h"
+#include "Clocker.h"
+
+
+
 //static variables at the beggining
 //window height and width
 int* SDWINDOW::WindowWidth = nullptr;
@@ -21,9 +25,7 @@ SDL_Event SDWINDOW::event;
 //to know if the game is running or not
 bool SDWINDOW::isRunning = false;
 
-float SDWINDOW::delta_time = 0.0f;
-
-SDWINDOW::Clock SDWINDOW::clock;
+//float SDWINDOW::delta_time = 0.0f;
 
 
 //mousehandler class
@@ -82,7 +84,7 @@ void SDWINDOW::init(const char* title, int posX, int posY, int width, int height
 
             //start mouse class
             mouseHandler = new MouseHandler();
-            player = new Player(300.0f,300.0f,20);
+            player = new Player(300.0f,300.0f,5);
             //gun data
             player->gunData(20,50);
             
@@ -146,6 +148,9 @@ void SDWINDOW::handleEvents() {
 
     //mouse
     mouseHandler->mousePos();
+    //get mouse position
+    player->gun->setMousePosition(mouseHandler->getMousePos());
+    
     //handle playerdirectionmoves
     player->keyboard();
 }
@@ -171,8 +176,10 @@ void SDWINDOW::display()
 
         //render transforms objects
 
+        
+        float dt = Clocker::GetInstance()->GetDelatTime();
         for(auto& a : transformList){
-            a->draw();
+            a->draw(dt);
         }
         
 
@@ -194,8 +201,10 @@ void SDWINDOW::display()
 void SDWINDOW::update() {
 
     
+    float dt = Clocker::GetInstance()->GetDelatTime();
+    
     for(auto& a : transformList){
-            a->update();
+        a->update(dt);
     }
     
     

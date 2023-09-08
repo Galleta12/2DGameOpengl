@@ -11,23 +11,6 @@ class SDWINDOW {
 public:
     
     
-    //struct for the deltatime
-    struct Clock
-    {
-        uint32_t lastTickTime = 0;
-        uint32_t deltaTime = 0;
-
-        Clock(){}
-        ~Clock(){}
-
-        void tick()
-        {
-            uint32_t tickTime = SDL_GetTicks();
-            deltaTime= (tickTime - lastTickTime);
-            lastTickTime = tickTime;
-        };
-
-    };
     
     
     //constructor
@@ -42,9 +25,9 @@ public:
 
     static SDL_Event event;
 
-    static float delta_time;
+    //static float delta_time;
 
-    static Clock clock;
+
     
     //start sdl2 and opengl
     void init(const char* title, int posX, int posY, int width, int height, bool fullscreen);

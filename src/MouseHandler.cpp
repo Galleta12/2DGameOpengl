@@ -30,7 +30,7 @@ void MouseHandler::mousePos(){
             mouseClickX = SDWINDOW::event.button.x;
             mouseClickY = SDWINDOW::event.button.y;
 
-            std::cout<< "Mouse X: " << mouseClickX << "Mouse y: " << mouseClickY << std::endl;     
+            //std::cout<< "Mouse X: " << mouseClickX << "Mouse y: " << mouseClickY << std::endl;     
 
             break;
         case SDL_BUTTON_RIGHT:

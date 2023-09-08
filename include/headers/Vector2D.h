@@ -1,6 +1,10 @@
 #pragma once
 #include <iostream>
 
+//#define _USE_MATH_DEFINES
+#include <cmath>
+
+const float PI = 3.14159265358979323846f;
 
 class Vector2D{
 
@@ -36,6 +40,23 @@ class Vector2D{
 
         Vector2D& operator*(const int& i);
         Vector2D& Zero();
+        
+        //normalize
+        Vector2D& Normalize();
+        
+        
+        //vector angle
+        static float Angle(const Vector2D& v1, const Vector2D& v2);
+        
+        static Vector2D Normalized(const Vector2D& v1);
+
+        //maginute
+        float Magnitude() const;
+
+        //this can be static since it doesnt depend on a instance of a vector object
+        static float Dot(const Vector2D& v1, const Vector2D& v2);
+
+        static float SignedAngle(const Vector2D& v1, const Vector2D& v2);
     
         //clean way to print the vectors
         friend std::ostream& operator <<(std::ostream& stream, const Vector2D& vec);

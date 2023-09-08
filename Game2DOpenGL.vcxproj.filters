@@ -24,6 +24,7 @@
     <ClInclude Include="include\headers\Vector2D.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="include\headers\Clocker.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -44,5 +45,6 @@
     <ClCompile Include="src\vector2D.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\clocker.cpp" />
   </ItemGroup>
 </Project>

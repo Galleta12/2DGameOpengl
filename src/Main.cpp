@@ -7,6 +7,7 @@
 
 #include "SDWINDOW.h"
 
+#include "Clocker.h"
 
 
 //start the sdlwindow
@@ -43,19 +44,12 @@ int main(int argc, char *argv[])
 	while(sdWindow->running()){
 		frameStart = SDL_GetTicks();
 
-		//deltatime
-		//sdWindow->delta_time = (SDL_GetTicks() - frameStart)/1000.0f;
-		
-		SDWINDOW::clock.tick();
-		
-		std::cout <<"deltatime in main: "<< SDWINDOW::clock.deltaTime << std::endl;
-		
+	
 
 
 		//events of sdl2
 		sdWindow->handleEvents();
 		
-		//sdWindow->delta_time = SDL_GetTicks()/1000.0f;
 		
 		//the update of the game
 		sdWindow->update();
@@ -63,6 +57,13 @@ int main(int argc, char *argv[])
 		sdWindow->display();
 
 		
+		
+		Clocker::GetInstance()->Tick();
+		
+		//std::cout << "Delta time clocker: " << Clocker::GetInstance()->GetDelatTime() << std::endl;
+		
+
+
 		//frameRate control
 		//this is for controlling the frame rate and have a consisten frame rate on the window.
 		

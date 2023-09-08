@@ -1,7 +1,7 @@
 #pragma once
 #include "Transform.h"
 
-
+#include <vector>
 
 
 
@@ -15,29 +15,36 @@ class Gun : public Transform{
         int power=0;
         float gunPosX = 0.0f;
         float gunPosY = 0.0f;
-        Vector2D centerPlayerTriangleRef;
+        Vector2D &centerPlayerTriangleRef;
         
-        Gun(float x, float y, int newSpeed, int newPower, Vector2D &center):Transform(x,y){
+        Gun(float x, float y, int newSpeed, int newPower, Vector2D &center):Transform(x,y), centerPlayerTriangleRef(center){
             position.x=x;
             position.y=y;
             gunPosX=x;
             gunPosY=y;
             speed = newSpeed;
             power = newPower;
-            centerPlayerTriangleRef = center; 
+            //centerPlayerTriangleRef = center;
         }
 
+        
+        void setMousePosition(std::vector<int> mousePositions);
+
+        Vector2D getMousePosition(){return mousePos;}
+       
+        void updatePosition(float deltaTime, Vector2D motion);
         void rotateGun();
-        void update() override;
-        void draw() override;
+        void update(float deltaTime ) override;
+        void draw(float deltaTime) override;
 
         friend std::ostream& operator <<(std::ostream& stream, const Gun& g);
 
 
     private:
-        float width=100.0f;
+        float width=60.0f;
         float height=10.0f;
-
+        Vector2D mousePos;
+        float angleMouse = 0.0f;
 };
 
 
@@ -60,6 +67,7 @@ class Player:public Transform{
             keydirX = 0.0f; // Initialize keydirX to 0
             keydirY = 0.0f; // Initialize keydirY to 0
 
+           
         }
 
         
@@ -67,12 +75,19 @@ class Player:public Transform{
         
         ~Player();
         
-        void update() override;
-        void draw() override;
+        void update(float deltaTime) override;
+        void draw(float deltaTime) override;
 
         void keyboard();
 
+        
+        
+        //gun pointer    
+        Gun* gun = nullptr;
+    
     private:
+        
+        
         int speed = 0;
         float playerPosX=0.0f;
         float playerPosY=0.0f;
@@ -80,9 +95,10 @@ class Player:public Transform{
         float keydirX = 0.0f;
         float keydirY = 0.0f;
 
+     
+
         Vector2D motion;
 
-        Gun *gun=nullptr;
         Vector2D centerTriangle;
         void calculateCenter();
         
