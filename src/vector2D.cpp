@@ -1,6 +1,6 @@
 #include "Vector2D.h"
 
-
+#include "RadToDegree.h"
 
 
 
@@ -133,7 +133,7 @@ float Vector2D::Angle(const Vector2D &v1, const Vector2D &v2)
     
     float angleRad = std::acos(dotProduct/(magnitude1 * magnitude2));
     //convert into degrees
-    float angleDeg = angleRad * 180.0f/ PI;
+    float angleDeg = RadToDegree::convert(angleRad);
     
     //float angleDegRounded = std::round(angleDeg * 100.0f)/100.0f;
 
@@ -186,7 +186,7 @@ float Vector2D::SignedAngle(const Vector2D &v1, const Vector2D &v2)
     }
 
     // Convert the angle into degrees
-    float angleDeg = angleRad * 180.0f / PI;
+    float angleDeg = RadToDegree::convert(angleRad);
 
     return angleDeg;
 }

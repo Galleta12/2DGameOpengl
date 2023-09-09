@@ -1,14 +1,14 @@
 #include "Player.h"
 
 
+
+#include "SDWINDOW.h"
+
 #include <iostream>
 
 #include <vector>
 #include <chrono>
-
-#include "SDWINDOW.h"
-
-
+#include <algorithm> 
 
 
 void Player::gunData(int newSpeed, int newPower)
@@ -28,10 +28,32 @@ Player::~Player()
 
 void Player::update(float deltaTime)
 {
-    //update the player motion
-    motion.x = keydirX * speed;
+    
+    //this means that there is movement    
+    if(isKeyDirx){
+
+        //update the player motion
+        motion.x = keydirX * speed;
+        motion.x *= friction;
+        //std::cout << "motion" << motion.x << std::endl;
+    }
+    else if(!isKeyDirx && motion.x != 0.0f){
+        
+        motion.x = std::max(motion.x, 0.0f);
+        
+        if(motion.x > 0.0f){
+            motion.x *= 0.2f;
+            
+            //std::cout << "motion false" << motion.x << std::endl;
+        }
+     
+    }
+
+
     
     
+    
+    //std::cout << "friction" << friction << std::endl;
     // std::cout << "keydir x" << keydirX << std::endl;
     // std::cout << "speed" << speed << std::endl;
     // std::cout << "Motion x" << motion.x << std::endl;
@@ -40,31 +62,12 @@ void Player::update(float deltaTime)
     
     position.x += motion.x * deltaTime;
 
+    
     gun->updatePosition(deltaTime,motion);
 
     gun->update(deltaTime);
 
-    // //we want to get the direction of the mouse from the vector position
-    // Vector2D dir = (gun->getMousePosition() - position).Normalize();
-    // Vector2D posDir = Vector2D::Normalized(position);
-
-    
-    
-    // // std::cout << "Normalize dir" << dir << std::endl;
-    // // std::cout << "Normalize position" << posDir << std::endl;
-    
-    
-    // angleMouse = Vector2D::Angle(getUpVec(),dir);
-    
-    // std::cout << "angle: " << angleMouse << std::endl;
-    // //std::cout << "up vector: " << getUpVec() << std::endl;
-
-
-    //we need to update the gunposition aswell, even if the position is updated by the player in the matrix stack we need to do the same
-
-    // std::cout << "New position x" << position.x << std::endl;
-    //std::cout << "delta time" << SDWINDOW::delta_time << std::endl;
-
+ 
 
 
 }
@@ -122,15 +125,17 @@ void Player::keyboard()
 
         //     break;
         
-        case SDLK_LEFT:
+        case SDLK_a:
             
             
+            isKeyDirx = true;
             keydirX = -1.0f;
             
             break;
         
-        case SDLK_RIGHT:
+        case SDLK_d:
            
+            isKeyDirx = true;
             keydirX = 1.0f;
             break;
         
@@ -147,8 +152,12 @@ void Player::keyboard()
         //     yDir =  0;    
             
         //     break;        
-        case SDLK_LEFT:
-        case SDLK_RIGHT:
+        case SDLK_a:
+        case SDLK_d:
+            
+            
+            //we dont want to abruptely stop the movment hence we use this flag
+            isKeyDirx = false;
             keydirX = 0.0f;
             break;
         
@@ -188,95 +197,3 @@ void Player::calculateCenter()
 
 }
 
-void Gun::setMousePosition(std::vector<int> mousePositions)
-{
-    mousePos.x = static_cast<float>(mousePositions[0]);
-    mousePos.y =  *SDWINDOW::WindowHeight - static_cast<float>(mousePositions[1]);
-    //std::cout<< "Mouse current X: " << mousePos.x << "Mouse current y: " << mousePos.y << std::endl;     
-
-}
-
-void Gun::updatePosition(float deltaTime, Vector2D motion)
-{
-    position.x += motion.x * deltaTime;
-
-}
-
-void Gun::rotateGun()
-{
-    //we want to get the direction of the mouse from the vector position
-    Vector2D dir = (getMousePosition() - position).Normalize();
-    Vector2D posDir = Vector2D::Normalized(position);
-
-    
-    
-    // std::cout << "Normalize dir" << dir << std::endl;
-    // std::cout << "Normalize position" << posDir << std::endl;
-    
-    
-    //angleMouse = Vector2D::Angle(getUpVec(),dir);
-    //angleMouse = Vector2D::SignedAngle(getRightVec(),dir);
-    float angle = std::atan2(dir.y, dir.x) * 180.0f / PI;
-    angleMouse = angle;
-    
-    //std::cout << "angle: " << angleMouse << std::endl;
-    //std::cout << "up vector: " << getUpVec() << std::endl;
-
-}
-
-void Gun::update(float deltaTime)
-{
-
-    rotateGun();
-
-
-}
-
-void Gun::draw(float deltaTime)
-{
-    glPushMatrix();
-
-    
-    
-    //std::cout<< "Current center" << centerPlayerTriangleRef << std::endl;
-    Vector2D centerInLocal;
-    centerInLocal.x = centerPlayerTriangleRef.x - position.x;
-    centerInLocal.y = centerPlayerTriangleRef.y - position.y;
-    
-    glTranslatef(centerInLocal.x,centerInLocal.y,0.0f);
-    //glTranslatef(0.0f,0.0f,0.0f);
-    glRotatef(angleMouse,0.0f,0.0f,1.0f);
-    
-    
-
-
-    glBegin(GL_QUADS);
-    glColor3f(0.0f,0.0f,1.0f);
-
-    // Draw a thin box (rectangle)
-    glVertex2f(0.0f, 0.0f);            // Top-left corner
-    glVertex2f(width, 0.0f);           // Top-right corner
-    glVertex2f(width, height);         // Bottom-right corner
-    glVertex2f(0.0f, height);          // Bottom-left corner
-
-    // glVertex2f(0.0f, -centerInLocal.y);            // Top-left corner
-    // glVertex2f(width, -centerInLocal.y);           // Top-right corner
-    // glVertex2f(width, height - centerInLocal.y);         // Bottom-right corner
-    // glVertex2f(0.0f, height - centerInLocal.y);      
-    // //std::cout << "Gun widht: " << width << " Heigh: " << height << std::endl;
-    glEnd();
-
-    glPopMatrix();
-
-
-
-}
-
-std::ostream &operator<<(std::ostream &stream, const Gun &g)
-{
-    // TODO: insert return statement here
-     stream << "Gun Pos(" << g.gunPosX << "," << g.gunPosY << ")\n"
-     << "Gun TranformPos(" << g.position.x << "," << g.position.y << ")\n"
-     << "Gun Refence of center player(" << g.centerPlayerTriangleRef << "This is the y component of sdl window "<< *SDWINDOW::WindowHeight - g.centerPlayerTriangleRef.y << ")";
-     return stream;
-}

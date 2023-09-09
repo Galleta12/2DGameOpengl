@@ -25,6 +25,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="include\headers\Clocker.h" />
+    <ClInclude Include="include\headers\Gun.h" />
+    <ClInclude Include="include\headers\RadToDegree.h" />
+    <ClInclude Include="include\headers\Floor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -46,5 +49,7 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\clocker.cpp" />
+    <ClCompile Include="src\gun.cpp" />
+    <ClCompile Include="src\floor.cpp" />
   </ItemGroup>
 </Project>

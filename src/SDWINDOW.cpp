@@ -11,6 +11,8 @@
 
 #include "Transform.h"
 #include "Player.h"
+#include "Gun.h"
+#include "Floor.h"
 #include "Clocker.h"
 
 
@@ -36,6 +38,8 @@ MouseHandler *mouseHandler = nullptr;
 std::vector<Transform*> transformList;
 //player object
 Player *player = nullptr;
+//floor object
+Floor *floorObject = nullptr;
 
 
 
@@ -43,7 +47,19 @@ Player *player = nullptr;
 SDWINDOW::SDWINDOW() {
   
 }
-SDWINDOW::~SDWINDOW() {}
+SDWINDOW::~SDWINDOW() {
+
+    // Clean up dynamically allocated objects
+    delete player;
+    delete floorObject;
+    delete mouseHandler;
+
+    // Clean up the objects in transformList vector
+    for (Transform* transform : transformList) {
+       delete transform;
+    }
+    transformList.clear(); // Optionally, clear the vector after deleting its elements
+}
 
 
 void SDWINDOW::init(const char* title, int posX, int posY, int width, int height, bool fullscreen) {
@@ -87,6 +103,12 @@ void SDWINDOW::init(const char* title, int posX, int posY, int width, int height
             player = new Player(300.0f,300.0f,5);
             //gun data
             player->gunData(20,50);
+            
+            //floorObject
+            floorObject = new Floor(1.0f, height /4);
+            
+       
+            transformList.emplace_back(floorObject);
             
             transformList.emplace_back(player);
 
@@ -149,7 +171,7 @@ void SDWINDOW::handleEvents() {
     //mouse
     mouseHandler->mousePos();
     //get mouse position
-    player->gun->setMousePosition(mouseHandler->getMousePos());
+    player->getGun()->setMousePosition(mouseHandler->getMousePos());
     
     //handle playerdirectionmoves
     player->keyboard();
@@ -162,14 +184,15 @@ void SDWINDOW::display()
 
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
+        
+        gluOrtho2D(0, *WindowWidth, 0, *WindowHeight);
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
 
 
         glViewport(0, 0, *WindowWidth, *WindowHeight);
         
-        //left, right, button, top
-        gluOrtho2D(0, *WindowWidth, 0, *WindowHeight);
+   
         glClear(GL_COLOR_BUFFER_BIT);
 
 
@@ -182,13 +205,6 @@ void SDWINDOW::display()
             a->draw(dt);
         }
         
-
-            // glBegin(GL_TRIANGLES);
-            // glColor3f(1.0f, 0.0f, 0.0f); // Red color
-            // glVertex2f(100, 100); // Vertex 1
-            // glVertex2f(100 + 30.0f, 100); // Vertex 2
-            // glVertex2f(100 + 30.0f, 100 + 30.0f); // Vertex 3
-            // glEnd();
 
     
         // swap to new updated screen to render

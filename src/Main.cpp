@@ -18,8 +18,8 @@ int main(int argc, char *argv[])
 {
 
 	//size screen
-	const int WIDTH = 1200;
-	const int HEIGHT = 600;
+	const int WIDTH = 1500;
+	const int HEIGHT = 750;
 
 	//cap frame rate
 	const int FPS = 144;

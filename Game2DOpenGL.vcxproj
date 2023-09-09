@@ -179,14 +179,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\headers\Clocker.h" />
+    <ClInclude Include="include\headers\Floor.h" />
+    <ClInclude Include="include\headers\Gun.h" />
     <ClInclude Include="include\headers\MouseHandler.h" />
     <ClInclude Include="include\headers\Player.h" />
+    <ClInclude Include="include\headers\RadToDegree.h" />
     <ClInclude Include="include\headers\SDWINDOW.h" />
     <ClInclude Include="include\headers\Transform.h" />
     <ClInclude Include="include\headers\Vector2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\clocker.cpp" />
+    <ClCompile Include="src\floor.cpp" />
+    <ClCompile Include="src\gun.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\MouseHandler.cpp" />
     <ClCompile Include="src\Player.cpp" />
