@@ -1,12 +1,6 @@
 #include "Gun.h"
 
 
-#include "SDWINDOW.h"
-#include "RadToDegree.h"
-#include <iostream>
-
-#include <vector>
-#include <chrono>
 
 void Gun::setMousePosition(std::vector<int> mousePositions)
 {
@@ -19,13 +13,23 @@ void Gun::setMousePosition(std::vector<int> mousePositions)
 void Gun::updatePosition(float deltaTime, Vector2D motion)
 {
     position.x += motion.x * deltaTime;
+    //position = position = centerPlayerTriangleRef;
 
 }
 
 void Gun::rotateGun()
 {
+    
+    Vector2D gunOffset = getMousePosition();
+    gunOffset.y = gunOffset.y + 25.0f;
+    
     //we want to get the direction of the mouse from the vector position
-    Vector2D dir = (getMousePosition() - position).Normalize();
+    Vector2D dir = (gunOffset - position).Normalize();
+
+  
+    //debugGizmos->RenderLine(centerPlayerTriangleRef,getMousePosition());
+    debugGizmos->RenderRay(centerPlayerTriangleRef,dir, 200.0f);
+
 
     Vector2D posDir = Vector2D::Normalized(position);
 
@@ -41,6 +45,9 @@ void Gun::rotateGun()
     
     angleMouse = RadToDegree::convert(angle);
     
+    //save the rotation
+    Rotation = angleMouse;
+
     //std::cout << "angle: " << angleMouse << std::endl;
     //std::cout << "up vector: " << getUpVec() << std::endl;
 
@@ -49,6 +56,7 @@ void Gun::rotateGun()
 void Gun::update(float deltaTime)
 {
 
+    Transform::update(deltaTime);
     rotateGun();
 
 

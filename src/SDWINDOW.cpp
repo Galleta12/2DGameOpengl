@@ -15,6 +15,8 @@
 #include "Floor.h"
 #include "Clocker.h"
 
+//gizmos
+#include "Gizmos.h"
 
 
 //static variables at the beggining
@@ -206,6 +208,7 @@ void SDWINDOW::display()
         }
         
 
+        renderGizmos();
     
         // swap to new updated screen to render
         SDL_GL_SwapWindow(window);
@@ -213,6 +216,15 @@ void SDWINDOW::display()
 }
 
 
+void SDWINDOW::renderGizmos()
+{
+
+    for(auto& g : Gizmos::instances){
+        g->DrawLine();
+        g->DrawRay();
+    }
+
+}
 
 void SDWINDOW::update() {
 
@@ -233,6 +245,9 @@ void SDWINDOW::update() {
 void SDWINDOW::clean() {
     SDL_DestroyWindow(window);
     window = NULL;
+    //cleangizmos
+    Gizmos::Cleanup();
     SDL_Quit();
     std::cout << "Game closed" << std::endl;
 }
+

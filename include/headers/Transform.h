@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Vector2D.h"
+#include "Gizmos.h"
 #include "cmath"
 
 class Transform{
@@ -37,8 +38,9 @@ class Transform{
             Vector2D rightVector(-upVector.y, upVector.x);
             right = rightVector;
             
-            return right;
+            return right * -1;
         }
+        
         Vector2D getUpVec(){
             
             float angleRadians = Rotation * (3.14159265359f / 180.0f); // Convert degrees to radians
@@ -53,14 +55,30 @@ class Transform{
 
         
         virtual void init(){}
-        virtual void update(float deltaTime){}
+        virtual void update(float deltaTime){
+            getUpVec();
+            getRightVec();
+            DrawUpGizmosTransform();
+            DrawRightGizmos();
+        }
         virtual void draw(float deltaTime){}
+        
 
+        void DrawUpGizmosTransform(){
+            //std::cout<<"DrawGizmos" << std::endl;
+            upGizmos->RenderRay(position,up.Normalize(),100.0f);
+        }
+        void DrawRightGizmos(){
+            rightGizmos->RenderRay(position,right.Normalize(),100.0f);
+        }
         //virtual ~Transform(){}
         
 
     private:
-
+        //purple
+        Gizmos *upGizmos = Gizmos::StartGizmos(0.5f, 0.5f, 0.0f);
+        // Set the color to orange (RGB: 1.0, 0.5, 0.0)
+        Gizmos *rightGizmos = Gizmos::StartGizmos(1.0f, 0.5f, 0.0f);
 
 
 };

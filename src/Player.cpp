@@ -29,6 +29,8 @@ Player::~Player()
 void Player::update(float deltaTime)
 {
     
+    
+    //Transform::update(deltaTime);
     //this means that there is movement    
     if(isKeyDirx){
 
@@ -42,7 +44,7 @@ void Player::update(float deltaTime)
         motion.x = std::max(motion.x, 0.0f);
         
         if(motion.x > 0.0f){
-            motion.x *= 0.2f;
+            motion.x *= 0.4f;
             
             //std::cout << "motion false" << motion.x << std::endl;
         }

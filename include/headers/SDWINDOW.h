@@ -47,6 +47,8 @@ public:
 private:
     SDL_Window* window = nullptr;
     SDL_GLContext glContext = nullptr;
+    //for rendering gizmis
+    void renderGizmos();
 
 
 };

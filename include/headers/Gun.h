@@ -1,7 +1,15 @@
 #pragma once
 #include "Transform.h"
 
+#include "SDWINDOW.h"
+#include "RadToDegree.h"
+#include <iostream>
+
 #include <vector>
+#include <chrono>
+
+
+#include "Gizmos.h"
 
 
 class Gun : public Transform{
@@ -43,4 +51,6 @@ class Gun : public Transform{
         float height=10.0f;
         Vector2D mousePos;
         float angleMouse = 0.0f;
+        //black color
+        Gizmos *debugGizmos = Gizmos::StartGizmos(0.0f,0.0f,0.0f);
 };
