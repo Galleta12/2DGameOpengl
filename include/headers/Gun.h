@@ -10,6 +10,7 @@
 
 
 #include "Gizmos.h"
+#include "Bullet.h"
 
 
 class Gun : public Transform{
@@ -31,19 +32,31 @@ class Gun : public Transform{
             speed = newSpeed;
             power = newPower;
             //centerPlayerTriangleRef = center;
+            //initialize the bullet
+            //bullet = new Bullet(x,y,5.0f,newSpeed,newPower,gunTip);
         }
 
+        ~Gun(); 
         
         void setMousePosition(std::vector<int> mousePositions);
 
         Vector2D getMousePosition(){return mousePos;}
+
        
         void updatePosition(float deltaTime, Vector2D motion);
         void rotateGun();
         void update(float deltaTime ) override;
         void draw(float deltaTime) override;
 
+        void mouseLeftPressed(std::vector<int> mousePositions);
+
+        //convert center in local
+
         friend std::ostream& operator <<(std::ostream& stream, const Gun& g);
+
+        std::vector<Bullet*> getVectorBullet(){
+            return bulletList;
+        }
 
 
     private:
@@ -53,4 +66,11 @@ class Gun : public Transform{
         float angleMouse = 0.0f;
         //black color
         Gizmos *debugGizmos = Gizmos::StartGizmos(0.0f,0.0f,0.0f);
+        //Bullet *bullet = nullptr;
+        std::vector<Bullet*> bulletList;
+
+        Vector2D gunTip;
+        void calculateGunTip();
+        Vector2D convertCenterInLocal();
+        Vector2D getPositionofTip();
 };

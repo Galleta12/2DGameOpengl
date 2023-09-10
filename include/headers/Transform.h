@@ -8,6 +8,10 @@ class Transform{
 
     public:
         
+        
+        
+        Vector2D localPosToWorld;
+        
         Vector2D position;
         Vector2D velocity;
         
@@ -16,6 +20,7 @@ class Transform{
         
         float Rotation = 0.0f;
         
+        bool isLocalSpace=false;
         
         Transform(float x, float y){
             position.x = x;
@@ -64,12 +69,33 @@ class Transform{
         virtual void draw(float deltaTime){}
         
 
+        void convertLocalToWorld(Vector2D parentPosition){
+            //localPosToWorld = parentPosition + position;                                     
+            localPosToWorld = parentPosition;                                     
+
+        }
+
         void DrawUpGizmosTransform(){
             //std::cout<<"DrawGizmos" << std::endl;
-            upGizmos->RenderRay(position,up.Normalize(),100.0f);
+            if(!isLocalSpace){
+
+                upGizmos->RenderRay(position,up.Normalize(),100.0f);
+            }
+            else{
+                upGizmos->RenderRay(localPosToWorld,up.Normalize(),100.0f);
+
+            }
         }
         void DrawRightGizmos(){
-            rightGizmos->RenderRay(position,right.Normalize(),100.0f);
+            if(!isLocalSpace){
+
+                rightGizmos->RenderRay(position,right.Normalize(),100.0f);
+            }
+            else
+            {
+                rightGizmos->RenderRay(localPosToWorld,right.Normalize(),100.0f);
+
+            }
         }
         //virtual ~Transform(){}
         

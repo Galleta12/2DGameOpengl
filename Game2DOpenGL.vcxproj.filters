@@ -29,6 +29,7 @@
     <ClInclude Include="include\headers\RadToDegree.h" />
     <ClInclude Include="include\headers\Floor.h" />
     <ClInclude Include="include\headers\Gizmos.h" />
+    <ClInclude Include="include\headers\Bullet.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -53,5 +54,6 @@
     <ClCompile Include="src\gun.cpp" />
     <ClCompile Include="src\floor.cpp" />
     <ClCompile Include="src\gizmos.cpp" />
+    <ClCompile Include="src\bullet.cpp" />
   </ItemGroup>
 </Project>

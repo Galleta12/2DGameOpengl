@@ -33,6 +33,7 @@ public:
     void init(const char* title, int posX, int posY, int width, int height, bool fullscreen);
     //sdl2 events
     void handleEvents();
+
     //update, main logic of the game here
     void update();
     //display of the boxes
@@ -49,6 +50,7 @@ private:
     SDL_GLContext glContext = nullptr;
     //for rendering gizmis
     void renderGizmos();
+    void objectsEvents();
 
 
 };

@@ -15,6 +15,8 @@
 #include "Floor.h"
 #include "Clocker.h"
 
+
+
 //gizmos
 #include "Gizmos.h"
 
@@ -45,7 +47,6 @@ Floor *floorObject = nullptr;
 
 
 
-
 SDWINDOW::SDWINDOW() {
   
 }
@@ -55,6 +56,7 @@ SDWINDOW::~SDWINDOW() {
     delete player;
     delete floorObject;
     delete mouseHandler;
+    //delete bullet;
 
     // Clean up the objects in transformList vector
     for (Transform* transform : transformList) {
@@ -103,16 +105,20 @@ void SDWINDOW::init(const char* title, int posX, int posY, int width, int height
             //start mouse class
             mouseHandler = new MouseHandler();
             player = new Player(300.0f,300.0f,5);
+            //set the bullet for test
+            //bullet = new Bullet(300.0f,300.0f, 5.0f,10.0f,10.0f);
             //gun data
             player->gunData(20,50);
             
             //floorObject
             floorObject = new Floor(1.0f, height /4);
             
+            //transformList.emplace_back(bullet);
        
             transformList.emplace_back(floorObject);
             
             transformList.emplace_back(player);
+
 
         }
         else {
@@ -170,13 +176,51 @@ void SDWINDOW::handleEvents() {
             break;
     }
 
+    
+    objectsEvents();
+}
+
+
+void SDWINDOW::objectsEvents(){
+    
+    int mouseClickX = 0;
+    int mouseClickY = 0;
+    
     //mouse
     mouseHandler->mousePos();
     //get mouse position
     player->getGun()->setMousePosition(mouseHandler->getMousePos());
-    
     //handle playerdirectionmoves
     player->keyboard();
+    
+    //check if there was a click
+     if(event.type == SDL_MOUSEBUTTONDOWN){
+        switch (event.button.button)
+        {
+            case SDL_BUTTON_LEFT:
+            mouseClickX = SDWINDOW::event.button.x;
+            mouseClickY = SDWINDOW::event.button.y;
+
+            std::cout<< "Mouse X: " << mouseClickX << "Mouse y: " << mouseClickY << std::endl;     
+            
+            player->getGun()->mouseLeftPressed({mouseClickX,mouseClickY});
+            
+            break;
+            
+            case SDL_BUTTON_RIGHT:
+            
+            break;
+            
+            default:
+            break;
+        
+        
+        
+        }
+     }
+    
+    
+    
 }
 
 void SDWINDOW::display()

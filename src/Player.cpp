@@ -31,6 +31,10 @@ void Player::update(float deltaTime)
     
     
     //Transform::update(deltaTime);
+
+
+    
+
     //this means that there is movement    
     if(isKeyDirx){
 
@@ -68,9 +72,16 @@ void Player::update(float deltaTime)
     gun->updatePosition(deltaTime,motion);
 
     gun->update(deltaTime);
+    
+    //for(auto& b : gun->getVectorBullet())b->update(deltaTime);
 
- 
+    //testing dot product
+    // Vector2D gunOffset = gun->getMousePosition();
+    // gunOffset.y = gunOffset.y + 25.0f;
+    // Vector2D dirTest = (gunOffset - position).Normalize();
 
+    // float dot = Vector2D::Dot(dirTest,Transform::up.Normalize());
+    // std::cout<<"Angle test" << dot << std::endl;
 
 }
 
@@ -108,6 +119,8 @@ void Player::draw(float deltaTime)
     gun->draw(deltaTime);
     //std::cout << "Gun draw: " <<*gun << std::endl;
     glPopMatrix();
+    //the bullets are independent from the player and gun pos
+    for(auto& b : gun->getVectorBullet())b->draw(deltaTime);
 
 }
 

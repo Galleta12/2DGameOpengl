@@ -178,6 +178,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\headers\Bullet.h" />
     <ClInclude Include="include\headers\Clocker.h" />
     <ClInclude Include="include\headers\Floor.h" />
     <ClInclude Include="include\headers\Gizmos.h" />
@@ -190,6 +191,7 @@
     <ClInclude Include="include\headers\Vector2D.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\bullet.cpp" />
     <ClCompile Include="src\clocker.cpp" />
     <ClCompile Include="src\floor.cpp" />
     <ClCompile Include="src\gizmos.cpp" />

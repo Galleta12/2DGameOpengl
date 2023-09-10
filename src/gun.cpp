@@ -1,6 +1,13 @@
 #include "Gun.h"
 
-
+Gun::~Gun()
+{
+    //delete bullet;
+    for(auto& b : bulletList){
+        delete b;
+    }
+    bulletList.clear();
+}
 
 void Gun::setMousePosition(std::vector<int> mousePositions)
 {
@@ -28,10 +35,9 @@ void Gun::rotateGun()
 
   
     //debugGizmos->RenderLine(centerPlayerTriangleRef,getMousePosition());
-    debugGizmos->RenderRay(centerPlayerTriangleRef,dir, 200.0f);
+    //debugGizmos->RenderRay(centerPlayerTriangleRef,dir, 200.0f);
 
-
-    Vector2D posDir = Vector2D::Normalized(position);
+    //Vector2D posDir = Vector2D::Normalized(position);
 
     
     
@@ -48,6 +54,8 @@ void Gun::rotateGun()
     //save the rotation
     Rotation = angleMouse;
 
+    getPositionofTip();
+
     //std::cout << "angle: " << angleMouse << std::endl;
     //std::cout << "up vector: " << getUpVec() << std::endl;
 
@@ -56,29 +64,29 @@ void Gun::rotateGun()
 void Gun::update(float deltaTime)
 {
 
-    Transform::update(deltaTime);
+    //Transform::update(deltaTime);
     rotateGun();
+    for(auto& b : bulletList)b->update(deltaTime);
+
 
 
 }
 
 void Gun::draw(float deltaTime)
 {
+    
     glPushMatrix();
-
-    
-    
+   
     //std::cout<< "Current center" << centerPlayerTriangleRef << std::endl;
-    Vector2D centerInLocal;
-    centerInLocal.x = centerPlayerTriangleRef.x - position.x;
-    centerInLocal.y = centerPlayerTriangleRef.y - position.y;
+    // Vector2D centerInLocal;
+    // centerInLocal.x = centerPlayerTriangleRef.x - position.x;
+    // centerInLocal.y = centerPlayerTriangleRef.y - position.y;
     
-    glTranslatef(centerInLocal.x,centerInLocal.y,0.0f);
+    glTranslatef(convertCenterInLocal().x,convertCenterInLocal().y,0.0f);
     //glTranslatef(0.0f,0.0f,0.0f);
     glRotatef(angleMouse,0.0f,0.0f,1.0f);
     
     
-
 
     glBegin(GL_QUADS);
     glColor3f(0.0f,0.0f,1.0f);
@@ -92,11 +100,75 @@ void Gun::draw(float deltaTime)
     // //std::cout << "Gun widht: " << width << " Heigh: " << height << std::endl;
     glEnd();
 
+    //calculateGunTip();
+
+    //for(auto& b : bulletList)b->draw(deltaTime);
+        
     glPopMatrix();
 
 
+}
+
+void Gun::mouseLeftPressed(std::vector<int> mousePositions)
+{
+    Vector2D gunOffset = getMousePosition();
+    gunOffset.y = gunOffset.y + 25.0f;
+    
+    //we want to get the direction of the mouse from the vector position
+    Vector2D dir = (gunOffset - position).Normalize();
+
+    //if pressed we want to create a bullet
+    //std::cout << "This is the dir: " << dir << std::endl;
+    
+    //bulletList.push_back(new Bullet({width,0.0f,5.0f,5,10,getPositionofTip(),Rotation}));
+    
+    Vector2D positionLaunch = getPositionofTip();
+    bulletList.push_back(new Bullet({positionLaunch.x,positionLaunch.y,8.0f,5,10,Rotation,dir}));
+    
+
+    //std::cout<< "Mouse X: " << mouseClickX << "Mouse y: " << mouseClickY << std::endl;     
+
+    
+    //std::cout << "Mouse pos: " << mousePos << std::endl;
+}
+
+Vector2D Gun::convertCenterInLocal()
+{
+    Vector2D centerInLocal;
+    centerInLocal.x = centerPlayerTriangleRef.x - position.x;
+    centerInLocal.y = centerPlayerTriangleRef.y - position.y;
+    return centerInLocal;
+}
+
+Vector2D Gun::getPositionofTip()
+{
+    
+    Vector2D worldPosTip;
+    Vector2D gunOffset = getMousePosition();
+    gunOffset.y = gunOffset.y + 25.0f;
+    
+    //we want to get the direction of the mouse from the vector position
+    Vector2D dir = (gunOffset - position).Normalize();
+    
+    Vector2D copycenter = centerPlayerTriangleRef;
+    
+    
+    worldPosTip = copycenter + (dir * width);
+    
+    
+    //debugGizmos->RenderLine(centerPlayerTriangleRef,worldPosTip);
+    
+    return worldPosTip;
+}
+
+void Gun::calculateGunTip()
+{
+    gunTip = position + Vector2D(10.0f,10.0f);
+
 
 }
+
+
 
 std::ostream &operator<<(std::ostream &stream, const Gun &g)
 {

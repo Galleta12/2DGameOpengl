@@ -7,9 +7,21 @@ class MouseHandler{
 
     public:
         
+        static enum MousePress{
+            ISLEFT,
+            NOLEFT,
+            ISRIGHT,
+            NORIGHT,
+
+        };
+
+        
         MouseHandler();
         
         ~MouseHandler();
+        
+        static MousePress mousePressEnum;
+        
         
         void mousePos();
 
@@ -26,8 +38,10 @@ class MouseHandler{
             return ismouseleft;
         }
 
+
     private:
         int mouseClickX, mouseClickY, mousePosX, mousePosY;
         bool ismouseleft=false;
+        bool ismouseRight = false;
 
 };
