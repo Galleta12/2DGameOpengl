@@ -56,6 +56,7 @@ class Bullet : public Transform{
             b = randomFloat();
             //we set the bullet as local
             Transform::isLocalSpace = true;
+            Transform::basisVector = true;
             //get the local space cordinates for the gizmos
             Transform::convertLocalToWorld(launchPos);
 

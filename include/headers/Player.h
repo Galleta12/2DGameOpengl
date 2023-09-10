@@ -20,7 +20,11 @@ class Player:public Transform{
             speed = newSpeed;
             keydirX = 0.0f; // Initialize keydirX to 0
             keydirY = 0.0f; // Initialize keydirY to 0
-
+            //allow physics for this
+            Transform::AddPhysics2D();
+            //allow basis
+            Transform::basisVector = false;
+            
            
         }
 
@@ -53,6 +57,7 @@ class Player:public Transform{
 
         Vector2D centerTriangle;
         void calculateCenter();
+        void checkIsCollisionGround(float deltaTime);
 
         const float friction = 0.9f;
 

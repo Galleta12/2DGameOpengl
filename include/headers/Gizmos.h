@@ -17,11 +17,16 @@ class Gizmos{
         void RenderLine(Vector2D start, Vector2D end);
         void RenderRay(Vector2D start, Vector2D direction, float distance);
 
+         
         
+        void changeColor(float r, float g, float b);
 
-        
+
+
+
         void DrawLine();
         void DrawRay();
+        
 
         bool checkInstanceExists(Gizmos* currentInstance);
         

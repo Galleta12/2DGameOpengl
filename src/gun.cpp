@@ -19,8 +19,9 @@ void Gun::setMousePosition(std::vector<int> mousePositions)
 
 void Gun::updatePosition(float deltaTime, Vector2D motion)
 {
-    position.x += motion.x * deltaTime;
-    //position = position = centerPlayerTriangleRef;
+    //position.x += motion.x * deltaTime;
+    position =  centerPlayerTriangleRef;
+
 
 }
 
@@ -28,7 +29,7 @@ void Gun::rotateGun()
 {
     
     Vector2D gunOffset = getMousePosition();
-    gunOffset.y = gunOffset.y + 25.0f;
+    gunOffset.y = gunOffset.y + 5.0f;
     
     //we want to get the direction of the mouse from the vector position
     Vector2D dir = (gunOffset - position).Normalize();
@@ -64,7 +65,7 @@ void Gun::rotateGun()
 void Gun::update(float deltaTime)
 {
 
-    //Transform::update(deltaTime);
+    Transform::update(deltaTime);
     rotateGun();
     for(auto& b : bulletList)b->update(deltaTime);
 
@@ -82,7 +83,7 @@ void Gun::draw(float deltaTime)
     // centerInLocal.x = centerPlayerTriangleRef.x - position.x;
     // centerInLocal.y = centerPlayerTriangleRef.y - position.y;
     
-    glTranslatef(convertCenterInLocal().x,convertCenterInLocal().y,0.0f);
+    glTranslatef(0.0f,-33.0f,0.0f);
     //glTranslatef(0.0f,0.0f,0.0f);
     glRotatef(angleMouse,0.0f,0.0f,1.0f);
     
@@ -112,7 +113,7 @@ void Gun::draw(float deltaTime)
 void Gun::mouseLeftPressed(std::vector<int> mousePositions)
 {
     Vector2D gunOffset = getMousePosition();
-    gunOffset.y = gunOffset.y + 25.0f;
+    gunOffset.y = gunOffset.y + 5.0f;
     
     //we want to get the direction of the mouse from the vector position
     Vector2D dir = (gunOffset - position).Normalize();
@@ -145,7 +146,7 @@ Vector2D Gun::getPositionofTip()
     
     Vector2D worldPosTip;
     Vector2D gunOffset = getMousePosition();
-    gunOffset.y = gunOffset.y + 25.0f;
+    gunOffset.y = gunOffset.y + 5.0f;
     
     //we want to get the direction of the mouse from the vector position
     Vector2D dir = (gunOffset - position).Normalize();
@@ -172,7 +173,7 @@ void Gun::calculateGunTip()
 
 std::ostream &operator<<(std::ostream &stream, const Gun &g)
 {
-    // TODO: insert return statement here
+   
      stream << "Gun Pos(" << g.gunPosX << "," << g.gunPosY << ")\n"
      << "Gun TranformPos(" << g.position.x << "," << g.position.y << ")\n"
      << "Gun Refence of center player(" << g.centerPlayerTriangleRef << "This is the y component of sdl window "<< *SDWINDOW::WindowHeight - g.centerPlayerTriangleRef.y << ")";

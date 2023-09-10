@@ -30,7 +30,7 @@ void Player::update(float deltaTime)
 {
     
     
-    //Transform::update(deltaTime);
+    Transform::update(deltaTime);
 
 
     
@@ -69,6 +69,13 @@ void Player::update(float deltaTime)
     position.x += motion.x * deltaTime;
 
     
+    //dont allow the player to move outside
+    Transform::getPhysics2D()->checkwindowcollision(position);
+    
+    
+    
+    //check collision ground
+    checkIsCollisionGround(deltaTime);
     gun->updatePosition(deltaTime,motion);
 
     gun->update(deltaTime);
@@ -83,6 +90,15 @@ void Player::update(float deltaTime)
     // float dot = Vector2D::Dot(dirTest,Transform::up.Normalize());
     // std::cout<<"Angle test" << dot << std::endl;
 
+}
+
+void Player::checkIsCollisionGround(float deltaTime){
+    //define the ray below
+    Vector2D currenttUp = Transform::up;
+    currenttUp.y *= -1;
+    Transform::getPhysics2D()->raycast(this,position,currenttUp,100.0f,true,deltaTime);
+
+     
 }
 
 

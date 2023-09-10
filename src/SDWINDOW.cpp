@@ -9,7 +9,7 @@
 #include "SDWINDOW.h"
 #include "MouseHandler.h"
 
-#include "Transform.h"
+
 #include "Player.h"
 #include "Gun.h"
 #include "Floor.h"
@@ -39,7 +39,8 @@ MouseHandler *mouseHandler = nullptr;
 
 
 //transform list
-std::vector<Transform*> transformList;
+//we want this to be static since the physics components must have access to this
+std::vector<Transform*> SDWINDOW::transformList;
 //player object
 Player *player = nullptr;
 //floor object

@@ -4,8 +4,9 @@
 #include <SDL_opengl.h>
 
 #include <vector>
+#include "Transform.h"
 
-
+class Transform;
 class SDWINDOW {
 
 public:
@@ -25,6 +26,10 @@ public:
 
     static SDL_Event event;
 
+    
+    
+    static std::vector<Transform*> transformList;
+    
     //static float delta_time;
 
 

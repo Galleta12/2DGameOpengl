@@ -30,6 +30,7 @@
     <ClInclude Include="include\headers\Floor.h" />
     <ClInclude Include="include\headers\Gizmos.h" />
     <ClInclude Include="include\headers\Bullet.h" />
+    <ClInclude Include="include\headers\Physics2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -55,5 +56,6 @@
     <ClCompile Include="src\floor.cpp" />
     <ClCompile Include="src\gizmos.cpp" />
     <ClCompile Include="src\bullet.cpp" />
+    <ClCompile Include="src\physics2D.cpp" />
   </ItemGroup>
 </Project>

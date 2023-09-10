@@ -2,7 +2,10 @@
 
 #include "Vector2D.h"
 #include "Gizmos.h"
-#include "cmath"
+
+#include "Physics2D.h"
+
+#include <cmath>
 
 class Transform{
 
@@ -21,7 +24,9 @@ class Transform{
         float Rotation = 0.0f;
         
         bool isLocalSpace=false;
-        
+
+        bool basisVector = false;
+
         Transform(float x, float y){
             position.x = x;
             position.y = y;
@@ -32,7 +37,9 @@ class Transform{
         //    velocity.Zero();
         // }
         
-        ~Transform(){}
+        ~Transform(){
+            delete physics2D;
+        }
 
         Vector2D getRightVec(){
 
@@ -61,10 +68,14 @@ class Transform{
         
         virtual void init(){}
         virtual void update(float deltaTime){
+            
             getUpVec();
             getRightVec();
-            DrawUpGizmosTransform();
-            DrawRightGizmos();
+            
+            if(basisVector){
+                DrawUpGizmosTransform();
+                DrawRightGizmos();
+            }
         }
         virtual void draw(float deltaTime){}
         
@@ -97,7 +108,16 @@ class Transform{
 
             }
         }
+
+
+        //create physics instance
+        void AddPhysics2D(){
+            physics2D = new Physics2D();
+        }
         //virtual ~Transform(){}
+        Physics2D *getPhysics2D(){
+            return physics2D;
+        }
         
 
     private:
@@ -105,6 +125,9 @@ class Transform{
         Gizmos *upGizmos = Gizmos::StartGizmos(0.5f, 0.5f, 0.0f);
         // Set the color to orange (RGB: 1.0, 0.5, 0.0)
         Gizmos *rightGizmos = Gizmos::StartGizmos(1.0f, 0.5f, 0.0f);
+        //
+        Physics2D *physics2D = nullptr; 
+        
 
 
 };
