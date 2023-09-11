@@ -56,7 +56,7 @@ private:
     //for rendering gizmis
     void renderGizmos();
     void objectsEvents();
-
+    void setMultiplePlatforms();
 
 };
 

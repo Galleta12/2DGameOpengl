@@ -20,11 +20,13 @@ class Player:public Transform{
             speed = newSpeed;
             keydirX = 0.0f; // Initialize keydirX to 0
             keydirY = 0.0f; // Initialize keydirY to 0
+            
             //allow physics for this
             Transform::AddPhysics2D();
             //allow basis
-            Transform::basisVector = false;
-            
+            Transform::basisVector = true;
+            //set up the vertices
+            init();
            
         }
 
@@ -33,6 +35,7 @@ class Player:public Transform{
         
         ~Player();
         
+        void init() override;
         void update(float deltaTime) override;
         void draw(float deltaTime) override;
 
@@ -63,6 +66,8 @@ class Player:public Transform{
 
         bool isKeyDirx = false;
         
+      Vector2D leftVertex;
+      Vector2D rightVertex;
 
 };
 

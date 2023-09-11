@@ -34,6 +34,8 @@ class Physics2D{
         void checkwindowcollision(Vector2D& currentPosition);
         //check raycast
         bool raycast(Transform* me,Vector2D start, Vector2D direction, float distance, bool draw, float deltaTime);
+        
+        bool raycastParametric(Transform* me,Vector2D direction, float distance, bool draw, float deltaTime);
 
         bool checkOnGround();
         //vector response reflect
@@ -44,6 +46,9 @@ class Physics2D{
 
     private:
         Gizmos *debugDrawRaycast =Gizmos::StartGizmos(1.0f,0.2f,0.8f);
+        Vector2D calculateNormalSuperfice(Vector2D pos, Vector2D end);
+        bool checkConditionsCollisionParametric(Vector2D hitPoint, Vector2D b1, Vector2D b2);
+        bool checkThitBetweenDeltaTime(float thit, float deltaTime);
 
 
 

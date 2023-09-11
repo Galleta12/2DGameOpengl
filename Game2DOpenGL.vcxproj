@@ -185,6 +185,7 @@
     <ClInclude Include="include\headers\Gun.h" />
     <ClInclude Include="include\headers\MouseHandler.h" />
     <ClInclude Include="include\headers\Physics2D.h" />
+    <ClInclude Include="include\headers\Platforms.h" />
     <ClInclude Include="include\headers\Player.h" />
     <ClInclude Include="include\headers\RadToDegree.h" />
     <ClInclude Include="include\headers\SDWINDOW.h" />
@@ -200,6 +201,7 @@
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\MouseHandler.cpp" />
     <ClCompile Include="src\physics2D.cpp" />
+    <ClCompile Include="src\platforms.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\SDWINDOW.cpp" />
     <ClCompile Include="src\transform.cpp" />

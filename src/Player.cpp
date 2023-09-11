@@ -67,11 +67,14 @@ void Player::update(float deltaTime)
     //update position
     
     position.x += motion.x * deltaTime;
-
-    
+    //update the left
+    //right vertex
     //dont allow the player to move outside
-    Transform::getPhysics2D()->checkwindowcollision(position);
     
+    leftVertex.x += motion.x * deltaTime;
+    rightVertex.x += motion.x * deltaTime;
+    
+    Transform::getPhysics2D()->checkwindowcollision(position);
     
     
     //check collision ground
@@ -90,13 +93,17 @@ void Player::update(float deltaTime)
     // float dot = Vector2D::Dot(dirTest,Transform::up.Normalize());
     // std::cout<<"Angle test" << dot << std::endl;
 
+    // for(auto& t : vertices){
+    //     std::cout << *t << std::endl;
+    // }
+
 }
 
 void Player::checkIsCollisionGround(float deltaTime){
     //define the ray below
     Vector2D currenttUp = Transform::up;
     currenttUp.y *= -1;
-    Transform::getPhysics2D()->raycast(this,position,currenttUp,100.0f,true,deltaTime);
+    //Transform::getPhysics2D()->raycast(this,position,currenttUp,100.0f,true,deltaTime);
 
      
 }
@@ -228,3 +235,42 @@ void Player::calculateCenter()
 
 }
 
+
+//set up the vertices of the player.
+void Player::init()
+{
+
+    
+    //get all points and put it on the vertices
+    //top corner
+
+    //  // Calculate positions of other two vertices
+    // Vector2D leftVertex(position.x - 25.0f, position.y - 50.0f);
+    // Vector2D rightVertex(position.x + 25.0f, position.y - 50.0f);
+    
+    
+    leftVertex.x = position.x - 25.0f;
+    leftVertex.y = position.y - 50.0f;
+    rightVertex.x = position.x + 25.0f;
+    rightVertex.y = position.y - 50.0f;
+    
+    vertices.push_back(&position);
+    vertices.push_back(&leftVertex);
+    vertices.push_back(&rightVertex);
+
+
+    
+    //refernce
+    // glVertex2f(-25.0f,-50.0f); // Bottom-left vertex
+    // glVertex2f(25.0f, -50.0f);  // Vertex 3
+    
+
+
+
+    
+    
+    //create a dubug gizmos instance
+    Gizmos *points = Gizmos::StartGizmos(1.0f,0.0f,0.0f);
+    points->SetPointsDebug(vertices,5.0f);
+
+}

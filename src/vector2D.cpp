@@ -17,6 +17,11 @@ Vector2D::~Vector2D()
 {
 }
 
+
+
+
+
+
 Vector2D& Vector2D::Add(const Vector2D& vec){
     this->x += vec.x;
     this->y += vec.y;
@@ -71,6 +76,8 @@ Vector2D& operator/(Vector2D& v1, const Vector2D& v2){
 }
 
 
+
+
 Vector2D& Vector2D::operator+=(const Vector2D& vec){
     return this->Add(vec);
   }
@@ -116,7 +123,30 @@ Vector2D& Vector2D::Normalize()
     return *this;
 }
 
+Vector2D Vector2D::Addition(const Vector2D &v1, const Vector2D &v2)
+{
+    return Vector2D(v1.x + v2.x,v1.y+v2.y);
+}
 
+Vector2D Vector2D::Substraction(const Vector2D &v1, const Vector2D &v2)
+{
+    return Vector2D(v1.x - v2.x, v1.y- v2.y);
+}
+
+Vector2D Vector2D::Multiplication(const Vector2D &v1, const Vector2D &v2)
+{
+    return Vector2D(v1.x * v2.x,v1.y *v2.y);
+}
+
+Vector2D Vector2D::Divition(const Vector2D &v1, const Vector2D &v2)
+{
+    return Vector2D(v1.x / v2.x,v1.y / v2.y);
+}
+
+Vector2D Vector2D::ScalarMultiplication(const Vector2D &v1, float scalar)
+{
+    return Vector2D(v1.x * scalar, v1.y * scalar);
+}
 
 float Vector2D::Angle(const Vector2D &v1, const Vector2D &v2)
 {
@@ -189,6 +219,28 @@ float Vector2D::SignedAngle(const Vector2D &v1, const Vector2D &v2)
     float angleDeg = RadToDegree::convert(angleRad);
 
     return angleDeg;
+}
+
+Vector2D Vector2D::NormalSuperfice(Vector2D v1, Vector2D v2)
+{
+    Vector2D r = v2 - v1;    
+    //flip
+    float tempX = r.x;
+    r.x = -r.y;
+    r.y = tempX;
+    
+    return r.Normalize();
+
+}
+Vector2D Vector2D::NormalSuperficeNoNormalized(Vector2D v1, Vector2D v2)
+{
+    Vector2D r = v2 - v1;    
+    //flip
+    float tempX = r.x;
+    r.x = -r.y;
+    r.y = tempX;
+    
+    return r;
 }
 // angle
 // always normalize before getting the angle

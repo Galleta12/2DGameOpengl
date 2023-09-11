@@ -36,7 +36,10 @@ class Bullet : public Transform{
             r = randomFloat();
             g = randomFloat();
             b = randomFloat();
+            Transform::basisVector = false;
+            Transform::AddPhysics2D();
             //this is a parent
+            init();
             launchBall();
         }
         
@@ -60,13 +63,15 @@ class Bullet : public Transform{
             //get the local space cordinates for the gizmos
             Transform::convertLocalToWorld(launchPos);
 
+            init();
         }
-        ~Bullet(){}
+        ~Bullet();
 
         void launchBall();  
-
+        void init() override;
         void update(float deltaTime ) override;
         void draw(float deltaTime) override;
+        
 
     
     private:
@@ -81,7 +86,9 @@ class Bullet : public Transform{
         float randomFloat();
         Vector2D motion;
         Gizmos *debugVelocity = Gizmos::StartGizmos(0.8f,0.5f,1.0f);
-
-
+        
+        void updatePoints(float deltaTime);
+     
+     
 
 };

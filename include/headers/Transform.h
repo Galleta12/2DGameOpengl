@@ -11,8 +11,10 @@ class Transform{
 
     public:
         
+                
         
         
+        bool lineFlag=false;
         Vector2D localPosToWorld;
         
         Vector2D position;
@@ -39,6 +41,10 @@ class Transform{
         
         ~Transform(){
             delete physics2D;
+             for(auto& v : vertices){
+                    delete v;
+                }
+                vertices.clear();
         }
 
         Vector2D getRightVec(){
@@ -65,7 +71,7 @@ class Transform{
 
         }
 
-        
+        //for setting up the vertices
         virtual void init(){}
         virtual void update(float deltaTime){
             
@@ -118,15 +124,19 @@ class Transform{
         Physics2D *getPhysics2D(){
             return physics2D;
         }
-        
 
+        //std::vector<Vector2D*> getVertices(){return vertices;}
+        
+        //list of points that confomr the picuture, worldpos
+        std::vector<Vector2D*> vertices; 
     private:
         //purple
         Gizmos *upGizmos = Gizmos::StartGizmos(0.5f, 0.5f, 0.0f);
         // Set the color to orange (RGB: 1.0, 0.5, 0.0)
         Gizmos *rightGizmos = Gizmos::StartGizmos(1.0f, 0.5f, 0.0f);
         //
-        Physics2D *physics2D = nullptr; 
+        Physics2D *physics2D = nullptr;
+        
         
 
 

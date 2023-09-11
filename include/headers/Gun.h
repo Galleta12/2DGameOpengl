@@ -34,7 +34,7 @@ class Gun : public Transform{
             //centerPlayerTriangleRef = center;
             //initialize the bullet
             //bullet = new Bullet(x,y,5.0f,newSpeed,newPower,gunTip);
-            Transform::basisVector = false;
+            Transform::basisVector = true;
         
         }
 

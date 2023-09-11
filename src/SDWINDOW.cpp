@@ -13,6 +13,7 @@
 #include "Player.h"
 #include "Gun.h"
 #include "Floor.h"
+#include "Platforms.h"
 #include "Clocker.h"
 
 
@@ -45,6 +46,10 @@ std::vector<Transform*> SDWINDOW::transformList;
 Player *player = nullptr;
 //floor object
 Floor *floorObject = nullptr;
+
+
+//std::vector<Platforms*> platformsList;
+//Platforms *platforms = nullptr;
 
 
 
@@ -107,19 +112,18 @@ void SDWINDOW::init(const char* title, int posX, int posY, int width, int height
             mouseHandler = new MouseHandler();
             player = new Player(300.0f,300.0f,5);
             //set the bullet for test
-            //bullet = new Bullet(300.0f,300.0f, 5.0f,10.0f,10.0f);
             //gun data
             player->gunData(20,50);
             
             //floorObject
             floorObject = new Floor(1.0f, height /4);
             
-            //transformList.emplace_back(bullet);
-       
+            
             transformList.emplace_back(floorObject);
             
             transformList.emplace_back(player);
-
+            //set platforms
+            setMultiplePlatforms();
 
         }
         else {
@@ -202,7 +206,9 @@ void SDWINDOW::objectsEvents(){
             mouseClickX = SDWINDOW::event.button.x;
             mouseClickY = SDWINDOW::event.button.y;
 
-            std::cout<< "Mouse X: " << mouseClickX << "Mouse y: " << mouseClickY << std::endl;     
+            std::cout<< "Mouse X: " << mouseClickX << "Mouse y: " << mouseClickY << std::endl;
+
+             std::cout<<  "Mouse y in gl context: " << *SDWINDOW::WindowHeight-mouseClickY << std::endl;        
             
             player->getGun()->mouseLeftPressed({mouseClickX,mouseClickY});
             
@@ -222,6 +228,19 @@ void SDWINDOW::objectsEvents(){
     
     
     
+}
+
+void SDWINDOW::setMultiplePlatforms()
+{
+    //we want for now 3 platforms
+    Platforms* p1 = new Platforms(300.0f,600.0f, 500.0f, 600.0f);
+    transformList.emplace_back(p1);
+    // // Create the second diagonal platform (p2)  
+    Platforms* p2 = new Platforms(1166.0f, 558.0f, 949.0f, 434.0f);
+    transformList.emplace_back(p2);
+    // // Create the third diagonal platform (p3)
+    // Platforms* p3 = new Platforms(500.0f, 300.0f, 200.0f, 20.0f);
+    // transformList.emplace_back(p3);
 }
 
 void SDWINDOW::display()
@@ -267,6 +286,7 @@ void SDWINDOW::renderGizmos()
     for(auto& g : Gizmos::instances){
         g->DrawLine();
         g->DrawRay();
+        g->DrawPoints();
     }
 
 }

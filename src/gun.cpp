@@ -124,7 +124,7 @@ void Gun::mouseLeftPressed(std::vector<int> mousePositions)
     //bulletList.push_back(new Bullet({width,0.0f,5.0f,5,10,getPositionofTip(),Rotation}));
     
     Vector2D positionLaunch = getPositionofTip();
-    bulletList.push_back(new Bullet({positionLaunch.x,positionLaunch.y,8.0f,5,10,Rotation,dir}));
+    bulletList.push_back(new Bullet({positionLaunch.x,positionLaunch.y,15.0f,1,10,Rotation,dir}));
     
 
     //std::cout<< "Mouse X: " << mouseClickX << "Mouse y: " << mouseClickY << std::endl;     

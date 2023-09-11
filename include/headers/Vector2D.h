@@ -31,6 +31,8 @@ class Vector2D{
         friend Vector2D& operator-(Vector2D& v1, const Vector2D& v2);
         friend Vector2D& operator*(Vector2D& v1, const Vector2D& v2);
         friend Vector2D& operator/(Vector2D& v1, const Vector2D& v2);
+        
+        
         //we want the same but for accumulations operators
         Vector2D& operator+=(const Vector2D& vec);
         Vector2D& operator-=(const Vector2D& vec);
@@ -42,6 +44,15 @@ class Vector2D{
         
         //normalize
         Vector2D& Normalize();
+        
+        
+        //static vector multiplication to avoid refernece problems
+        static Vector2D Addition(const Vector2D& v1, const Vector2D& v2);
+        static Vector2D Substraction(const Vector2D& v1, const Vector2D& v2);
+        static Vector2D Multiplication(const Vector2D& v1, const Vector2D& v2);
+        static Vector2D Divition(const Vector2D& v1, const Vector2D& v2);
+        static Vector2D ScalarMultiplication(const Vector2D& v1, float scalar);
+        
         
         
         //vector angle
@@ -56,6 +67,9 @@ class Vector2D{
         static float Dot(const Vector2D& v1, const Vector2D& v2);
 
         static float SignedAngle(const Vector2D& v1, const Vector2D& v2);
+
+        static Vector2D NormalSuperfice(Vector2D v1, Vector2D v2);
+        static Vector2D NormalSuperficeNoNormalized(Vector2D v1, Vector2D v2);
     
         //clean way to print the vectors
         friend std::ostream& operator <<(std::ostream& stream, const Vector2D& vec);
