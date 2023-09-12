@@ -50,10 +50,10 @@ void Platforms::update(float deltaTime)
     // //flip
     // Vector2D norm(-positionR.y,positionR.x);
     // normalVec = norm;
-    Vector2D normalVec = Vector2D::NormalSuperfice(position,end);
+    Transform::normalVectorPlane = Vector2D::NormalSuperfice(position,end);
     
     
-    debugNormal->RenderRay(position,normalVec,100.0f);
+    debugNormal->RenderRay(position,Transform::normalVectorPlane,100.0f);
 
 }
 

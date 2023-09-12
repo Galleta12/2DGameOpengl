@@ -1,9 +1,14 @@
 #include "Physics2D.h"
 #include "SDWINDOW.h"
+#include <cmath>
+#include <limits>
 
 
 Physics2D::~Physics2D()
 {
+
+    raycastHitObjectList.clear();
+    //delete raycastHitinfo;
 }
 
 
@@ -143,26 +148,54 @@ bool Physics2D::checkThitBetweenDeltaTime(float thit, float deltaTime)
     }
     return false;
 }
+Vector2D Physics2D::calculateEndRay(Vector2D start, Vector2D dir, float dist)
+{
+    //calculate end of ray
+    Vector2D end = Vector2D::Addition(start,(Vector2D::ScalarMultiplication(dir,dist)));
+    //Vector2D end = start + (dir * dist);
+    
+    return end;
+}
 bool Physics2D::checkConditionsCollisionParametric(Vector2D hitPoint, Vector2D b1, Vector2D b2)
 {
     
-    if(hitPoint.x >= b1.x && hitPoint.x <= b2.x && hitPoint.y >= b1.y &&  hitPoint.y <= b2.y){
-        return true;
-    }else{
+    //first check if we should check for collision on the x or y components
+    float yDelta = std::abs(b1.y - b2.y); 
+    float XDelta = std::abs(b1.x - b2.x); 
+    //check only y
+    if(yDelta > XDelta){
 
-        return false;
+        if(hitPoint.y >= b1.y &&  hitPoint.y <= b2.y){
+            return true;
+        }
+        else{
+            return false;
+        }
+    
+    }
+    else{
+
+        if(hitPoint.x >= b1.x && hitPoint.x <= b2.x){
+            return true;
+        }else{
+
+            return false;
+        }
     }
 
     
 }
-bool Physics2D::raycastParametric(Transform *me, Vector2D direction, float distance, bool draw, float deltaTime)
+bool Physics2D::raycastParametric(const Transform *me, Vector2D direction, float distance, bool draw, float deltaTime)
 {
 
     bool isCollision=false;
-    Vector2D newDir= direction * distance;
+    Vector2D newDir = direction;
+    //this becomes the newStart
+    Vector2D newStart = calculateEndRay(me->position,direction,distance);
+      if(draw){
+       
 
-    if(draw){
-        debugDrawRaycast->RenderRay(me->position,direction,distance);
+        debugDrawRaycast->RenderLine(me->position,newStart);
     }
 
     for(auto& t : SDWINDOW::transformList){
@@ -193,9 +226,9 @@ bool Physics2D::raycastParametric(Transform *me, Vector2D direction, float dista
                     Vector2D n = Vector2D::NormalSuperficeNoNormalized(*b1,*b2);
                     //B - A
                     Vector2D BA;
-                    BA.x = b1->x - me->position.x;
-                    BA.y = b1->y - me->position.y;
-
+                    BA.x = b1->x - newStart.x;
+                    BA.y = b1->y - newStart.y;
+                     //thit(ndot(B-A)/n dot c)
                     float thit = (Vector2D::Dot(n,BA)/Vector2D::Dot(n,newDir));
                      
                     //first check if the thit is between the current fram
@@ -206,15 +239,25 @@ bool Physics2D::raycastParametric(Transform *me, Vector2D direction, float dista
                     Vector2D pointHit;
                     Vector2D currentDir = newDir;
                     Vector2D thitC =  currentDir * thit;
-                    Vector2D currentPos = me->position;
+                    Vector2D currentPos = newStart;
                     pointHit = currentPos + thitC;
                     //check conditions
                     
-                    if(checkConditionsCollisionParametric(me->position,*b1,*b2)){
-                        std::cout << "Yes collision" << std::endl;
-                        debugDrawRaycast->changeColor(0.0f,0.0f,0.0f);
-                        isCollision = true;
+                    if(checkConditionsCollisionParametric(newStart,*b1,*b2)){
+                        //std::cout << "Yes collision" << std::endl;
+                        //debugDrawRaycast->changeColor(0.0f,0.0f,0.0f);
+                        //save the hit line and the distance
+                        //float distance = Vector2D:
+                        raycastHitObjectList[t] = Vector2D::DistanceVec(newStart,t->position);
+
+                        continue;
                     }
+                    else{                       
+                        
+                        continue;
+
+                    }
+                                        
 
                 }
             }
@@ -223,12 +266,47 @@ bool Physics2D::raycastParametric(Transform *me, Vector2D direction, float dista
          }
     }
 
- 
+
+
+   if(!raycastHitObjectList.empty()){
+        isCollision = true;       
+        getFirstHitRayCast();
+        return isCollision;
+    }
+  
+  
+
     return isCollision;
 }
 
+void Physics2D::getFirstHitRayCast()
+{
+
+    
+    float minDist = std::numeric_limits<float>::infinity();;
+    Transform* hitTransform=nullptr;
+    for(auto& pair : raycastHitObjectList){
+       float newdist = pair.second;
+
+       if(newdist < minDist){
+            minDist = newdist;
+            hitTransform = pair.first;
+       }
+       
+    }
+    //we have the first hit now. Hence
+    //save importan information
+    raycastHitinfo->hitnormal = hitTransform->normalVectorPlane;
+    
+    //clear everything
+    raycastHitObjectList.clear();
+}
 bool Physics2D::checkOnGround()
 {
     return false;
+}
+
+void Physics2D::gravityForce(float yDir)
+{
 }
 

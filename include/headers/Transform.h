@@ -12,7 +12,7 @@ class Transform{
     public:
         
                 
-        
+        Vector2D normalVectorPlane;
         
         bool lineFlag=false;
         Vector2D localPosToWorld;

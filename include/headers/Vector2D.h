@@ -68,6 +68,11 @@ class Vector2D{
 
         static float SignedAngle(const Vector2D& v1, const Vector2D& v2);
 
+
+        static float DistanceVec(const Vector2D& v1, const Vector2D& v2);
+
+        static Vector2D Reflection(const Vector2D& v1, const Vector2D& v2);
+        
         static Vector2D NormalSuperfice(Vector2D v1, Vector2D v2);
         static Vector2D NormalSuperficeNoNormalized(Vector2D v1, Vector2D v2);
     

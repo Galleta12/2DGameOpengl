@@ -239,8 +239,11 @@ void SDWINDOW::setMultiplePlatforms()
     Platforms* p2 = new Platforms(1166.0f, 558.0f, 949.0f, 434.0f);
     transformList.emplace_back(p2);
     // // Create the third diagonal platform (p3)
-    // Platforms* p3 = new Platforms(500.0f, 300.0f, 200.0f, 20.0f);
-    // transformList.emplace_back(p3);
+    Platforms* p3 = new Platforms(295.0f, 500.0f, 295.0f, 394.0f);
+    transformList.emplace_back(p3);
+    
+    Platforms* p4 = new Platforms(576.0f, 501.0f, 538.0f, 425.0f);
+    transformList.emplace_back(p4);
 }
 
 void SDWINDOW::display()

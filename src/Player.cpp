@@ -74,7 +74,7 @@ void Player::update(float deltaTime)
     leftVertex.x += motion.x * deltaTime;
     rightVertex.x += motion.x * deltaTime;
     
-    Transform::getPhysics2D()->checkwindowcollision(position);
+    //Transform::getPhysics2D()->checkwindowcollision(position);
     
     
     //check collision ground

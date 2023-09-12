@@ -43,7 +43,7 @@ void Bullet::init()
    
     //create a dubug gizmos instance
     Gizmos *points = Gizmos::StartGizmos(1.0f,0.0f,1.0f);
-    //points->SetPointsDebug(vertices,2.0f);
+    points->SetPointsDebug(vertices,2.0f);
 
 }
 
@@ -61,14 +61,32 @@ void Bullet::update(float deltaTime)
 
     // }
      
+    bool isHit = Transform::getPhysics2D()->raycastParametric(this,dir,50.0f,true,deltaTime);
+    
+    if(isHit){
+        //call the vector reflection
+        Vector2D normal = Transform::getPhysics2D()->raycastHitinfo->hitnormal.Normalize();
+        //use same direction used in the raycast
+        Vector2D reflec = Vector2D::Reflection(dir, normal);
+
+        //std::cout<<"reflect" << reflec << std::endl;
+
+        dir = Vector2D::Normalized(reflec);
+        motion.x = dir.x * speed;
+        motion.y = dir.y * speed;
+    }
+    
     
     position.x +=  motion.x * deltaTime;
     position.y +=  motion.y * deltaTime;
     updatePoints(deltaTime);
+    
     //we always want to reder the velocity
-    //debugVelocity->RenderRay(position,dir, 200.0f); 
+    //Vector2D end = Vector2D::Addition(position,(Vector2D::ScalarMultiplication(dir,30.0f)));
+    
+    //debugVelocity->RenderRay(position,dir, 30.0f); 
+    //debugVelocity->RenderLine(position,end); 
     //collisions
-    Transform::getPhysics2D()->raycastParametric(this,dir,10,true,deltaTime);
 
 
 }

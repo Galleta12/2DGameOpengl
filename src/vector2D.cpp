@@ -221,6 +221,31 @@ float Vector2D::SignedAngle(const Vector2D &v1, const Vector2D &v2)
     return angleDeg;
 }
 
+
+
+
+float Vector2D::DistanceVec(const Vector2D& v1, const Vector2D& v2)
+{
+    float dx = v1.x - v2.x;
+    float dy = v1.y - v2.y;
+
+    return std::sqrt((dx * dx) + (dy * dy));
+}
+
+Vector2D Vector2D::Reflection(const Vector2D& v1, const Vector2D& v2)
+{
+    Vector2D reflection;
+    //formula, the normal should be normalize, the normal is v2
+    Vector2D normal = v2;
+    //c(v1) - 2(c:n)n
+    float dotProduct = Vector2D::Dot(v1,normal);
+    Vector2D scalarProducts =  Vector2D::ScalarMultiplication(normal,dotProduct) * 2.0f ;
+    
+    reflection = Vector2D::Substraction(v1,scalarProducts);
+
+    return reflection;
+}
+
 Vector2D Vector2D::NormalSuperfice(Vector2D v1, Vector2D v2)
 {
     Vector2D r = v2 - v1;    
