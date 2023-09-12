@@ -267,8 +267,14 @@ Vector2D Vector2D::NormalSuperficeNoNormalized(Vector2D v1, Vector2D v2)
     
     return r;
 }
-// angle
-// always normalize before getting the angle
+
+Vector2D Vector2D::PositionBetween(Vector2D &a, Vector2D &b)
+{
+    float x = (a.x + b.x) * 0.5f;
+    float y = (a.y + b.y) * 0.5f;
+    return Vector2D(x, y);
+}
+
 
 std::ostream& operator <<(std::ostream& stream, const Vector2D& vec){
     stream << "Vector2D(" << vec.x << "," << vec.y << ")";

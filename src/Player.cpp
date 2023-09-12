@@ -56,20 +56,14 @@ void Player::update(float deltaTime)
     }
 
 
+    // bool collision = Transform::getPhysics2D()->satCollisionAlg(this,true);
     
-    
-    
-    //std::cout << "friction" << friction << std::endl;
-    // std::cout << "keydir x" << keydirX << std::endl;
-    // std::cout << "speed" << speed << std::endl;
-    // std::cout << "Motion x" << motion.x << std::endl;
-    //motion.y = 
-    //update position
-    
+    // if(collision){
+    //     //std::cout << "This is good " << std::endl;
+    // }
+
     position.x += motion.x * deltaTime;
-    //update the left
-    //right vertex
-    //dont allow the player to move outside
+    
     
     leftVertex.x += motion.x * deltaTime;
     rightVertex.x += motion.x * deltaTime;
@@ -83,19 +77,7 @@ void Player::update(float deltaTime)
 
     gun->update(deltaTime);
     
-    //for(auto& b : gun->getVectorBullet())b->update(deltaTime);
-
-    //testing dot product
-    // Vector2D gunOffset = gun->getMousePosition();
-    // gunOffset.y = gunOffset.y + 25.0f;
-    // Vector2D dirTest = (gunOffset - position).Normalize();
-
-    // float dot = Vector2D::Dot(dirTest,Transform::up.Normalize());
-    // std::cout<<"Angle test" << dot << std::endl;
-
-    // for(auto& t : vertices){
-    //     std::cout << *t << std::endl;
-    // }
+    
 
 }
 
@@ -144,6 +126,42 @@ void Player::draw(float deltaTime)
     glPopMatrix();
     //the bullets are independent from the player and gun pos
     for(auto& b : gun->getVectorBullet())b->draw(deltaTime);
+
+}
+
+//populate the list of normal edges, we also want to draw then for visualization
+//only for debuggin porpuses
+void Player::computeNormalEdges()
+{
+
+    for(int i =0; i<Transform::vertices.size();i++){
+        Vector2D* a = vertices[i]; 
+        Vector2D* b = vertices[(i+1)%vertices.size()];
+
+        Vector2D n = Vector2D::NormalSuperfice(*a,*b);
+        
+        //Vector2D* nn = new Vector2D(n.x,n.y);
+        //for placing
+        Vector2D halfN = Vector2D::PositionBetween(*a,*b);        
+        //debug
+        
+        Gizmos *debugN = Gizmos::StartGizmos(0.5f,0.5f,0.5f);
+        debugN->RenderRay(halfN ,n,100.0f);
+        
+        
+        float dot = Vector2D::Dot(*a,n);
+
+        Vector2D projectionVector = Vector2D::ScalarMultiplication(n,dot);
+        
+        Gizmos *debugP = Gizmos::StartGizmos(0.2f,1.0f,0.8f);
+        debugP->RenderRay( *a,projectionVector.Normalize(),100.0f);
+
+        //save it.
+        //normalEdgesList.push_back(nn);
+
+    }
+
+
 
 }
 
@@ -255,8 +273,8 @@ void Player::init()
     rightVertex.y = position.y - 50.0f;
     
     vertices.push_back(&position);
-    vertices.push_back(&leftVertex);
     vertices.push_back(&rightVertex);
+    vertices.push_back(&leftVertex);
 
 
     
@@ -272,5 +290,7 @@ void Player::init()
     //create a dubug gizmos instance
     Gizmos *points = Gizmos::StartGizmos(1.0f,0.0f,0.0f);
     points->SetPointsDebug(vertices,5.0f);
+
+    computeNormalEdges();
 
 }

@@ -15,6 +15,7 @@ class Transform{
         Vector2D normalVectorPlane;
         
         bool lineFlag=false;
+           
         Vector2D localPosToWorld;
         
         Vector2D position;
@@ -44,6 +45,10 @@ class Transform{
              for(auto& v : vertices){
                     delete v;
                 }
+              for (Vector2D* normalPtr : normalEdgesList) {
+                        delete normalPtr; // Deallocate the memory for each Vector2D object
+                }
+                normalEdgesList.clear();
                 vertices.clear();
         }
 
@@ -84,7 +89,9 @@ class Transform{
             }
         }
         virtual void draw(float deltaTime){}
-        
+
+        virtual void computeNormalEdges(){}
+
 
         void convertLocalToWorld(Vector2D parentPosition){
             //localPosToWorld = parentPosition + position;                                     
@@ -128,7 +135,9 @@ class Transform{
         //std::vector<Vector2D*> getVertices(){return vertices;}
         
         //list of points that confomr the picuture, worldpos
-        std::vector<Vector2D*> vertices; 
+        std::vector<Vector2D*> vertices;
+
+        std::vector<Vector2D*> normalEdgesList; 
     private:
         //purple
         Gizmos *upGizmos = Gizmos::StartGizmos(0.5f, 0.5f, 0.0f);

@@ -19,6 +19,8 @@ class Physics2D{
             
             Vector2D hitnormal;
 
+            float distance;
+
             // RayCastCollisionInfo(Vector2D  hitposition,Vector2D  hitnormal){
             //     hitposition = hitposition;
             //     hitnormal = hitnormal;
@@ -42,6 +44,7 @@ class Physics2D{
         bool raycastParametric(const Transform* me,Vector2D direction, float distance, bool draw, float deltaTime);
 
         bool checkOnGround();
+        bool satCollisionAlg(Transform* me, bool draw);
         //vector response reflect
         
         //othertypes of collision
@@ -60,8 +63,10 @@ class Physics2D{
         Vector2D calculateEndRay(Vector2D start, Vector2D dir, float dist);
         void getFirstHitRayCast();
         //void reflectPosition(const Vector2D& movement);
-        
-        std::map<Transform*,float> raycastHitObjectList;
+        //collision separate axis theorem
+      
+
+        std::map<Transform*,std::unique_ptr<RayCastCollisionInfo>> raycastHitObjectList;
 
 
 

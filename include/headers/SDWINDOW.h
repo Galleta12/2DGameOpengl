@@ -57,6 +57,7 @@ private:
     void renderGizmos();
     void objectsEvents();
     void setMultiplePlatforms();
+    void setMultipleBoxes();
 
 };
 

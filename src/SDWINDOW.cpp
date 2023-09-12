@@ -14,6 +14,7 @@
 #include "Gun.h"
 #include "Floor.h"
 #include "Platforms.h"
+#include "Box.h"
 #include "Clocker.h"
 
 
@@ -115,8 +116,10 @@ void SDWINDOW::init(const char* title, int posX, int posY, int width, int height
             //gun data
             player->gunData(20,50);
             
+            
+            setMultipleBoxes();
             //floorObject
-            floorObject = new Floor(1.0f, height /4);
+            floorObject = new Floor(1.0f, height /5);
             
             
             transformList.emplace_back(floorObject);
@@ -124,6 +127,8 @@ void SDWINDOW::init(const char* title, int posX, int posY, int width, int height
             transformList.emplace_back(player);
             //set platforms
             setMultiplePlatforms();
+            //set boxes
+            
 
         }
         else {
@@ -244,6 +249,22 @@ void SDWINDOW::setMultiplePlatforms()
     
     Platforms* p4 = new Platforms(576.0f, 501.0f, 538.0f, 425.0f);
     transformList.emplace_back(p4);
+
+    Platforms* p5 = new Platforms(576.0f, 150.0f, 538.0f, 400.0f);
+    transformList.emplace_back(p5);
+
+
+}
+
+void SDWINDOW::setMultipleBoxes()
+{
+    Box* p1 = new Box(600.0f,250.0f);
+    transformList.emplace_back(p1);
+    
+    // Platforms* p2 = new Platforms(1166.0f, 558.0f, 949.0f, 434.0f);
+    // transformList.emplace_back(p2);
+    
+
 }
 
 void SDWINDOW::display()

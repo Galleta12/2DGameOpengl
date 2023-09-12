@@ -24,7 +24,7 @@ class Player:public Transform{
             //allow physics for this
             Transform::AddPhysics2D();
             //allow basis
-            Transform::basisVector = true;
+            Transform::basisVector = false;
             //set up the vertices
             init();
            
@@ -38,7 +38,7 @@ class Player:public Transform{
         void init() override;
         void update(float deltaTime) override;
         void draw(float deltaTime) override;
-
+        void computeNormalEdges() override;
         void keyboard();
 
         Gun* getGun(){return gun;}
