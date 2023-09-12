@@ -41,6 +41,7 @@ class Bullet : public Transform{
             //this is a parent
             init();
             launchBall();
+            isBullet= true;
         }
         
         
@@ -58,10 +59,10 @@ class Bullet : public Transform{
             g = randomFloat();
             b = randomFloat();
             //we set the bullet as local
-            Transform::isLocalSpace = true;
-            Transform::basisVector = true;
+            // Transform::isLocalSpace = true;
+            // Transform::basisVector = true;
             //get the local space cordinates for the gizmos
-            Transform::convertLocalToWorld(launchPos);
+            //Transform::convertLocalToWorld(launchPos);
 
             init();
         }
@@ -81,6 +82,7 @@ class Bullet : public Transform{
         float radius = 0.0f;
         float airFriction = 0.08f;
         float r,g,b = 0.0f;
+        float timer = 0.0f;
         Vector2D positionOfLaunch;
         Vector2D dir;
         float randomFloat();

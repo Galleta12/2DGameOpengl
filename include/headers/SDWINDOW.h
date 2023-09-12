@@ -58,6 +58,7 @@ private:
     void objectsEvents();
     void setMultiplePlatforms();
     void setMultipleBoxes();
+ 
 
 };
 

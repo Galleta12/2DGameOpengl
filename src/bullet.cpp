@@ -3,7 +3,7 @@
 //need deltatiem for the initial launch
 #include "Clocker.h"
 
-#pragma once
+static auto lastPrintTime = std::chrono::system_clock::now();
 
 Bullet::~Bullet()
 {
@@ -55,8 +55,11 @@ void Bullet::update(float deltaTime)
     //add the end we want to get the transform updates
     Transform::update(deltaTime);
 
+    
+    
+ 
     //std::cout<< "Dir update" << dir << std::endl;
-   //I will compute each of this on different component there is a problem on my vectors
+    //I will compute each of this on different component there is a problem on my vectors
     // for(auto& a : vertices){
 
     // }
@@ -80,7 +83,30 @@ void Bullet::update(float deltaTime)
     position.x +=  motion.x * deltaTime;
     position.y +=  motion.y * deltaTime;
     updatePoints(deltaTime);
+
+  
+   
+       
     
+    
+    // Calculate time difference since last print
+    auto currentTime = std::chrono::system_clock::now();
+    std::chrono::duration<double> elapsedTime = currentTime - lastPrintTime;
+
+    // Check if 5 seconds have passed since last print
+    
+    if (elapsedTime.count() >= 5) {
+   
+        lastPrintTime = currentTime;
+
+       // Remove this bullet from the transformList
+        SDWINDOW::transformList.erase(std::remove(SDWINDOW::transformList.begin(), SDWINDOW::transformList.end(), this), SDWINDOW::transformList.end());
+
+        // Delete this bullet object
+        delete this;
+ 
+    }
+
     //we always want to reder the velocity
     //Vector2D end = Vector2D::Addition(position,(Vector2D::ScalarMultiplication(dir,30.0f)));
     

@@ -12,6 +12,8 @@ class Transform{
     public:
         
                 
+        bool isBullet=false;
+        
         Vector2D normalVectorPlane;
         
         bool lineFlag=false;

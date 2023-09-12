@@ -8,6 +8,14 @@ Physics2D::~Physics2D()
 {
 
     raycastHitObjectList.clear();
+    //I want to delete my instances
+   
+        
+      Gizmos::instances.erase(std::remove(Gizmos::instances.begin(),Gizmos::instances.end(), debugDrawRaycast), Gizmos::instances.end());
+
+
+     
+   
     //delete raycastHitinfo;
 }
 

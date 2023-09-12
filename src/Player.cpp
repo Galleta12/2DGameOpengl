@@ -125,7 +125,7 @@ void Player::draw(float deltaTime)
     //std::cout << "Gun draw: " <<*gun << std::endl;
     glPopMatrix();
     //the bullets are independent from the player and gun pos
-    for(auto& b : gun->getVectorBullet())b->draw(deltaTime);
+    //for(auto& b : gun->getVectorBullet())b->draw(deltaTime);
 
 }
 

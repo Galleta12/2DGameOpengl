@@ -67,7 +67,7 @@ void Gun::update(float deltaTime)
 
     Transform::update(deltaTime);
     rotateGun();
-    for(auto& b : bulletList)b->update(deltaTime);
+    //for(auto& b : bulletList)b->update(deltaTime);
 
 
 
@@ -124,8 +124,10 @@ void Gun::mouseLeftPressed(std::vector<int> mousePositions)
     //bulletList.push_back(new Bullet({width,0.0f,5.0f,5,10,getPositionofTip(),Rotation}));
     
     Vector2D positionLaunch = getPositionofTip();
-    bulletList.push_back(new Bullet({positionLaunch.x,positionLaunch.y,15.0f,1,10,Rotation,dir}));
-    
+    //refence to the bullet list on the gun.
+    //bulletList.push_back(new Bullet({positionLaunch.x,positionLaunch.y,15.0f,1,10,Rotation,dir}));
+    //we want the bullet list to be added to the transform list
+    SDWINDOW::transformList.push_back(new Bullet({positionLaunch.x,positionLaunch.y,15.0f,1,10,Rotation,dir}));
 
     //std::cout<< "Mouse X: " << mouseClickX << "Mouse y: " << mouseClickY << std::endl;     
 
