@@ -76,6 +76,7 @@ class Vector2D{
         static Vector2D NormalSuperfice(Vector2D v1, Vector2D v2);
         static Vector2D NormalSuperficeNoNormalized(Vector2D v1, Vector2D v2);
         static Vector2D PositionBetween(Vector2D& a, Vector2D& b);    
+        static Vector2D InvertVector(Vector2D& a);    
         //clean way to print the vectors
         friend std::ostream& operator <<(std::ostream& stream, const Vector2D& vec);
 

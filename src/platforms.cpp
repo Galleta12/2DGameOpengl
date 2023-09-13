@@ -8,8 +8,8 @@
 void Platforms::init()
 {
     //
-    vertices.push_back(&position);
     vertices.push_back(&end);
+    vertices.push_back(&position);
     Gizmos *points = Gizmos::StartGizmos(0.4f,1.0f,1.0f);
     points->SetPointsDebug(vertices, 15.0f);
 

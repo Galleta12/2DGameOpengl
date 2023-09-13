@@ -36,12 +36,13 @@ class Bullet : public Transform{
             r = randomFloat();
             g = randomFloat();
             b = randomFloat();
+            Transform::isBullet = true;
             Transform::basisVector = false;
             Transform::AddPhysics2D();
             //this is a parent
             init();
             launchBall();
-            isBullet= true;
+          
         }
         
         
@@ -72,6 +73,7 @@ class Bullet : public Transform{
         void init() override;
         void update(float deltaTime ) override;
         void draw(float deltaTime) override;
+        void OnCollision(float deltaTime,Transform* objectCollision,Vector2D normalCollision, float depth);
         
 
     

@@ -64,20 +64,20 @@ void Bullet::update(float deltaTime)
 
     // }
      
-    bool isHit = Transform::getPhysics2D()->raycastParametric(this,dir,50.0f,true,deltaTime);
+    // bool isHit = Transform::getPhysics2D()->raycastParametric(this,dir,50.0f,true,deltaTime);
     
-    if(isHit){
-        //call the vector reflection
-        Vector2D normal = Transform::getPhysics2D()->raycastHitinfo->hitnormal.Normalize();
-        //use same direction used in the raycast
-        Vector2D reflec = Vector2D::Reflection(dir, normal);
+    // if(isHit){
+    //     //call the vector reflection
+    //     Vector2D normal = Transform::getPhysics2D()->raycastHitinfo->hitnormal.Normalize();
+    //     //use same direction used in the raycast
+    //     Vector2D reflec = Vector2D::Reflection(dir, normal);
 
-        //std::cout<<"reflect" << reflec << std::endl;
+    //     //std::cout<<"reflect" << reflec << std::endl;
 
-        dir = Vector2D::Normalized(reflec);
-        motion.x = dir.x * speed;
-        motion.y = dir.y * speed;
-    }
+    //     dir = Vector2D::Normalized(reflec);
+    //     motion.x = dir.x * speed;
+    //     motion.y = dir.y * speed;
+    // }
     
     
     position.x +=  motion.x * deltaTime;
@@ -95,7 +95,7 @@ void Bullet::update(float deltaTime)
 
     // Check if 5 seconds have passed since last print
     
-    if (elapsedTime.count() >= 5) {
+    if (elapsedTime.count() >= 8) {
    
         lastPrintTime = currentTime;
 
@@ -151,6 +151,20 @@ void Bullet::draw(float deltaTime)
 
     glPopMatrix();
 
+
+}
+
+void Bullet::OnCollision(float deltaTime, Transform *objectCollision, Vector2D normalCollision, float depth)
+{
+
+    Vector2D normal = normalCollision;
+    Vector2D reflec = Vector2D::Reflection(dir, normal);
+
+        //std::cout<<"reflect" << reflec << std::endl;
+
+    dir = Vector2D::Normalized(reflec);
+    motion.x = dir.x * speed;
+    motion.y = dir.y * speed;
 
 }
 

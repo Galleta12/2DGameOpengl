@@ -250,19 +250,20 @@ void SDWINDOW::setMultiplePlatforms()
     Platforms* p4 = new Platforms(576.0f, 501.0f, 538.0f, 425.0f);
     transformList.emplace_back(p4);
 
-    Platforms* p5 = new Platforms(576.0f, 150.0f, 538.0f, 400.0f);
-    transformList.emplace_back(p5);
+    // Platforms* p5 = new Platforms(576.0f, 150.0f, 538.0f, 400.0f);
+    // transformList.emplace_back(p5);
 
 
 }
 
 void SDWINDOW::setMultipleBoxes()
 {
-    Box* p1 = new Box(600.0f,250.0f);
+    Box* p1 = new Box(600.0f,250.0f,false);
     transformList.emplace_back(p1);
     
-    // Platforms* p2 = new Platforms(1166.0f, 558.0f, 949.0f, 434.0f);
-    // transformList.emplace_back(p2);
+    Box* p2 = new Box(100.0f,250.0f,true);
+    transformList.emplace_back(p2);
+    
     
 
 }
@@ -326,7 +327,26 @@ void SDWINDOW::update() {
         a->update(dt);
     }
     
-    
+    //only collision for transforms with physics added to it
+    for(int a=0; a < transformList.size()-1; a++){
+        if(transformList[a]->getPhysics2D() == nullptr)continue;
+        
+        for(int b=a+1; b<transformList.size();b++){
+            if(transformList[b]->getPhysics2D() == nullptr)continue;
+           float depth = 0.0f; 
+           Vector2D normalCollision;
+           
+           bool isIntersection = Physics2D::satColliderChecker(transformList[a],transformList[b],depth,normalCollision);
+           if (isIntersection) {
+               //std::cout << "Collision" << std::endl;
+               transformList[a]->OnCollision(dt,transformList[b],normalCollision,depth/2.0f);
+               transformList[b]->OnCollision(dt,transformList[a],Vector2D::InvertVector(normalCollision),depth/2.0f);
+           }
+        
+        }
+    }
+
+
 
 }
 

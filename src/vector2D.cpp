@@ -250,11 +250,11 @@ Vector2D Vector2D::NormalSuperfice(Vector2D v1, Vector2D v2)
 {
     Vector2D r = v2 - v1;    
     //flip
-    float tempX = r.x;
-    r.x = -r.y;
-    r.y = tempX;
+    // float tempX = r.x;
+    // r.x = -r.y;
+    // r.y = tempX;
     
-    return r.Normalize();
+    return Vector2D(-r.y,r.x).Normalize();
 
 }
 Vector2D Vector2D::NormalSuperficeNoNormalized(Vector2D v1, Vector2D v2)
@@ -275,6 +275,10 @@ Vector2D Vector2D::PositionBetween(Vector2D &a, Vector2D &b)
     return Vector2D(x, y);
 }
 
+Vector2D Vector2D::InvertVector(Vector2D &a)
+{
+    return Vector2D(-a.x,-a.y);
+}
 
 std::ostream& operator <<(std::ostream& stream, const Vector2D& vec){
     stream << "Vector2D(" << vec.x << "," << vec.y << ")";

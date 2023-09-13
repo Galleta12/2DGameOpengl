@@ -32,8 +32,8 @@ void Player::update(float deltaTime)
     
     Transform::update(deltaTime);
 
+    //handle collision
 
-    
 
     //this means that there is movement    
     if(isKeyDirx){
@@ -56,19 +56,22 @@ void Player::update(float deltaTime)
     }
 
 
-    // bool collision = Transform::getPhysics2D()->satCollisionAlg(this,true);
-    
-    // if(collision){
-    //     //std::cout << "This is good " << std::endl;
-    // }
-
     position.x += motion.x * deltaTime;
     
     
     leftVertex.x += motion.x * deltaTime;
     rightVertex.x += motion.x * deltaTime;
+
     
-    //Transform::getPhysics2D()->checkwindowcollision(position);
+    motion.y = keydirY * speed;
+    motion.y *= friction;
+    
+    position.y += motion.y * deltaTime;
+    
+    
+    leftVertex.y += motion.y * deltaTime;
+    rightVertex.y += motion.y * deltaTime;
+    
     
     
     //check collision ground
@@ -134,32 +137,34 @@ void Player::draw(float deltaTime)
 void Player::computeNormalEdges()
 {
 
-    for(int i =0; i<Transform::vertices.size();i++){
-        Vector2D* a = vertices[i]; 
-        Vector2D* b = vertices[(i+1)%vertices.size()];
+        
+    // for(int j=0;j<Transform::vertices.size();j++){
+    //     Vector2D* a = vertices[j]; 
+    //     Vector2D* b = vertices[(j+1)%vertices.size()];
 
-        Vector2D n = Vector2D::NormalSuperfice(*a,*b);
+    //     Vector2D n = Vector2D::NormalSuperfice(*a,*b);
         
-        //Vector2D* nn = new Vector2D(n.x,n.y);
-        //for placing
-        Vector2D halfN = Vector2D::PositionBetween(*a,*b);        
-        //debug
+    //     //Vector2D* nn = new Vector2D(n.x,n.y);
+    //     //for placing
+    //     Vector2D halfN =  Vector2D::PositionBetween(*a,*b);        
+    //     Vector2D offset = Vector2D(0.0f,-100.0f);
+    //     // halfN = halfN + offset;
+    //     //debug
         
-        Gizmos *debugN = Gizmos::StartGizmos(0.5f,0.5f,0.5f);
-        debugN->RenderRay(halfN ,n,100.0f);
-        
-        
-        float dot = Vector2D::Dot(*a,n);
+    //     Gizmos *debugN = Gizmos::StartGizmos(0.5f,0.5f,0.5f);
+    //     debugN->RenderRay(halfN ,n,1000.0f);
 
-        Vector2D projectionVector = Vector2D::ScalarMultiplication(n,dot);
-        
-        Gizmos *debugP = Gizmos::StartGizmos(0.2f,1.0f,0.8f);
-        debugP->RenderRay( *a,projectionVector.Normalize(),100.0f);
 
-        //save it.
-        //normalEdgesList.push_back(nn);
-
-    }
+    
+    // for(int i =0; i<Transform::vertices.size();i++){
+    //     Vector2D* v1 = vertices[i]; 
+    //     float dot = Vector2D::Dot(n,*v1);
+    //     Vector2D projectionVector = Vector2D::ScalarMultiplication(n,dot);
+    //     Gizmos *debugP = Gizmos::StartGizmos(0.2f,1.0f,0.8f);
+    //     debugP->RenderRay(*v1,Vector2D::Normalized(projectionVector),1000.0f);
+    // }
+    // }    
+    
 
 
 
@@ -170,16 +175,16 @@ void Player::keyboard()
     if(SDWINDOW::event.type == SDL_KEYDOWN){
         switch (SDWINDOW::event.key.keysym.sym)
         {
-        // case SDLK_UP:
+        case SDLK_w:
             
-        //     yDir =  1;    
-        //     break;
+            keydirY =  1.0f;    
+            break;
         
-        // case SDLK_DOWN:
+        case SDLK_s:
             
-        //     yDir =  -1;    
+           keydirY=  -1.0f;    
 
-        //     break;
+            break;
         
         case SDLK_a:
             
@@ -203,11 +208,11 @@ void Player::keyboard()
     if(SDWINDOW::event.type == SDL_KEYUP){
         switch (SDWINDOW::event.key.keysym.sym)
         {
-        // case SDLK_UP:
-        // case SDLK_DOWN:
-        //     yDir =  0;    
+        case SDLK_w:
+        case SDLK_s:
+            keydirY =  0.0f;    
             
-        //     break;        
+            break;        
         case SDLK_a:
         case SDLK_d:
             
@@ -225,6 +230,7 @@ void Player::keyboard()
     //std::cout << "keydir: " <<keydirX << std::endl;
 
 }
+
 
 void Player::calculateCenter()
 {
@@ -292,5 +298,32 @@ void Player::init()
     points->SetPointsDebug(vertices,5.0f);
 
     computeNormalEdges();
+
+}
+
+void Player::OnCollision(float deltaTime,Transform* objectCollision,Vector2D normalCollision, float depth)
+{
+
+    std::cout << "Collision Player" << std::endl;
+    //resolve collision
+    Vector2D newMotion= Vector2D::ScalarMultiplication(normalCollision,depth);
+    
+    if(objectCollision->isBullet){return;}
+    
+    if(objectCollision->isFloor){
+        newMotion.y = 0.0f;
+        keydirY =  0.0f;
+        motion.y = 0.0f;       
+    }
+    
+    
+    position.x += newMotion.x * deltaTime; 
+    leftVertex.x += newMotion.x * deltaTime;
+    rightVertex.x += newMotion.x * deltaTime;
+
+    position.y += newMotion.y * deltaTime; 
+    leftVertex.y += newMotion.y * deltaTime;
+    rightVertex.y += newMotion.y * deltaTime;
+
 
 }

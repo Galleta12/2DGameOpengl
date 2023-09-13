@@ -12,8 +12,14 @@ class Transform{
     public:
         
                 
-        bool isBullet=false;
         
+        bool isFloor = false; 
+        bool isPlayer=false;
+
+        bool isBox=false;
+
+        bool isBullet = false;
+
         Vector2D normalVectorPlane;
         
         bool lineFlag=false;
@@ -78,7 +84,7 @@ class Transform{
 
         }
 
-        //for setting up the vertices
+        //for setting up the verticec
         virtual void init(){}
         virtual void update(float deltaTime){
             
@@ -94,6 +100,7 @@ class Transform{
 
         virtual void computeNormalEdges(){}
 
+        virtual void OnCollision(float deltaTime,Transform* objectCollision,Vector2D normalCollision, float depth){}
 
         void convertLocalToWorld(Vector2D parentPosition){
             //localPosToWorld = parentPosition + position;                                     

@@ -7,12 +7,16 @@ class Floor : public Transform{
 
     public:
 
+     
+        
         Floor(float x, float y):Transform(x,y){
             position.x =x;
             position.y = y;
             end.x = position.x + (1500.0f - 2.0f);
             end.y = position.y; 
             lineFlag = true;
+            Transform::AddPhysics2D();
+            Transform::isFloor = true;
             init();
         }
      

@@ -26,7 +26,7 @@ class Gizmos{
 
         void SetPointsDebug(std::vector<Vector2D*>& points, float _radius);  
 
-        
+        void SetPoint(Vector2D pos, float _radius);        
         void changeColor(float r, float g, float b);
          
     
@@ -36,7 +36,7 @@ class Gizmos{
         void DrawLine();
         void DrawRay();
         void DrawPoints();
-
+        void DrawPoint();
         bool checkInstanceExists(Gizmos* currentInstance);
         
         static void Cleanup();

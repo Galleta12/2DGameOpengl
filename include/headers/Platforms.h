@@ -13,6 +13,7 @@ class Platforms: public Transform{
             end.x = _endX;
             end.y = _endY;
             lineFlag = true;
+            Transform::AddPhysics2D();
             init();
         }
         

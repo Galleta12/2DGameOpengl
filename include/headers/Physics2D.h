@@ -4,6 +4,8 @@
 #include "Gizmos.h"
 #include <map>
 #include <memory>
+#include <limits>
+
 
 class Transform;
 class Physics2D{
@@ -21,19 +23,32 @@ class Physics2D{
 
             float distance;
 
-            // RayCastCollisionInfo(Vector2D  hitposition,Vector2D  hitnormal){
-            //     hitposition = hitposition;
-            //     hitnormal = hitnormal;
-            // }
-
         };
         
+
+        struct CollisionSatInfo
+        {
+            //normal for the direction where we need to push the second object
+            Vector2D hitNormal;
+            //depth value to move away fron the collision
+            float depthValue = std::numeric_limits<float>::infinity();
+            //transform object of collision
+            Transform *collisionObject = nullptr;
+
+        };
         
         
         Physics2D(){};
         ~Physics2D();
 
         std::unique_ptr<RayCastCollisionInfo> raycastHitinfo = std::make_unique<RayCastCollisionInfo>();
+        
+        std::vector<std::unique_ptr<CollisionSatInfo>> collisionInfoList;
+
+        std::unique_ptr<CollisionSatInfo> collisionSATALGINFO = std::make_unique<CollisionSatInfo>();
+
+        
+        
         //RayCastCollisionInfo *raycastHitinfo=nullptr;
 
         //checkwindowcollision
@@ -51,6 +66,12 @@ class Physics2D{
         //gravity
         void gravityForce(float yDir);
 
+        static bool satColliderChecker(const Transform* p1, const Transform* p2,float& depth, Vector2D& normalCollision);
+
+        //list with the current collisions
+
+
+
     private:
         float r= 1.0f;
         float g= 0.2f;
@@ -64,10 +85,12 @@ class Physics2D{
         void getFirstHitRayCast();
         //void reflectPosition(const Vector2D& movement);
         //collision separate axis theorem
-      
-
         std::map<Transform*,std::unique_ptr<RayCastCollisionInfo>> raycastHitObjectList;
 
+        static void ProjecAxis(const Transform* currentPolygon, Vector2D axis, float &min, float &max);
+
+        //arimetic mean to get center of polygon
+        static Vector2D  FindCenterMean(const std::vector<Vector2D*> vertices);
 
 
 };

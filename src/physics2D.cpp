@@ -1,7 +1,7 @@
 #include "Physics2D.h"
 #include "SDWINDOW.h"
 #include <cmath>
-#include <limits>
+
 
 
 Physics2D::~Physics2D()
@@ -9,9 +9,15 @@ Physics2D::~Physics2D()
 
     raycastHitObjectList.clear();
     //I want to delete my instances
-   
+    
+    for(auto& a : collisionInfoList){
+        delete a->collisionObject;
+    
+    }   
+    
+    collisionInfoList.clear();
         
-      Gizmos::instances.erase(std::remove(Gizmos::instances.begin(),Gizmos::instances.end(), debugDrawRaycast), Gizmos::instances.end());
+    Gizmos::instances.erase(std::remove(Gizmos::instances.begin(),Gizmos::instances.end(), debugDrawRaycast), Gizmos::instances.end());
 
 
      
@@ -233,7 +239,7 @@ bool Physics2D::raycastParametric(const Transform *me, Vector2D direction, float
                     Vector2D* b1 = verticesList[i]; 
                     Vector2D* b2 = verticesList[(i+1)%verticesList.size()]; 
 
-                    Vector2D n = Vector2D::NormalSuperficeNoNormalized(*b1,*b2);
+                    Vector2D n = Vector2D::NormalSuperfice(*b1,*b2);
                    //B - A
                     Vector2D BA;
                     BA.x = b1->x - newStart.x;
@@ -396,4 +402,106 @@ bool Physics2D::satCollisionAlg(Transform *me, bool draw)
     }
 
     return true;
+}
+
+bool Physics2D::satColliderChecker(const Transform* p1, const Transform* p2, float& depth, Vector2D& normalCollision)
+{
+
+    depth = std::numeric_limits<float>::infinity();
+    //normalCollision.Zero();
+    
+
+    const std::vector<Vector2D*>& verticesListA = p1->vertices;
+    const std::vector<Vector2D*>& verticesListB = p2->vertices;
+
+    const Transform* polygon1 = p1;
+    const Transform* polygon2 = p2;
+    for(int number=0; number < 2; number++){
+
+        if(number == 1){
+            std::swap(polygon1, polygon2); 
+        }
+        
+        const std::vector<Vector2D*>& verticesList = polygon1->vertices;
+        for(int i=0; i < verticesList.size(); i ++){
+            //get the normals
+            Vector2D *pointA = verticesList[i];
+            Vector2D *pointB = verticesList[(i+1) % verticesList.size()];
+
+            Vector2D axis = Vector2D::NormalSuperfice(*pointA,*pointB);
+		    
+            float minA = std::numeric_limits<float>::infinity();
+            float maxA = -std::numeric_limits<float>::infinity();
+		    
+            float minB = std::numeric_limits<float>::infinity();
+		    float maxB = -std::numeric_limits<float>::infinity();
+            //project each the axis on the vertex of each polygon
+            Physics2D::ProjecAxis(polygon1,axis,minA,maxA);
+            Physics2D::ProjecAxis(polygon2,axis,minB,maxB);
+
+            //there is a gap therefore there is separation
+            if(minA >= maxB || minB >=maxA){
+                return false;
+            }
+            //there is overlap
+            //when there is no seperation both max are greater than the minimun 
+            //compute the deltas and use the small value to get the depth
+            float axisDepth = std::min(maxB - minA, maxA - minB);
+            
+            if(axisDepth < depth){
+                depth = axisDepth;
+                normalCollision = axis;
+            }
+            
+        }
+    
+    }
+
+    
+    depth /= normalCollision.Magnitude();
+    //maybe divide depth with the lenght of the n
+
+    // Vector2D centerA = Physics2D::FindCenterMean(verticesListA);
+    // Vector2D centerB = Physics2D::FindCenterMean(verticesListB);
+
+    // Vector2D direction = Vector2D::Substraction(centerB,centerA);
+    // //opposite invert normal
+    // if(Vector2D::Dot(direction,normalCollision) < 0.0f){
+    //     // normalCollision.x  *= -1; 
+    //     // normalCollision.y  *= -1;
+    //     normalCollision = Vector2D::InvertVector(normalCollision); 
+    // }
+
+
+    return true;
+
+
+
+
+}
+
+
+void Physics2D::ProjecAxis(const Transform* currentPolygon, Vector2D axis, float &min, float &max)
+{
+    const std::vector<Vector2D*>& verticesList = currentPolygon->vertices;
+    for(int i=0; i < verticesList.size(); i++){
+        Vector2D *vertex = verticesList[i];
+        float proj = Vector2D::Dot(*vertex,axis);
+        if(proj < min){min=proj;}
+        if(proj > max){max=proj;}
+    }
+
+}
+
+Vector2D Physics2D::FindCenterMean(const std::vector<Vector2D*> vertices)
+{
+    float sumX = 0.0f;
+    float sumY = 0.0f;
+    for(int i=0; i < vertices.size();i++){
+        Vector2D *vec = vertices[i];
+        sumX+= vec->x;
+        sumY+= vec->y;
+    }
+    return Vector2D( sumX/static_cast<float>(vertices.size()), sumY/static_cast<float>(vertices.size()));     
+
 }

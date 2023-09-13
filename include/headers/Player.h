@@ -20,12 +20,14 @@ class Player:public Transform{
             speed = newSpeed;
             keydirX = 0.0f; // Initialize keydirX to 0
             keydirY = 0.0f; // Initialize keydirY to 0
-            
+
             //allow physics for this
             Transform::AddPhysics2D();
             //allow basis
             Transform::basisVector = false;
             //set up the vertices
+            Transform::isPlayer=true;
+            
             init();
            
         }
@@ -40,6 +42,8 @@ class Player:public Transform{
         void draw(float deltaTime) override;
         void computeNormalEdges() override;
         void keyboard();
+
+        void OnCollision(float deltaTime,Transform* objectCollision,Vector2D normalCollision, float depth) override;
 
         Gun* getGun(){return gun;}
         

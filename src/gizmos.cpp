@@ -65,8 +65,13 @@ void Gizmos::SetPointsDebug(std::vector<Vector2D*>& points, float _radius)
 
 }
 
+void Gizmos::SetPoint(Vector2D pos, float _radius)
+{
+    radius = _radius;
+    pointPointers.push_back(&pos);
 
 
+}
 
 void Gizmos::changeColor(float r, float g, float b)
 {
@@ -153,6 +158,8 @@ void Gizmos::DrawPoints()
 
 
 }
+
+
 
 bool Gizmos::checkInstanceExists(Gizmos *currentInstance)
 {
