@@ -181,9 +181,12 @@
     <ClInclude Include="include\headers\Box.h" />
     <ClInclude Include="include\headers\Bullet.h" />
     <ClInclude Include="include\headers\Clocker.h" />
+    <ClInclude Include="include\headers\Enemy.h" />
+    <ClInclude Include="include\headers\EnemyGun.h" />
     <ClInclude Include="include\headers\Floor.h" />
     <ClInclude Include="include\headers\Gizmos.h" />
     <ClInclude Include="include\headers\Gun.h" />
+    <ClInclude Include="include\headers\Map.h" />
     <ClInclude Include="include\headers\MouseHandler.h" />
     <ClInclude Include="include\headers\Physics2D.h" />
     <ClInclude Include="include\headers\Platforms.h" />
@@ -197,10 +200,13 @@
     <ClCompile Include="src\box.cpp" />
     <ClCompile Include="src\bullet.cpp" />
     <ClCompile Include="src\clocker.cpp" />
+    <ClCompile Include="src\enemy.cpp" />
+    <ClCompile Include="src\enemygun.cpp" />
     <ClCompile Include="src\floor.cpp" />
     <ClCompile Include="src\gizmos.cpp" />
     <ClCompile Include="src\gun.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\map.cpp" />
     <ClCompile Include="src\MouseHandler.cpp" />
     <ClCompile Include="src\physics2D.cpp" />
     <ClCompile Include="src\platforms.cpp" />

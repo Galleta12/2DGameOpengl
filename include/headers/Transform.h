@@ -13,6 +13,8 @@ class Transform{
         
                 
         
+        bool isEnemy = false;
+        
         bool isFloor = false; 
         bool isPlayer=false;
 

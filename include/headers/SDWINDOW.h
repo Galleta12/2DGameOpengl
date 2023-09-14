@@ -70,14 +70,16 @@ private:
     SDL_Window* window = nullptr;
     SDL_GLContext glContext = nullptr;
     //for rendering gizmis
+    void setObjectsLists();
     void renderGizmos();
     void objectsEvents();
     void setMultiplePlatforms();
     void setMultipleBoxes();
+    void setMultipleEnemies();
     void restartGame();
     void updateLogicHandler();
     void updateCameraCordinates();
-    
+        
 
 };
 

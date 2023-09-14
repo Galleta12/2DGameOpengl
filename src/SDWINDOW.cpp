@@ -15,6 +15,7 @@
 #include "Floor.h"
 #include "Platforms.h"
 #include "Box.h"
+#include "Enemy.h"
 #include "Clocker.h"
 
 
@@ -107,30 +108,7 @@ void SDWINDOW::init(const char* title, int posX, int posY, int width, int height
             
             isRunning = true;
 
-            //start mouse class
-            mouseHandler = new MouseHandler();
-            
-            //save player initial position
-            initialPlayerX = 300.0f;
-            initialPlayerY = 300.0f;
-            player = new Player(300.0f,300.0f,5);
-            //set the bullet for test
-            //gun data
-            player->gunData(20,50);
-            
-            
-            setMultipleBoxes();
-            //floorObject
-            floorObject = new Floor(1.0f, height /5);
-            
-            
-            transformList.emplace_back(floorObject);
-            
-            transformList.emplace_back(player);
-            //set platforms
-            setMultiplePlatforms();
-            //set boxes
-            
+            setObjectsLists();
 
         }
         else {
@@ -147,6 +125,36 @@ void SDWINDOW::init(const char* title, int posX, int posY, int width, int height
 }
 
 
+void SDWINDOW::setObjectsLists()
+{
+            //start mouse class
+    mouseHandler = new MouseHandler();
+    
+    //save player initial position
+    initialPlayerX = 300.0f;
+    initialPlayerY = 300.0f;
+    player = new Player(300.0f,300.0f,5);
+    //set the bullet for test
+    //gun data
+    player->gunData(20,50);
+    
+    
+    setMultipleBoxes();
+    //floorObject
+    floorObject = new Floor(1.0f, *SDWINDOW::WindowHeight /5);
+    
+    
+    transformList.emplace_back(floorObject);
+    
+    transformList.emplace_back(player);
+    //set platforms
+    setMultiplePlatforms();
+
+    //set enemies
+    setMultipleEnemies();
+
+
+}
 
 void SDWINDOW::handleEvents() {
     
@@ -275,6 +283,13 @@ void SDWINDOW::setMultipleBoxes()
 
 }
 
+void SDWINDOW::setMultipleEnemies()
+{
+    Enemy* e1 = new Enemy(1200.0f,200.0f,player);
+    transformList.emplace_back(e1);
+
+}
+
 
 void SDWINDOW::display()
 {
@@ -396,7 +411,6 @@ void SDWINDOW::restartGame()
 }
 
 
-
 void SDWINDOW::updateCameraCordinates()
 {
 
@@ -419,7 +433,6 @@ void SDWINDOW::updateCameraCordinates()
 
 
 }
-
 
 
 

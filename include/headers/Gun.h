@@ -35,7 +35,7 @@ class Gun : public Transform{
             //initialize the bullet
             //bullet = new Bullet(x,y,5.0f,newSpeed,newPower,gunTip);
           
-            Transform::basisVector = false;
+            Transform::basisVector = true;
         
         }
 

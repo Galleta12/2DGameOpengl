@@ -33,6 +33,9 @@
     <ClInclude Include="include\headers\Physics2D.h" />
     <ClInclude Include="include\headers\Platforms.h" />
     <ClInclude Include="include\headers\Box.h" />
+    <ClInclude Include="include\headers\Enemy.h" />
+    <ClInclude Include="include\headers\EnemyGun.h" />
+    <ClInclude Include="include\headers\Map.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -61,5 +64,8 @@
     <ClCompile Include="src\physics2D.cpp" />
     <ClCompile Include="src\platforms.cpp" />
     <ClCompile Include="src\box.cpp" />
+    <ClCompile Include="src\enemy.cpp" />
+    <ClCompile Include="src\enemygun.cpp" />
+    <ClCompile Include="src\map.cpp" />
   </ItemGroup>
 </Project>
