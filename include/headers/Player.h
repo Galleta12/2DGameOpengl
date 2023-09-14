@@ -69,10 +69,13 @@ class Player:public Transform{
         Vector2D motion;
 
         Vector2D centerTriangle;
+        
+        
         void calculateCenter();
         void checkIsCollisionGround(float deltaTime);
-
-        void yMovements(float deltaTime);
+        void updateXmovements(float deltaTime);
+        void updateYmovements(float deltaTime);
+    
 
         const float friction = 0.9f;
 

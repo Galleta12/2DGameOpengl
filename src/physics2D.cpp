@@ -295,77 +295,7 @@ void Physics2D::gravityForce(float yDir)
 {
 }
 
-bool Physics2D::satCollisionAlg(Transform *me, bool draw)
-{
 
-    //get a list of my own vertices
-    //const std::vector<Vector2D*>& meVerticesList = me->vertices;
-    for(auto& t : SDWINDOW::transformList){
-
-        //check my vertices agains other vertices
-        //inside this loop I dont want to check me.
-        if(t==me)continue;
-        
-        //address of our shape
-        Transform *poly1 = me;
-        Transform *poly2 = t;
-
-        if(poly1->vertices.size() ==0 || poly2->vertices.size() ==0)continue;
-
-        //test first collision between two
-        for(int shape = 0; shape < 2; shape++)
-        {
-            if(shape==1){
-                poly1 = t;
-                poly2 = me;
-            }
-            const std::vector<Vector2D*>& verticesList = poly1->vertices;
-            const std::vector<Vector2D*>& verticesList2 = poly2->vertices;
-            for(int i=0; i < verticesList.size(); i++){
-                //normal axis
-                Vector2D* b1 = verticesList[i]; 
-                Vector2D* b2 = verticesList[(i+1)%verticesList.size()]; 
-                //normal
-                Vector2D axisProj = Vector2D::NormalSuperfice(*b1,*b2);
-
-                //project all of the points of the first polygon into the axis
-                //min and max of the projection line
-                float minP1 = INFINITY, maxP1 = -INFINITY;
-                //iterate through all the points on the first polygon    
-                for(int p= 0; p < verticesList.size(); p++){
-                    //dot product of the point and axis of porjection
-                    float dot = Vector2D::Dot(*verticesList[p],axisProj);
-                    minP1 = std::min(minP1,dot);    
-                    maxP1 = std::min(maxP1,dot);    
-                
-                }
-                //for next shape            
-                float minP2 = INFINITY, maxP2 = -INFINITY;
-                //iterate through all the points on the first polygon    
-                for(int p= 0; p < verticesList2.size(); p++){
-                    //dot product of the point and axis of porjection
-                    float dot = Vector2D::Dot(*verticesList2[p],axisProj);
-                    minP2 = std::min(minP2,dot);    
-                    maxP2 = std::min(maxP2,dot);    
-                
-                }
-
-                if(!(maxP2 >= minP1 || maxP1 >=minP2)){
-                    //return false;
-                    std::cout << "sos " << std::endl;
-                }else{
-                    std::cout << "yes " << std::endl;
-                }
-            
-            }
-
-
-        }
-        
-    }
-
-    return true;
-}
 
 bool Physics2D::satColliderChecker(const Transform* p1, const Transform* p2, float& depth, Vector2D& normalCollision)
 {
@@ -391,7 +321,7 @@ bool Physics2D::satColliderChecker(const Transform* p1, const Transform* p2, flo
             Vector2D *pointA = verticesList[i];
             Vector2D *pointB = verticesList[(i+1) % verticesList.size()];
 
-            Vector2D axis = Vector2D::NormalSuperficeNoNormalized(*pointA,*pointB);
+            Vector2D axis = Vector2D::NormalSuperfice(*pointA,*pointB);
 		    
             float minA = std::numeric_limits<float>::infinity();
             float maxA = -std::numeric_limits<float>::infinity();
@@ -430,9 +360,9 @@ bool Physics2D::satColliderChecker(const Transform* p1, const Transform* p2, flo
     Vector2D centerA = Physics2D::FindCenterMean(verticesListA);
     Vector2D centerB = Physics2D::FindCenterMean(verticesListB);
 
-    Vector2D direction;
-    direction.x = centerA.x - centerB.x;
-    direction.y = centerA.y - centerB.y;
+    Vector2D direction = Vector2D::Substraction(centerB,centerA);
+    // direction.x = centerA.x - centerB.x;
+    // direction.y = centerA.y - centerB.y;
     //opposite invert normal
     if(Vector2D::Dot(direction,normalCollision) < 0.0f){
         normalCollision.x   =  -normalCollision.x ; 

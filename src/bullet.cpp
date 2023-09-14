@@ -26,7 +26,7 @@ void Bullet::init()
     //vertices.push_back(&position);
     
     // Calculate points evenly spaced around the circumference of the ball
-    const int numPoints = 5; // You want four points
+    const int numPoints = 4; // You want four points
     for (int i = 0; i < numPoints; ++i)
     {
         float angle = i * (2.0f * RadToDegree::PI / numPoints); // Calculate angle between points
@@ -129,7 +129,7 @@ void Bullet::draw(float deltaTime)
     glBegin(GL_LINES);
     glColor3f(r,g,b); // Red color
 
-    const int numSegments = 5; // Number of line segments to approximate the circle
+    const int numSegments = 4; // Number of line segments to approximate the circle
     const float angleIncrement = 2.0f * RadToDegree::PI / numSegments;
     float angle = 0.0f;
 

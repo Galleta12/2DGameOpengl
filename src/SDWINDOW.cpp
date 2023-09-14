@@ -212,7 +212,7 @@ void SDWINDOW::objectsEvents(){
     
     
     //mouse
-    mouseHandler->mousePos(cameraX ,cameraY );
+    mouseHandler->mousePos(cameraX ,cameraY);
     //get mouse position
     player->getGun()->setMousePosition(mouseHandler->getMousePos());
     //handle playerdirectionmoves
@@ -295,6 +295,8 @@ void SDWINDOW::display()
 {
         
         updateCameraCordinates();
+
+        std::cout<< "Camera pos" << cameraY << std::endl;
         
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
@@ -414,22 +416,31 @@ void SDWINDOW::restartGame()
 void SDWINDOW::updateCameraCordinates()
 {
 
-  
+    
     // Calculate the camera's x-coordinate centered around the player
     cameraX = player->getPlayerPos().x - (*WindowWidth / 4.0f);
+    cameraY = player->getPlayerPos().y - (*WindowHeight/ 2.0f);
 
-    // Define the minimum and maximum y-coordinate limits for the camera
-    float minYLimit = *WindowHeight / 4.0f; // Minimum y-coordinate limit
-    float maxYLimit = *WindowHeight * 0.75f; // Maximum y-coordinate limit
+//     // Define the minimum and maximum y-coordinate limits for the camera
+//     float minYLimit = *WindowHeight / 4.0f; // Minimum y-coordinate limit
+//     float maxYLimit = *WindowHeight * 0.75f; // Maximum y-coordinate limit
 
-    // Check if the player's y-coordinate is below the minYLimit
-    if (player->getPlayerPos().y < minYLimit) {
-        // Update cameraY to keep the player near the bottom of the screen
-        cameraY = player->getPlayerPos().y - (*WindowHeight / 4.0f);
-    } else if (player->getPlayerPos().y > maxYLimit) {
-        // Update cameraY to keep the player near the top of the screen
-        cameraY = player->getPlayerPos().y - *WindowHeight * 0.75f;
-    }
+//    if(gameState == GameState::LOSS){
+
+//         cameraY = minYLimit - 40.0f;
+        
+//         return;
+//     }
+//     // Check if the player's y-coordinate is below the minYLimit
+//     if (player->getPlayerPos().y < minYLimit) {
+//         // Update cameraY to keep the player near the bottom of the screen
+//         cameraY = player->getPlayerPos().y - (*WindowHeight / 4.0f);
+//         return;
+//     } else if (player->getPlayerPos().y > maxYLimit) {
+//         // Update cameraY to keep the player near the top of the screen
+//         cameraY = player->getPlayerPos().y - (*WindowHeight * 0.75f);
+//         return;
+//     }
 
 
 }
@@ -447,19 +458,24 @@ void SDWINDOW::updateLogicHandler()
     
     //only collision for transforms with physics added to it
     for(int a=0; a < transformList.size()-1; a++){
-        if(transformList[a]->getPhysics2D() == nullptr)continue;
+        //store first object
+        Transform* polygon1 = transformList[a]; 
+        if(polygon1->getPhysics2D() == nullptr)continue;
         
         for(int b=a+1; b<transformList.size();b++){
-            if(transformList[b]->getPhysics2D() == nullptr)continue;
-           float depth = std::numeric_limits<float>::infinity();; 
-           Vector2D normalCollision;
+            Transform* polygon2 = transformList[b]; 
+            
+            if(polygon2->getPhysics2D() == nullptr)continue;
            
-           bool isIntersection = Physics2D::satColliderChecker(transformList[a],transformList[b],depth,normalCollision);
-           if (isIntersection) {
-               //std::cout << "Collision" << std::endl;
-               transformList[a]->OnCollision(dt,transformList[b],normalCollision,depth/2.0f);
-               transformList[b]->OnCollision(dt,transformList[a],Vector2D::InvertVector(normalCollision),depth/2.0f);
-           }
+            float depth = std::numeric_limits<float>::infinity();; 
+            Vector2D normalCollision;
+            
+            bool isIntersection = Physics2D::satColliderChecker(polygon1,polygon2,depth,normalCollision);
+            if (isIntersection) {
+                //std::cout << "Collision" << std::endl;
+                polygon1->OnCollision(dt,polygon2,Vector2D::InvertVector(normalCollision),depth/2.0f);
+                polygon2->OnCollision(dt,polygon1,normalCollision,depth/2.0f);
+            }
         
         }
     }
