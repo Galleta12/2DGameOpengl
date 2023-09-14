@@ -130,6 +130,8 @@ void Player::jumpHanlder(float deltaTime)
 
 }
 
+
+
 void Player::draw(float deltaTime)
 {
 
@@ -347,7 +349,7 @@ void Player::OnCollision(float deltaTime,Transform* objectCollision,Vector2D nor
     
     Transform::OnCollision(deltaTime,objectCollision,normalCollision,depth,unmodifiedNormalCollision);
     
-    
+    normalDebug->RenderRay(objectCollision->position,normalCollision,100.0f);
    
     //std::cout << "Collision Player" << std::endl;
     //resolve collision
@@ -360,6 +362,24 @@ void Player::OnCollision(float deltaTime,Transform* objectCollision,Vector2D nor
         // SDWINDOW::gameState = SDWINDOW::GameState::LOSS;
         return;
     }
+    
+    
+    //projection only on lines
+    if(objectCollision->lineFlag){
+        //dont allow y movements
+        
+        // newMotion.y = 0.0f;
+        // keydirY =  0.0f;
+        // motion.y = 0.0f;
+        isCollisionFloor = true;
+
+        ProjectionAlongPlane(deltaTime,normalCollision,objectCollision, newMotion);
+        
+        return;
+    }
+    
+    
+    
     
     //all y movements needs to be zero if it is a floor
     if(objectCollision->isFloor){
@@ -378,6 +398,61 @@ void Player::OnCollision(float deltaTime,Transform* objectCollision,Vector2D nor
     rightVertex.y += newMotion.y * deltaTime;
 
 }
+
+void Player::ProjectionAlongPlane(float deltaTime, Vector2D normal, const Transform* objectedCollided, Vector2D newMotion)
+{
+    //first get the orthographic of the normal
+    Vector2D orthographic;
+    orthographic.x = -normal.y;
+    orthographic.y = normal.x;
+    //calculate to see if they are parallel to the motion if they are not we want to flip it
+    //we flip if they are not pointing in the same direction
+    if(Vector2D::Dot(orthographic,motion) < 0.0f){
+        orthographic = Vector2D::InvertVector(orthographic);
+    }
+    //we dont want to do anything if the player up vector is not pointing the same dir
+    //Vector up similar to Vecto3D.up in unity a unit lenght vector pointing always upwards
+    Vector2D up(0.0f, 1.0f);
+    
+    float angle = AngleWithPlane(up,normal);
+    
+    //to the normal collision
+    if(Vector2D::Dot(Transform::up,normal) < 0.0f || angle >= 45.0f || angle == 0.0f){
+        //just collide and apply gravity.    
+        //handle movements
+        position.x += newMotion.x * deltaTime; 
+        leftVertex.x += newMotion.x * deltaTime;
+        rightVertex.x += newMotion.x * deltaTime;
+
+        position.y += newMotion.y * deltaTime; 
+        leftVertex.y += newMotion.y * deltaTime;
+        rightVertex.y += newMotion.y * deltaTime;
+        return;
+    }
+    
+    
+    //std::cout << "currnet angle" << angle << std::endl;
+    //draw to see if working
+    debuggerLine->RenderRay(objectedCollided->position,orthographic,300.0f);
+    debuggerMotion->RenderRay(position,motion,300.0f);
+
+
+    
+    
+    
+
+}
+
+
+
+float Player::AngleWithPlane(Vector2D ortho, Vector2D normal){
+
+    float angle = Vector2D::Angle(ortho,normal);
+
+    return angle;
+
+}
+
 
 void Player::resetPosition(float x, float y)
 {

@@ -77,6 +77,8 @@ class Player:public Transform{
         void updateYmovements(float deltaTime);
         void jumpHanlder(float deltaTime);
 
+        void ProjectionAlongPlane(float deltaTime, Vector2D normal,const Transform* objectedCollided, Vector2D newMotion);
+        float AngleWithPlane(Vector2D ortho, Vector2D normal);
         const float friction = 0.9f;
 
         bool isKeyDirx = false;
@@ -91,6 +93,10 @@ class Player:public Transform{
         Vector2D rightVertex;
         float jumpForce = 0.0f;
         //int jumpSpeed = 3;
+        //gizmos for debuggin projection
+        Gizmos *debuggerLine = Gizmos::StartGizmos(1.0f,0.5f,1.0f);
+        Gizmos *debuggerMotion = Gizmos::StartGizmos(0.0f,0.0f,0.0f);
+
 
 };
 

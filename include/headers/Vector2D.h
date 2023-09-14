@@ -72,6 +72,8 @@ class Vector2D{
         static float DistanceVec(const Vector2D& v1, const Vector2D& v2);
 
         static Vector2D Reflection(const Vector2D& v1, const Vector2D& v2);
+
+        static Vector2D VectorProjection(const Vector2D& vector, const Vector2D& plane);
         
         static Vector2D NormalSuperfice(Vector2D v1, Vector2D v2);
         static Vector2D NormalSuperficeNoNormalized(Vector2D v1, Vector2D v2);

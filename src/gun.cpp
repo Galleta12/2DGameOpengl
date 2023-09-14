@@ -36,7 +36,7 @@ void Gun::rotateGun()
     Vector2D dir = (gunOffset - position).Normalize();
 
   
-    debugGizmos->RenderLine(centerPlayerTriangleRef,getMousePosition());
+    //debugGizmos->RenderLine(centerPlayerTriangleRef,getMousePosition());
     //debugGizmos->RenderRay(centerPlayerTriangleRef,dir, 200.0f);
 
     //Vector2D posDir = Vector2D::Normalized(position);

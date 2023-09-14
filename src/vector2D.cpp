@@ -246,6 +246,19 @@ Vector2D Vector2D::Reflection(const Vector2D& v1, const Vector2D& v2)
     return reflection;
 }
 
+Vector2D Vector2D::VectorProjection(const Vector2D &vector, const Vector2D &plane)
+{
+    // we assume that the plane is normalize, so we project vector a into the vector plane
+    //formula (vector dot plane)plane
+    float dot = Vector2D::Dot(vector,plane);
+
+    Vector2D projectedVector = Vector2D::ScalarMultiplication(plane,dot);
+    
+    
+    return projectedVector;
+
+}
+
 Vector2D Vector2D::NormalSuperfice(Vector2D v1, Vector2D v2)
 {
     Vector2D r = v2 - v1;    
