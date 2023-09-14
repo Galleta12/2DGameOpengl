@@ -26,7 +26,7 @@ void Bullet::init()
     //vertices.push_back(&position);
     
     // Calculate points evenly spaced around the circumference of the ball
-    const int numPoints = 4; // You want four points
+    const int numPoints = 10; // You want four points
     for (int i = 0; i < numPoints; ++i)
     {
         float angle = i * (2.0f * RadToDegree::PI / numPoints); // Calculate angle between points
@@ -95,7 +95,7 @@ void Bullet::update(float deltaTime)
 
     // Check if 5 seconds have passed since last print
     
-    if (elapsedTime.count() >= 8) {
+    if (elapsedTime.count() >= 4) {
    
         lastPrintTime = currentTime;
 
@@ -129,7 +129,7 @@ void Bullet::draw(float deltaTime)
     glBegin(GL_LINES);
     glColor3f(r,g,b); // Red color
 
-    const int numSegments = 4; // Number of line segments to approximate the circle
+    const int numSegments = 10; // Number of line segments to approximate the circle
     const float angleIncrement = 2.0f * RadToDegree::PI / numSegments;
     float angle = 0.0f;
 
@@ -154,17 +154,38 @@ void Bullet::draw(float deltaTime)
 
 }
 
-void Bullet::OnCollision(float deltaTime, Transform *objectCollision, Vector2D normalCollision, float depth)
+void Bullet::OnCollision(float deltaTime, Transform *objectCollision, Vector2D normalCollision, float depth,Vector2D unmodifiedNormalCollision)
 {
 
+    Transform::OnCollision(deltaTime,objectCollision,normalCollision,depth,unmodifiedNormalCollision);
+
+
+
+    //normalDebug->RenderRay(position,normalCollision,100.0f);
+    
+    // Vector2D newMotion;
+    // float adjust = 1.1f; // A small adjustment factor
+    // newMotion.x += normalCollision.x * depth * adjust;
+    // newMotion.y += normalCollision.y * depth * adjust;
+
+
+    // motion.x = 0.0f;
+    // motion.y = 0.0f;
+
+    
+    //Vector2D normal = unmodifiedNormalCollision;
     Vector2D normal = normalCollision;
     Vector2D reflec = Vector2D::Reflection(dir, normal);
 
-        //std::cout<<"reflect" << reflec << std::endl;
+    //std::cout<<"reflect" << reflec << std::endl;
 
     dir = Vector2D::Normalized(reflec);
-    motion.x = dir.x * speed;
-    motion.y = dir.y * speed;
+    motion.x = (dir.x * speed) + (depth * normalCollision.x);
+    motion.y = (dir.y * speed) + (depth * normalCollision.y);
+
+    //debugVelocity->RenderRay(position,dir, 30.0f); 
+    //normalDebug->RenderRay(position,dir,100.0f);
+    
 
 }
 

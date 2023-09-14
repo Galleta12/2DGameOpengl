@@ -102,7 +102,7 @@ class Transform{
 
         virtual void computeNormalEdges(){}
 
-        virtual void OnCollision(float deltaTime,Transform* objectCollision,Vector2D normalCollision, float depth){}
+        virtual void OnCollision(float deltaTime,Transform* objectCollision,Vector2D normalCollision, float depth, Vector2D unmodifiedNormalCollision);
 
         void convertLocalToWorld(Vector2D parentPosition){
             //localPosToWorld = parentPosition + position;                                     
@@ -151,6 +151,7 @@ class Transform{
         std::vector<Vector2D*> normalEdgesList; 
 
         Gizmos *normalDebug = Gizmos::StartGizmos(0.7f,0.5f,0.5f);
+    
     private:
         //purple
         Gizmos *upGizmos = Gizmos::StartGizmos(0.5f, 0.5f, 0.0f);

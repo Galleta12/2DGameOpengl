@@ -35,17 +35,14 @@ void Player::update(float deltaTime)
     
     //we dont want to do anything if player is death
     if(isDeath)return;
-    
+       
+    updateXmovements(deltaTime);
     
    
-    updateXmovements(deltaTime);
+
     updateYmovements(deltaTime);
-
-
-
- 
     
-    
+
     gun->updatePosition(deltaTime,motion);
 
     gun->update(deltaTime);
@@ -101,15 +98,35 @@ void Player::updateXmovements(float deltaTime)
 
 void Player::updateYmovements(float deltaTime)
 {
-    motion.y = keydirY * speed;
-    motion.y *= friction;
+    //if(!isCollisionFloor){
+
+        if(isJumping){
+            jumpHanlder(deltaTime);
+            motion.y *= 0.5f;
+
+        }else{
+        
+            motion.y = keydirY * speed;
+        }
+         //motion.y -= 9.8f;        
+    //}
+//if(!isJumping){
+
+            //motion.y = keydirY * speed;
+            
+            position.y += motion.y * deltaTime;
+            leftVertex.y += motion.y * deltaTime;
+            rightVertex.y += motion.y * deltaTime;
+            
+        //}
+
+}
+
+void Player::jumpHanlder(float deltaTime)
+{
     
-    position.y += motion.y * deltaTime;
-    
-    
-    leftVertex.y += motion.y * deltaTime;
-    rightVertex.y += motion.y * deltaTime;
-    
+    motion.y += jumpForce;
+
 
 }
 
@@ -154,9 +171,7 @@ void Player::draw(float deltaTime)
 //populate the list of normal edges, we also want to draw then for visualization
 //only for debuggin porpuses
 void Player::computeNormalEdges()
-{
-
-        
+{       
     // for(int j=0;j<Transform::vertices.size();j++){
     //     Vector2D* a = vertices[j]; 
     //     Vector2D* b = vertices[(j+1)%vertices.size()];
@@ -172,9 +187,7 @@ void Player::computeNormalEdges()
         
     //     Gizmos *debugN = Gizmos::StartGizmos(0.5f,0.5f,0.5f);
     //     debugN->RenderRay(halfN ,n,1000.0f);
-
-
-    
+   
     // for(int i =0; i<Transform::vertices.size();i++){
     //     Vector2D* v1 = vertices[i]; 
     //     float dot = Vector2D::Dot(n,*v1);
@@ -184,9 +197,6 @@ void Player::computeNormalEdges()
     // }
     // }    
     
-
-
-
 }
 
 void Player::keyboard()
@@ -223,6 +233,12 @@ void Player::keyboard()
             keydirX = 1.0f;
             break;
         
+        case SDLK_SPACE:
+            isJumping = true;
+            jumpForce = 5.0f;
+
+            break;
+
         default:
             break;
         }
@@ -238,11 +254,14 @@ void Player::keyboard()
             break;        
         case SDLK_a:
         case SDLK_d:
-            
-            
             //we dont want to abruptely stop the movment hence we use this flag
             isKeyDirx = false;
             keydirX = 0.0f;
+            break;
+        case SDLK_SPACE:
+            
+            isJumping = false;
+
             break;
         
         default:
@@ -250,7 +269,6 @@ void Player::keyboard()
         }
     }
 
-    //std::cout << "keydir: " <<keydirX << std::endl;
 
 }
 
@@ -324,21 +342,22 @@ void Player::init()
 
 }
 
-void Player::OnCollision(float deltaTime,Transform* objectCollision,Vector2D normalCollision, float depth)
+void Player::OnCollision(float deltaTime,Transform* objectCollision,Vector2D normalCollision, float depth, Vector2D unmodifiedNormalCollision)
 {
-
+    
+    Transform::OnCollision(deltaTime,objectCollision,normalCollision,depth,unmodifiedNormalCollision);
+    
+    
+   
     //std::cout << "Collision Player" << std::endl;
     //resolve collision
     Vector2D newMotion= Vector2D::ScalarMultiplication(normalCollision,depth);
     
     if(objectCollision->isBullet){
-        //set flag as death
-        isDeath = true;
-
-        //change state of game
-        SDWINDOW::gameState = SDWINDOW::GameState::LOSS;
-
-
+        // //set flag as death
+        // isDeath = true;
+        // //change state of game
+        // SDWINDOW::gameState = SDWINDOW::GameState::LOSS;
         return;
     }
     
@@ -349,8 +368,7 @@ void Player::OnCollision(float deltaTime,Transform* objectCollision,Vector2D nor
         motion.y = 0.0f;
         isCollisionFloor = true;       
     }
-    
-    
+        
     position.x += newMotion.x * deltaTime; 
     leftVertex.x += newMotion.x * deltaTime;
     rightVertex.x += newMotion.x * deltaTime;
@@ -358,7 +376,6 @@ void Player::OnCollision(float deltaTime,Transform* objectCollision,Vector2D nor
     position.y += newMotion.y * deltaTime; 
     leftVertex.y += newMotion.y * deltaTime;
     rightVertex.y += newMotion.y * deltaTime;
-
 
 }
 

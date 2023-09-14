@@ -74,8 +74,11 @@ void Enemy::draw(float deltaTime)
 
 }
 
-void Enemy::OnCollision(float deltaTime, Transform *objectCollision, Vector2D normalCollision, float depth)
+void Enemy::OnCollision(float deltaTime, Transform *objectCollision, Vector2D normalCollision, float depth,Vector2D unmodifiedNormalCollision)
 {
+    
+    Transform::OnCollision(deltaTime,objectCollision,normalCollision,depth,unmodifiedNormalCollision);
+    
     if(objectCollision->isBullet)return;
 
 

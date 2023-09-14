@@ -48,6 +48,14 @@ void Floor::draw(float deltaTime)
 
 }
 
+void Floor::OnCollision(float deltaTime, Transform *objectCollision, Vector2D normalCollision, float depth, Vector2D unmodifiedNormalCollision)
+{
+
+    Transform::OnCollision(deltaTime,objectCollision,normalCollision,depth,unmodifiedNormalCollision);
+
+
+}
+
 bool Floor::IsGround()
 {
     return false;

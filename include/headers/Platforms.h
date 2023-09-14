@@ -25,6 +25,8 @@ class Platforms: public Transform{
         void update(float deltaTime)override;
               
         void draw(float deltaTime)override;
+        void OnCollision(float deltaTime,Transform* objectCollision,Vector2D normalCollision, float depth, Vector2D unmodifiedNormalCollision) override;
+
     
     private:
         Vector2D end;

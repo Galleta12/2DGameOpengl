@@ -296,7 +296,6 @@ void SDWINDOW::display()
         
         updateCameraCordinates();
 
-        std::cout<< "Camera pos" << cameraY << std::endl;
         
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
@@ -473,8 +472,10 @@ void SDWINDOW::updateLogicHandler()
             bool isIntersection = Physics2D::satColliderChecker(polygon1,polygon2,depth,normalCollision);
             if (isIntersection) {
                 //std::cout << "Collision" << std::endl;
-                polygon1->OnCollision(dt,polygon2,Vector2D::InvertVector(normalCollision),depth/2.0f);
-                polygon2->OnCollision(dt,polygon1,normalCollision,depth/2.0f);
+                polygon1->OnCollision(dt,polygon2,Vector2D::InvertVector(normalCollision),depth/2.0f,normalCollision);
+                
+                polygon2->OnCollision(dt,polygon1,normalCollision,depth/2.0f,normalCollision);
+            
             }
         
         }

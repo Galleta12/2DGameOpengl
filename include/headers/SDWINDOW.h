@@ -69,6 +69,7 @@ private:
     
     SDL_Window* window = nullptr;
     SDL_GLContext glContext = nullptr;
+    Gizmos *normalDebugPhysics = Gizmos::StartGizmos(0.7f,0.5f,0.5f);
     //for rendering gizmis
     void setObjectsLists();
     void renderGizmos();

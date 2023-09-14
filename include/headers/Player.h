@@ -24,7 +24,7 @@ class Player:public Transform{
             //allow physics for this
             Transform::AddPhysics2D();
             //allow basis
-            Transform::basisVector = false;
+            Transform::basisVector = true;
             //set up the vertices
             Transform::isPlayer=true;
             
@@ -43,7 +43,7 @@ class Player:public Transform{
         void computeNormalEdges() override;
         void keyboard();
 
-        void OnCollision(float deltaTime,Transform* objectCollision,Vector2D normalCollision, float depth) override;
+        void OnCollision(float deltaTime,Transform* objectCollision,Vector2D normalCollision, float depth,Vector2D unmodifiedNormalCollision) override;
 
         Gun* getGun(){return gun;}
 
@@ -75,7 +75,7 @@ class Player:public Transform{
         void checkIsCollisionGround(float deltaTime);
         void updateXmovements(float deltaTime);
         void updateYmovements(float deltaTime);
-    
+        void jumpHanlder(float deltaTime);
 
         const float friction = 0.9f;
 
@@ -85,9 +85,12 @@ class Player:public Transform{
 
         bool isDeath = false;
 
+        bool isJumping = false;
 
         Vector2D leftVertex;
         Vector2D rightVertex;
+        float jumpForce = 0.0f;
+        //int jumpSpeed = 3;
 
 };
 

@@ -38,6 +38,29 @@ void Platforms::draw(float deltaTime)
 
 }
 
+void Platforms::OnCollision(float deltaTime, Transform *objectCollision, Vector2D normalCollision, float depth, Vector2D unmodifiedNormalCollision)
+{
+    Transform::OnCollision(deltaTime,objectCollision,normalCollision,depth,unmodifiedNormalCollision);
+
+
+    // if(objectCollision->isBullet){
+    //     Vector2D newMotion= Vector2D::ScalarMultiplication(normalCollision,depth);
+        
+    //     objectCollision->position.x += newMotion.x;
+    //     objectCollision->position.y += newMotion.y;
+    //     //objectCollision->position 
+    //     //objectCollision->vertices
+        
+    //     for(auto& b : objectCollision->vertices){
+    //         b->x += newMotion.x * deltaTime;
+    //         b->y += newMotion.y * deltaTime;
+    //     }
+    
+    
+    // }
+
+
+}
 
 void Platforms::update(float deltaTime)
 {
@@ -54,6 +77,10 @@ void Platforms::update(float deltaTime)
     
     
     debugNormal->RenderRay(position,Transform::normalVectorPlane,100.0f);
+
+    
+
+
 
 }
 

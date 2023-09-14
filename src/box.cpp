@@ -122,9 +122,12 @@ void Box::draw(float deltaTime)
 
 }
 
-void Box::OnCollision(float deltaTime, Transform *objectCollision, Vector2D normalCollision, float depth)
+void Box::OnCollision(float deltaTime, Transform *objectCollision, Vector2D normalCollision, float depth,Vector2D unmodifiedNormalCollision)
 {
 
+    
+    Transform::OnCollision(deltaTime,objectCollision,normalCollision,depth,unmodifiedNormalCollision);
+    
     if(objectCollision->isBullet)return;
     if(!isMove) return;
     Vector2D newMotion= Vector2D::ScalarMultiplication(normalCollision,depth);
