@@ -23,7 +23,7 @@ class MouseHandler{
         static MousePress mousePressEnum;
         
         
-        void mousePos();
+        void mousePos(float cameraX, float cameraY);
 
         std::vector<int> getMouseClikPos(){
 

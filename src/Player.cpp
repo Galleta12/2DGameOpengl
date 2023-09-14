@@ -32,10 +32,7 @@ void Player::update(float deltaTime)
     
     Transform::update(deltaTime);
 
-    //handle collision
-
-
-    //this means that there is movement    
+    
     if(isKeyDirx){
 
         //update the player motion
@@ -62,7 +59,27 @@ void Player::update(float deltaTime)
     leftVertex.x += motion.x * deltaTime;
     rightVertex.x += motion.x * deltaTime;
 
+
+
+
+
+    yMovements(deltaTime);
     
+    
+    gun->updatePosition(deltaTime,motion);
+
+    gun->update(deltaTime);
+
+    //set collision floor as false, again
+    isCollisionFloor = false;
+    
+    
+
+}
+void Player::yMovements(float deltaTime)
+{
+
+
     motion.y = keydirY * speed;
     motion.y *= friction;
     
@@ -72,24 +89,16 @@ void Player::update(float deltaTime)
     leftVertex.y += motion.y * deltaTime;
     rightVertex.y += motion.y * deltaTime;
     
-    
-    
-    //check collision ground
-    checkIsCollisionGround(deltaTime);
-    gun->updatePosition(deltaTime,motion);
 
-    gun->update(deltaTime);
-    
-    
 
 }
 
 void Player::checkIsCollisionGround(float deltaTime){
     //define the ray below
-    Vector2D currenttUp = Transform::up;
-    currenttUp.y *= -1;
+    // Vector2D currenttUp = Transform::up;
+    // currenttUp.y *= -1;
     //Transform::getPhysics2D()->raycast(this,position,currenttUp,100.0f,true,deltaTime);
-
+    
      
 }
 
@@ -180,9 +189,13 @@ void Player::keyboard()
             keydirY =  1.0f;    
             break;
         
+        
         case SDLK_s:
             
-           keydirY=  -1.0f;    
+           if(!isCollisionFloor){
+
+            keydirY=  -1.0f;    
+           }
 
             break;
         
@@ -304,7 +317,13 @@ void Player::init()
 void Player::OnCollision(float deltaTime,Transform* objectCollision,Vector2D normalCollision, float depth)
 {
 
-    std::cout << "Collision Player" << std::endl;
+    
+    
+    
+    
+    
+    
+    //std::cout << "Collision Player" << std::endl;
     //resolve collision
     Vector2D newMotion= Vector2D::ScalarMultiplication(normalCollision,depth);
     
@@ -313,7 +332,8 @@ void Player::OnCollision(float deltaTime,Transform* objectCollision,Vector2D nor
     if(objectCollision->isFloor){
         newMotion.y = 0.0f;
         keydirY =  0.0f;
-        motion.y = 0.0f;       
+        motion.y = 0.0f;
+        isCollisionFloor = true;       
     }
     
     

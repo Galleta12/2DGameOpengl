@@ -28,43 +28,6 @@ Physics2D::~Physics2D()
 
 
 
-void Physics2D::checkwindowcollision(Vector2D& position)
-{
-    // Get the player's current position
-    Vector2D currentPosition = position;
-
-    // Get the dimensions of the window
-    float windowWidth = *SDWINDOW::WindowWidth; // Replace with your actual window width
-    float windowHeight = *SDWINDOW::WindowHeight; // Replace with your actual window height
-
-    // Define some padding to keep the player within the window bounds
-    float padding = 20.0f; // Adjust as needed
-
-    // Check if the player is going off the left edge of the window
-    if (currentPosition.x - padding < 0.0f) {
-        currentPosition.x = padding; // Set the player's position to the left edge with padding
-    }
-
-    // Check if the player is going off the right edge of the window
-    if (currentPosition.x + padding > windowWidth) {
-        currentPosition.x = windowWidth - padding; // Set the player's position to the right edge with padding
-    }
-
-    // Check if the player is going off the top edge of the window
-    if (currentPosition.y - padding < 0.0f) {
-        currentPosition.y = padding; // Set the player's position to the top edge with padding
-    }
-
-    // Check if the player is going off the bottom edge of the window
-    if (currentPosition.y + padding > windowHeight) {
-        currentPosition.y = windowHeight - padding; // Set the player's position to the bottom edge with padding
-    }
-
-    // Update the player's position to the adjusted position
-    position = currentPosition;
-
-
-}
 
 // bool Physics2D::raycast(Transform* me,Vector2D start,Vector2D direction, float distance, bool draw, float deltaTime)
 // {
@@ -419,7 +382,7 @@ bool Physics2D::satColliderChecker(const Transform* p1, const Transform* p2, flo
     for(int number=0; number < 2; number++){
 
         if(number == 1){
-            std::swap(polygon1, polygon2); 
+        std::swap(polygon1, polygon2); 
         }
         
         const std::vector<Vector2D*>& verticesList = polygon1->vertices;
@@ -428,7 +391,7 @@ bool Physics2D::satColliderChecker(const Transform* p1, const Transform* p2, flo
             Vector2D *pointA = verticesList[i];
             Vector2D *pointB = verticesList[(i+1) % verticesList.size()];
 
-            Vector2D axis = Vector2D::NormalSuperfice(*pointA,*pointB);
+            Vector2D axis = Vector2D::NormalSuperficeNoNormalized(*pointA,*pointB);
 		    
             float minA = std::numeric_limits<float>::infinity();
             float maxA = -std::numeric_limits<float>::infinity();
@@ -457,20 +420,25 @@ bool Physics2D::satColliderChecker(const Transform* p1, const Transform* p2, flo
     
     }
 
+   
     
-    depth /= normalCollision.Magnitude();
-    //maybe divide depth with the lenght of the n
+    Vector2D mag = normalCollision;
 
-    // Vector2D centerA = Physics2D::FindCenterMean(verticesListA);
-    // Vector2D centerB = Physics2D::FindCenterMean(verticesListB);
+    depth /= mag.Magnitude();
+    normalCollision = Vector2D::Normalized(normalCollision);
 
-    // Vector2D direction = Vector2D::Substraction(centerB,centerA);
-    // //opposite invert normal
-    // if(Vector2D::Dot(direction,normalCollision) < 0.0f){
-    //     // normalCollision.x  *= -1; 
-    //     // normalCollision.y  *= -1;
-    //     normalCollision = Vector2D::InvertVector(normalCollision); 
-    // }
+    Vector2D centerA = Physics2D::FindCenterMean(verticesListA);
+    Vector2D centerB = Physics2D::FindCenterMean(verticesListB);
+
+    Vector2D direction;
+    direction.x = centerA.x - centerB.x;
+    direction.y = centerA.y - centerB.y;
+    //opposite invert normal
+    if(Vector2D::Dot(direction,normalCollision) < 0.0f){
+        normalCollision.x   =  -normalCollision.x ; 
+        normalCollision.y  = -normalCollision.y ;
+        //normalCollision = Vector2D::InvertVector(normalCollision); 
+    }
 
 
     return true;

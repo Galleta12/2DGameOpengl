@@ -35,7 +35,7 @@ void Gun::rotateGun()
     Vector2D dir = (gunOffset - position).Normalize();
 
   
-    //debugGizmos->RenderLine(centerPlayerTriangleRef,getMousePosition());
+    debugGizmos->RenderLine(centerPlayerTriangleRef,getMousePosition());
     //debugGizmos->RenderRay(centerPlayerTriangleRef,dir, 200.0f);
 
     //Vector2D posDir = Vector2D::Normalized(position);
@@ -127,7 +127,7 @@ void Gun::mouseLeftPressed(std::vector<int> mousePositions)
     //refence to the bullet list on the gun.
     //bulletList.push_back(new Bullet({positionLaunch.x,positionLaunch.y,15.0f,1,10,Rotation,dir}));
     //we want the bullet list to be added to the transform list
-    SDWINDOW::transformList.push_back(new Bullet({positionLaunch.x,positionLaunch.y,15.0f,1,10,Rotation,dir}));
+    SDWINDOW::transformList.push_back(new Bullet({positionLaunch.x,positionLaunch.y,15.0f,3,10,Rotation,dir}));
 
     //std::cout<< "Mouse X: " << mouseClickX << "Mouse y: " << mouseClickY << std::endl;     
 

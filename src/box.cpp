@@ -41,15 +41,15 @@ void Box::computeNormalEdges()
 {
             
     
-    for(int i=0; i<Transform::vertices.size();i++){
-        Vector2D* a = vertices[i];
-        Vector2D* b = vertices[(i+1)%vertices.size()];
-        Vector2D n = Vector2D::NormalSuperfice(*a,*b);
-        Gizmos *debugN = Gizmos::StartGizmos(0.5f,0.5f,0.5f);
-        Vector2D halfN =  Vector2D::PositionBetween(*a,*b);      
-        debugN->RenderRay(halfN ,n,50.0f);
+    // for(int i=0; i<Transform::vertices.size();i++){
+    //     Vector2D* a = vertices[i];
+    //     Vector2D* b = vertices[(i+1)%vertices.size()];
+    //     Vector2D n = Vector2D::NormalSuperfice(*a,*b);
+    //     Gizmos *debugN = Gizmos::StartGizmos(0.5f,0.5f,0.5f);
+    //     Vector2D halfN =  Vector2D::PositionBetween(*a,*b);      
+    //     debugN->RenderRay(halfN ,n,50.0f);
 
-    }
+    // }
     
     
     // for(int j=0;j<Transform::vertices.size();j++){
@@ -131,10 +131,11 @@ void Box::OnCollision(float deltaTime, Transform *objectCollision, Vector2D norm
     
     
     position.x += newMotion.x * deltaTime; 
+    position.y += newMotion.y * deltaTime;
 
     for(auto& b : vertices){
         b->x += newMotion.x * deltaTime;
-        //b->y += newMotion.y * deltaTime;
+        b->y += newMotion.y * deltaTime;
         
     }
 

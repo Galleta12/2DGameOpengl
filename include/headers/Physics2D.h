@@ -51,8 +51,7 @@ class Physics2D{
         
         //RayCastCollisionInfo *raycastHitinfo=nullptr;
 
-        //checkwindowcollision
-        void checkwindowcollision(Vector2D& currentPosition);
+     
         //check raycast
         bool raycast(Transform* me,Vector2D start, Vector2D direction, float distance, bool draw, float deltaTime);
         

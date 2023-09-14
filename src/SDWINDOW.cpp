@@ -258,7 +258,7 @@ void SDWINDOW::setMultiplePlatforms()
 
 void SDWINDOW::setMultipleBoxes()
 {
-    Box* p1 = new Box(600.0f,250.0f,false);
+    Box* p1 = new Box(600.0f,250.0f,true);
     transformList.emplace_back(p1);
     
     Box* p2 = new Box(100.0f,250.0f,true);
@@ -273,12 +273,17 @@ void SDWINDOW::setMultipleBoxes()
 void SDWINDOW::display()
 {
 
-
+        // Calculate the camera position (centered around the player)
+        float cameraX = player->getPlayerPos().x - (*WindowWidth / 2.0f);
+        float cameraY =  player->getPlayerPos().y - (*WindowHeight / 2.0f);
 
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
         
-        gluOrtho2D(0, *WindowWidth, 0, *WindowHeight);
+        //gluOrtho2D(0, *WindowWidth, 0, *WindowHeight);
+        gluOrtho2D(cameraX, cameraX + *WindowWidth, cameraY, cameraY + *WindowHeight);
+        
+        
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
 
@@ -333,7 +338,7 @@ void SDWINDOW::update() {
         
         for(int b=a+1; b<transformList.size();b++){
             if(transformList[b]->getPhysics2D() == nullptr)continue;
-           float depth = 0.0f; 
+           float depth = std::numeric_limits<float>::infinity();; 
            Vector2D normalCollision;
            
            bool isIntersection = Physics2D::satColliderChecker(transformList[a],transformList[b],depth,normalCollision);

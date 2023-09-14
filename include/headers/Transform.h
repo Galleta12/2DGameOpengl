@@ -147,6 +147,8 @@ class Transform{
         std::vector<Vector2D*> vertices;
 
         std::vector<Vector2D*> normalEdgesList; 
+
+        Gizmos *normalDebug = Gizmos::StartGizmos(0.7f,0.5f,0.5f);
     private:
         //purple
         Gizmos *upGizmos = Gizmos::StartGizmos(0.5f, 0.5f, 0.0f);

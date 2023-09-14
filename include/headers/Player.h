@@ -46,6 +46,8 @@ class Player:public Transform{
         void OnCollision(float deltaTime,Transform* objectCollision,Vector2D normalCollision, float depth) override;
 
         Gun* getGun(){return gun;}
+
+        const Vector2D getPlayerPos(){return position;}
         
     
     private:
@@ -66,12 +68,17 @@ class Player:public Transform{
         void calculateCenter();
         void checkIsCollisionGround(float deltaTime);
 
+        void yMovements(float deltaTime);
+
         const float friction = 0.9f;
 
         bool isKeyDirx = false;
         
-      Vector2D leftVertex;
-      Vector2D rightVertex;
+        bool isCollisionFloor = false;
+
+        
+        Vector2D leftVertex;
+        Vector2D rightVertex;
 
 };
 
