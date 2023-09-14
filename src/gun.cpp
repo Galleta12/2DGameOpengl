@@ -12,7 +12,8 @@ Gun::~Gun()
 void Gun::setMousePosition(std::vector<int> mousePositions)
 {
     mousePos.x = static_cast<float>(mousePositions[0]);
-    mousePos.y =  *SDWINDOW::WindowHeight - static_cast<float>(mousePositions[1]);
+    //mousePos.y =  *SDWINDOW::WindowHeight - static_cast<float>(mousePositions[1]);
+    mousePos.y =  static_cast<float>(mousePositions[1]);
     //std::cout<< "Mouse current X: " << mousePos.x << "Mouse current y: " << mousePos.y << std::endl;     
 
 }
@@ -110,7 +111,7 @@ void Gun::draw(float deltaTime)
 
 }
 
-void Gun::mouseLeftPressed(std::vector<int> mousePositions)
+void Gun::mouseLeftPressed()
 {
     Vector2D gunOffset = getMousePosition();
     gunOffset.y = gunOffset.y + 5.0f;

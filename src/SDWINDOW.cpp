@@ -48,10 +48,8 @@ Player *player = nullptr;
 //floor object
 Floor *floorObject = nullptr;
 
-
-//std::vector<Platforms*> platformsList;
-//Platforms *platforms = nullptr;
-
+//state of Game
+SDWINDOW::GameState SDWINDOW::gameState = SDWINDOW::GameState::ONGAME;
 
 
 SDWINDOW::SDWINDOW() {
@@ -111,6 +109,10 @@ void SDWINDOW::init(const char* title, int posX, int posY, int width, int height
 
             //start mouse class
             mouseHandler = new MouseHandler();
+            
+            //save player initial position
+            initialPlayerX = 300.0f;
+            initialPlayerY = 300.0f;
             player = new Player(300.0f,300.0f,5);
             //set the bullet for test
             //gun data
@@ -196,8 +198,13 @@ void SDWINDOW::objectsEvents(){
     int mouseClickX = 0;
     int mouseClickY = 0;
     
+   
+    
+    updateCameraCordinates();
+    
+    
     //mouse
-    mouseHandler->mousePos();
+    mouseHandler->mousePos(cameraX ,cameraY );
     //get mouse position
     player->getGun()->setMousePosition(mouseHandler->getMousePos());
     //handle playerdirectionmoves
@@ -213,9 +220,9 @@ void SDWINDOW::objectsEvents(){
 
             std::cout<< "Mouse X: " << mouseClickX << "Mouse y: " << mouseClickY << std::endl;
 
-             std::cout<<  "Mouse y in gl context: " << *SDWINDOW::WindowHeight-mouseClickY << std::endl;        
+             std::cout<<  "Mouse y in gl context: " << cameraX << "Y" << cameraY << std::endl;        
             
-            player->getGun()->mouseLeftPressed({mouseClickX,mouseClickY});
+            player->getGun()->mouseLeftPressed();
             
             break;
             
@@ -269,14 +276,11 @@ void SDWINDOW::setMultipleBoxes()
 }
 
 
-
 void SDWINDOW::display()
 {
-
-        // Calculate the camera position (centered around the player)
-        float cameraX = player->getPlayerPos().x - (*WindowWidth / 2.0f);
-        float cameraY =  player->getPlayerPos().y - (*WindowHeight / 2.0f);
-
+        
+        updateCameraCordinates();
+        
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
         
@@ -325,7 +329,103 @@ void SDWINDOW::renderGizmos()
 
 void SDWINDOW::update() {
 
+    switch (gameState)
+    {
+    case GameState::ONGAME:
+        updateLogicHandler();
+        break;
+    case GameState::LOSS:
+        
+        restartGame();
+        //we also want to reset the state of the game
+        gameState = SDWINDOW::GameState::ONGAME;
+        
+        break;
+    case GameState::WIN:
+        break;
+    default:
+        break;
+    }
     
+    
+
+
+
+}
+
+
+
+
+void SDWINDOW::clean() {
+    SDL_DestroyWindow(window);
+    window = NULL;
+    //cleangizmos
+    Gizmos::Cleanup();
+    SDL_Quit();
+    std::cout << "Game closed" << std::endl;
+}
+
+
+void SDWINDOW::GameStateUpdater()
+{
+
+
+}
+
+void SDWINDOW::restartGame()
+{
+    player->resetPosition(initialPlayerX,initialPlayerY);
+    //delete all the current bullets
+    // Create a new vector to store the updated transform list without bullets
+    std::vector<Transform*> updatedTransformList;
+
+    // Iterate through the transformList and move non-bullet objects to the updated list
+    for (Transform* transform : transformList) {
+        if (!transform->isBullet) {
+            updatedTransformList.push_back(transform);
+        } else {
+            // Delete the bullet object since it's no longer needed
+            delete transform;
+        }
+    }
+
+    // Clear the original transformList and assign it the updated list
+    transformList.clear();
+    transformList = updatedTransformList;
+
+}
+
+
+
+void SDWINDOW::updateCameraCordinates()
+{
+
+  
+    // Calculate the camera's x-coordinate centered around the player
+    cameraX = player->getPlayerPos().x - (*WindowWidth / 4.0f);
+
+    // Define the minimum and maximum y-coordinate limits for the camera
+    float minYLimit = *WindowHeight / 4.0f; // Minimum y-coordinate limit
+    float maxYLimit = *WindowHeight * 0.75f; // Maximum y-coordinate limit
+
+    // Check if the player's y-coordinate is below the minYLimit
+    if (player->getPlayerPos().y < minYLimit) {
+        // Update cameraY to keep the player near the bottom of the screen
+        cameraY = player->getPlayerPos().y - (*WindowHeight / 4.0f);
+    } else if (player->getPlayerPos().y > maxYLimit) {
+        // Update cameraY to keep the player near the top of the screen
+        cameraY = player->getPlayerPos().y - *WindowHeight * 0.75f;
+    }
+
+
+}
+
+
+
+
+void SDWINDOW::updateLogicHandler()
+{
+
     float dt = Clocker::GetInstance()->GetDelatTime();
     
     for(auto& a : transformList){
@@ -351,19 +451,4 @@ void SDWINDOW::update() {
         }
     }
 
-
-
 }
-
-
-
-
-void SDWINDOW::clean() {
-    SDL_DestroyWindow(window);
-    window = NULL;
-    //cleangizmos
-    Gizmos::Cleanup();
-    SDL_Quit();
-    std::cout << "Game closed" << std::endl;
-}
-

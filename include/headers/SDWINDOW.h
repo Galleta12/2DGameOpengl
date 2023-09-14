@@ -14,6 +14,13 @@ public:
     
     
     
+    static enum GameState{
+        ONGAME,
+        WIN,
+        LOSS
+    };
+    
+    static GameState gameState;
     //constructor
     SDWINDOW();
     //deconstuctor
@@ -41,6 +48,7 @@ public:
 
     //update, main logic of the game here
     void update();
+    
     //display of the boxes
     void display();
     
@@ -48,9 +56,17 @@ public:
     
     bool running() { return isRunning; }
 
+    static void GameStateUpdater();
 
+
+    float initialPlayerX = 0.0f;
+    float initialPlayerY = 0.0f;
 
 private:
+    
+    float cameraX = 0.0f;
+    float cameraY = 0.0f;
+    
     SDL_Window* window = nullptr;
     SDL_GLContext glContext = nullptr;
     //for rendering gizmis
@@ -58,7 +74,10 @@ private:
     void objectsEvents();
     void setMultiplePlatforms();
     void setMultipleBoxes();
- 
+    void restartGame();
+    void updateLogicHandler();
+    void updateCameraCordinates();
+    
 
 };
 

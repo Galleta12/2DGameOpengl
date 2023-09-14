@@ -33,6 +33,11 @@ void Player::update(float deltaTime)
     Transform::update(deltaTime);
 
     
+    //we dont want to do anything if player is death
+    if(isDeath)return;
+    
+    
+    
     if(isKeyDirx){
 
         //update the player motion
@@ -321,13 +326,20 @@ void Player::OnCollision(float deltaTime,Transform* objectCollision,Vector2D nor
     
     
     
-    
-    
     //std::cout << "Collision Player" << std::endl;
     //resolve collision
     Vector2D newMotion= Vector2D::ScalarMultiplication(normalCollision,depth);
     
-    if(objectCollision->isBullet){return;}
+    if(objectCollision->isBullet){
+        //set flag as death
+        isDeath = true;
+
+        //change state of game
+        SDWINDOW::gameState = SDWINDOW::GameState::LOSS;
+
+
+        return;
+    }
     
     if(objectCollision->isFloor){
         newMotion.y = 0.0f;
@@ -344,6 +356,25 @@ void Player::OnCollision(float deltaTime,Transform* objectCollision,Vector2D nor
     position.y += newMotion.y * deltaTime; 
     leftVertex.y += newMotion.y * deltaTime;
     rightVertex.y += newMotion.y * deltaTime;
+
+
+}
+
+void Player::resetPosition(float x, float y)
+{
+    
+    
+    position.x = x;
+    position.y = y;
+    
+    //reset everything
+    leftVertex.x = position.x - 25.0f;
+    leftVertex.y = position.y - 50.0f;
+    rightVertex.x = position.x + 25.0f;
+    rightVertex.y = position.y - 50.0f;
+    //set it back a false after changing position
+    isDeath = false;
+  
 
 
 }

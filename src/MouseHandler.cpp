@@ -16,13 +16,15 @@ MouseHandler::~MouseHandler(){}
 
 
 
-void MouseHandler::mousePos(){
+void MouseHandler::mousePos(float cameraX, float cameraY){
 
     
     
       if (SDWINDOW::event.type == SDL_MOUSEMOTION) {
-        mousePosX = SDWINDOW::event.motion.x;
-        mousePosY = SDWINDOW::event.motion.y;
+        // mousePosX = SDWINDOW::event.motion.x;
+        // mousePosY = SDWINDOW::event.motion.y;
+        mousePosX = SDWINDOW::event.motion.x + cameraX;
+        mousePosY = *SDWINDOW::WindowHeight - SDWINDOW::event.motion.y + cameraY;
         //std::cout<< "Mouse current X: " << mousePosX << "Mouse current y: " << mousePosY << std::endl;     
 
     }

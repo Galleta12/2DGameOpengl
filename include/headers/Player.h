@@ -49,7 +49,11 @@ class Player:public Transform{
 
         const Vector2D getPlayerPos(){return position;}
         
-    
+
+        void resetPosition(float x, float y);
+
+        bool getIsDeath(){return isDeath;}
+
     private:
         
         //gun pointer    
@@ -76,7 +80,9 @@ class Player:public Transform{
         
         bool isCollisionFloor = false;
 
-        
+        bool isDeath = false;
+
+
         Vector2D leftVertex;
         Vector2D rightVertex;
 

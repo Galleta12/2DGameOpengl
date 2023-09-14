@@ -51,7 +51,7 @@ class Gun : public Transform{
         void update(float deltaTime ) override;
         void draw(float deltaTime) override;
 
-        void mouseLeftPressed(std::vector<int> mousePositions);
+        void mouseLeftPressed();
 
         //convert center in local
 
