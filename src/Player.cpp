@@ -141,6 +141,8 @@ void Player::draw(float deltaTime)
     
     glTranslatef(position.x,position.y,0.0f);
 
+    glRotatef(Transform::Rotation,0.0f,0.0f,1.0f);
+    
     glBegin(GL_TRIANGLES);
     glColor3f(1.0f, 0.0f, 0.0f); // Red color
     
@@ -454,47 +456,45 @@ void Player::ProjectVectorNormalMotion(float deltaTime,Vector2D orthographic ,Ve
     // Vector2D projected = Vector2D::VectorProjection(motion,orthographic);
     // //normalize it
     // projected = Vector2D::Normalized(projected);
-    // if(Vector2D::Dot(projected, orthographic) < 0.0f ){
-    //     projected = Vector2D::InvertVector(projected);
-    // }
     
     
+    Vector2D projected = Vector2D::VectorProjection(motion,orthographic);
+    //projected = Vector2D::Normalized(projected);
+    if(Vector2D::Dot(Vector2D::Normalized(projected), orthographic) < 0.0f ){
+        projected = Vector2D::InvertVector(projected);
+    }
     
-    
-    
-    // Vector2D newProjectedMotion;
-    // newProjectedMotion.x = projected.x + normal.x;
-    // newProjectedMotion.y = projected.y + normal.y;
+    Vector2D newProjectedMotion;
+    newProjectedMotion.x = projected.x + newMotion.x;
+    newProjectedMotion.y = projected.y + newMotion.y;
 
-     float motionDot = Vector2D::Dot(motion, normal);
-    Vector2D motionProjection = Vector2D::ScalarMultiplication(normal, motionDot);
-    Vector2D newProjectedMotion = Vector2D::Substraction(motion,motionProjection) + (normal);
+    //lets rotate
+    float angle = std::atan2(projected.y, projected.x);
+    float angleDeg = RadToDegree::convert(angle);
+
+    // float motionDot = Vector2D::Dot(motion, normal);
+    // Vector2D motionProjection = Vector2D::ScalarMultiplication(normal, motionDot);
+    // Vector2D newProjectedMotion = Vector2D::Substraction(motion,motionProjection) ;
     
 
-    std::cout<< "project" << newProjectedMotion << std::endl;
+    //std::cout<< "project" << projected << std::endl;
     //motion = newProjectedMotion;
     
     
     debuggerLine->RenderRay(objectedCollided->position,orthographic,300.0f);
     
-    debuggerMotion->RenderRay(position,newProjectedMotion,300.0f);
+    debuggerMotion->RenderRay(position,projected,300.0f);
     
 
-    // position.x += newMotion.x * deltaTime; 
-    // leftVertex.x += newMotion.x * deltaTime;
-    // rightVertex.x += newMotion.x * deltaTime;
-
-    // position.y += newMotion.y * deltaTime; 
-    // leftVertex.y += newMotion.y * deltaTime;
-    // rightVertex.y += newMotion.y * deltaTime;
-    position.x += newProjectedMotion.x * deltaTime;
+    position.x += newProjectedMotion.x * deltaTime; 
     leftVertex.x += newProjectedMotion.x * deltaTime;
     rightVertex.x += newProjectedMotion.x * deltaTime;
 
-    position.y += newProjectedMotion.y * deltaTime;
+    position.y += newProjectedMotion.y * deltaTime; 
     leftVertex.y += newProjectedMotion.y * deltaTime;
     rightVertex.y += newProjectedMotion.y * deltaTime;
-
+  
+    Rotation = angleDeg;
 
 }
 
