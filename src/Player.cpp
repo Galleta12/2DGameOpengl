@@ -114,9 +114,9 @@ void Player::updateYmovements(float deltaTime)
 
             //motion.y = keydirY * speed;
             
-            position.y += motion.y * deltaTime;
-            leftVertex.y += motion.y * deltaTime;
-            rightVertex.y += motion.y * deltaTime;
+        position.y += motion.y * deltaTime;
+        leftVertex.y += motion.y * deltaTime;
+        rightVertex.y += motion.y * deltaTime;
             
         //}
 
@@ -371,7 +371,7 @@ void Player::OnCollision(float deltaTime,Transform* objectCollision,Vector2D nor
         // newMotion.y = 0.0f;
         // keydirY =  0.0f;
         // motion.y = 0.0f;
-        isCollisionFloor = true;
+        //isCollisionFloor = true;
 
         ProjectionAlongPlane(deltaTime,normalCollision,objectCollision, newMotion);
         
@@ -417,7 +417,7 @@ void Player::ProjectionAlongPlane(float deltaTime, Vector2D normal, const Transf
     float angle = AngleWithPlane(up,normal);
     
     //to the normal collision
-    if(Vector2D::Dot(Transform::up,normal) < 0.0f || angle >= 45.0f || angle == 0.0f){
+    if(Vector2D::Dot(Transform::up,normal) < 0.0f || angle == 90.0f || angle == 0.0f){
         //just collide and apply gravity.    
         //handle movements
         position.x += newMotion.x * deltaTime; 
@@ -430,16 +430,71 @@ void Player::ProjectionAlongPlane(float deltaTime, Vector2D normal, const Transf
         return;
     }
     
-    
+    //we can start projection the vector, we can just project, new motion and flip it 
+    //only if is facing another direction
     //std::cout << "currnet angle" << angle << std::endl;
     //draw to see if working
+    ProjectVectorNormalMotion(deltaTime,orthographic,normal,objectedCollided,newMotion);
+
+}
+
+
+
+
+
+void Player::ProjectVectorNormalMotion(float deltaTime,Vector2D orthographic ,Vector2D normal, const Transform *objectedCollided, Vector2D newMotion)
+{
+    //project the newmotion into the plane
+    //the plane is orthographic
+    //project only the x dir
+    //the projected vector is not normalized
+    
+    // orthographic = Vector2D::Normalized(orthographic);
+    
+    // Vector2D projected = Vector2D::VectorProjection(motion,orthographic);
+    // //normalize it
+    // projected = Vector2D::Normalized(projected);
+    // if(Vector2D::Dot(projected, orthographic) < 0.0f ){
+    //     projected = Vector2D::InvertVector(projected);
+    // }
+    
+    
+    
+    
+    
+    // Vector2D newProjectedMotion;
+    // newProjectedMotion.x = projected.x + normal.x;
+    // newProjectedMotion.y = projected.y + normal.y;
+
+     float motionDot = Vector2D::Dot(motion, normal);
+    Vector2D motionProjection = Vector2D::ScalarMultiplication(normal, motionDot);
+    Vector2D newProjectedMotion = Vector2D::Substraction(motion,motionProjection) + (normal);
+    
+
+    std::cout<< "project" << newProjectedMotion << std::endl;
+    //motion = newProjectedMotion;
+    
+    
     debuggerLine->RenderRay(objectedCollided->position,orthographic,300.0f);
-    debuggerMotion->RenderRay(position,motion,300.0f);
+    
+    debuggerMotion->RenderRay(position,newProjectedMotion,300.0f);
+    
 
+    // position.x += newMotion.x * deltaTime; 
+    // leftVertex.x += newMotion.x * deltaTime;
+    // rightVertex.x += newMotion.x * deltaTime;
 
-    
-    
-    
+    // position.y += newMotion.y * deltaTime; 
+    // leftVertex.y += newMotion.y * deltaTime;
+    // rightVertex.y += newMotion.y * deltaTime;
+    position.x += newProjectedMotion.x * deltaTime;
+    leftVertex.x += newProjectedMotion.x * deltaTime;
+    rightVertex.x += newProjectedMotion.x * deltaTime;
+
+    position.y += newProjectedMotion.y * deltaTime;
+    leftVertex.y += newProjectedMotion.y * deltaTime;
+    rightVertex.y += newProjectedMotion.y * deltaTime;
+
 
 }
 

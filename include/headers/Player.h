@@ -70,6 +70,7 @@ class Player:public Transform{
 
         Vector2D centerTriangle;
         
+        Vector2D currentDir;
         
         void calculateCenter();
         void checkIsCollisionGround(float deltaTime);
@@ -79,6 +80,7 @@ class Player:public Transform{
 
         void ProjectionAlongPlane(float deltaTime, Vector2D normal,const Transform* objectedCollided, Vector2D newMotion);
         float AngleWithPlane(Vector2D ortho, Vector2D normal);
+        void ProjectVectorNormalMotion(float deltaTime, Vector2D normal,Vector2D orthographic ,const Transform* objectedCollided, Vector2D newMotion);
         const float friction = 0.9f;
 
         bool isKeyDirx = false;
@@ -89,6 +91,8 @@ class Player:public Transform{
 
         bool isJumping = false;
 
+        //bool isProjectionGoingOn = false;
+        
         Vector2D leftVertex;
         Vector2D rightVertex;
         float jumpForce = 0.0f;
