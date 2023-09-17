@@ -33,6 +33,7 @@ void Player::update(float deltaTime)
     Transform::update(deltaTime);
 
     
+
     //we dont want to do anything if player is death
     if(isDeath)return;
        
@@ -47,10 +48,6 @@ void Player::update(float deltaTime)
 
     gun->update(deltaTime);
 
-    //set collision floor as false, again
-    isCollisionFloor = false;
-    
-    
 
 }
 
@@ -59,8 +56,11 @@ void Player::checkIsCollisionGround(float deltaTime){
     //define the ray below
     // Vector2D currenttUp = Transform::up;
     // currenttUp.y *= -1;
-    //Transform::getPhysics2D()->raycast(this,position,currenttUp,100.0f,true,deltaTime);
-    
+    // bool hit = Transform::getPhysics2D()->raycastParametric(this,currenttUp,100.0f,true,deltaTime);
+    // if(hit){
+    //     Vector2D normal = Transform::getPhysics2D()->raycastHitinfo->hitnormal.Normalize();
+        
+    // }
      
 }
 
@@ -98,28 +98,37 @@ void Player::updateXmovements(float deltaTime)
 
 void Player::updateYmovements(float deltaTime)
 {
-    //if(!isCollisionFloor){
-
-        if(isJumping){
-            jumpHanlder(deltaTime);
-            motion.y *= 0.5f;
-
-        }else{
         
+        
+
+
+        // if(!isCollisionFloor){
+
+        //     //apply gravity when is in air
+        //     motion.y -= 0.5f;
+        //     //motion.y *= 0.5;
+            
+        // }else if(isCollisionFloor){
+        //     motion.y = 0.0f;
+        // }
+        
+        
+        if(isJumping){
+            //motion.y -= 0.2f;
+            
+            jumpHanlder(deltaTime);
+
+            motion.y *= 0.5;
+        }
+        else{
             motion.y = keydirY * speed;
         }
-         //motion.y -= 9.8f;        
-    //}
-//if(!isJumping){
-
-            //motion.y = keydirY * speed;
-            
+        
+        
         position.y += motion.y * deltaTime;
         leftVertex.y += motion.y * deltaTime;
         rightVertex.y += motion.y * deltaTime;
             
-        //}
-
 }
 
 void Player::jumpHanlder(float deltaTime)
@@ -167,8 +176,7 @@ void Player::draw(float deltaTime)
     gun->draw(deltaTime);
     //std::cout << "Gun draw: " <<*gun << std::endl;
     glPopMatrix();
-    //the bullets are independent from the player and gun pos
-    //for(auto& b : gun->getVectorBullet())b->draw(deltaTime);
+  
 
 }
 
@@ -216,10 +224,10 @@ void Player::keyboard()
         
         case SDLK_s:
             
-           if(!isCollisionFloor){
+           //if(!isCollisionFloor){
 
             keydirY=  -1.0f;    
-           }
+           //}
 
             break;
         
@@ -238,9 +246,15 @@ void Player::keyboard()
             break;
         
         case SDLK_SPACE:
-            isJumping = true;
-            jumpForce = 5.0f;
+            
+            
 
+                isCollisionFloor = false;
+                isJumping = true;
+                jumpForce = 6.0f;
+
+
+                
             break;
 
         default:
@@ -357,6 +371,10 @@ void Player::OnCollision(float deltaTime,Transform* objectCollision,Vector2D nor
     //resolve collision
     Vector2D newMotion= Vector2D::ScalarMultiplication(normalCollision,depth);
     
+   
+    
+    
+    
     if(objectCollision->isBullet){
         // //set flag as death
         // isDeath = true;
@@ -368,28 +386,17 @@ void Player::OnCollision(float deltaTime,Transform* objectCollision,Vector2D nor
     
     //projection only on lines
     if(objectCollision->lineFlag){
-        //dont allow y movements
-        
-        // newMotion.y = 0.0f;
-        // keydirY =  0.0f;
-        // motion.y = 0.0f;
-        //isCollisionFloor = true;
 
         ProjectionAlongPlane(deltaTime,normalCollision,objectCollision, newMotion);
-        
+       
         return;
     }
-    
-    
-    
-    
-    //all y movements needs to be zero if it is a floor
-    if(objectCollision->isFloor){
-        newMotion.y = 0.0f;
-        keydirY =  0.0f;
-        motion.y = 0.0f;
-        isCollisionFloor = true;       
+     if(objectCollision->isFloor == true){
+        
+       isCollisionFloor = true;       
+
     }
+        
         
     position.x += newMotion.x * deltaTime; 
     leftVertex.x += newMotion.x * deltaTime;
@@ -412,11 +419,13 @@ void Player::ProjectionAlongPlane(float deltaTime, Vector2D normal, const Transf
     if(Vector2D::Dot(orthographic,motion) < 0.0f){
         orthographic = Vector2D::InvertVector(orthographic);
     }
-    //we dont want to do anything if the player up vector is not pointing the same dir
+    //we dont want to do anything if the player up vector is not pointing the same dir of the normal
     //Vector up similar to Vecto3D.up in unity a unit lenght vector pointing always upwards
     Vector2D up(0.0f, 1.0f);
     
     float angle = AngleWithPlane(up,normal);
+    
+    
     
     //to the normal collision
     if(Vector2D::Dot(Transform::up,normal) < 0.0f || angle == 90.0f || angle == 0.0f){
@@ -470,7 +479,7 @@ void Player::ProjectVectorNormalMotion(float deltaTime,Vector2D orthographic ,Ve
 
     //lets rotate
     float angle = std::atan2(projected.y, projected.x);
-    float angleDeg = RadToDegree::convert(angle);
+    //float angleDeg = RadToDegree::convert(angle);
 
     // float motionDot = Vector2D::Dot(motion, normal);
     // Vector2D motionProjection = Vector2D::ScalarMultiplication(normal, motionDot);
@@ -487,18 +496,27 @@ void Player::ProjectVectorNormalMotion(float deltaTime,Vector2D orthographic ,Ve
     
 
     position.x += newProjectedMotion.x * deltaTime; 
-    leftVertex.x += newProjectedMotion.x * deltaTime;
-    rightVertex.x += newProjectedMotion.x * deltaTime;
-
     position.y += newProjectedMotion.y * deltaTime; 
+    
+    
+    leftVertex.x += newProjectedMotion.x * deltaTime ;
     leftVertex.y += newProjectedMotion.y * deltaTime;
+    rightVertex.x += newProjectedMotion.x * deltaTime;
     rightVertex.y += newProjectedMotion.y * deltaTime;
+
   
-    Rotation = angleDeg;
 
 }
 
+bool Player::checkIfFloorCollision(float deltaTime, Vector2D normal, const Transform *objectedCollided)
 
+{
+    Vector2D up(0.0f,1.0f);
+    float angleWithPlane = AngleWithPlane(up,normal);
+
+   return angleWithPlane == 0.0f;
+
+}
 
 float Player::AngleWithPlane(Vector2D ortho, Vector2D normal){
 
@@ -525,5 +543,34 @@ void Player::resetPosition(float x, float y)
     isDeath = false;
   
 
+
+}
+
+void Player::handleRotations(float angle, float deltaTime)
+{
+    float angleDeg = RadToDegree::convert(angle);
+
+    float leftXRot = (std::cos(angle) * -25.0f) - (std::sin(angle)* -50.0f); 
+    float leftYRot = (std::sin(angle) * -25.0f) + (std::cos(angle)* -50.0f); 
+    
+    float rightXRot = (std::cos(angle) * 25.0f) - (std::sin(angle)* -50.0f); 
+    float rightYRot = (std::sin(angle) * 25.0f) + (std::cos(angle)* -50.0f); 
+    
+    
+    leftVertex.x = position.x + leftXRot;
+    leftVertex.y = position.y + leftYRot;
+
+    rightVertex.x = position.x + rightXRot;
+    rightVertex.y = position.y + rightYRot;
+
+    Rotation = angleDeg;
+
+
+}
+
+bool Player::checkIfRotationGood(Vector2D normal)
+{
+
+    return Vector2D::Angle(normal,Transform::up) == 0.0f;
 
 }

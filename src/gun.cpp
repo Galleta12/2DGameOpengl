@@ -119,10 +119,6 @@ void Gun::mouseLeftPressed()
     //we want to get the direction of the mouse from the vector position
     Vector2D dir = (gunOffset - position).Normalize();
 
-    //if pressed we want to create a bullet
-    //std::cout << "This is the dir: " << dir << std::endl;
-    
-    //bulletList.push_back(new Bullet({width,0.0f,5.0f,5,10,getPositionofTip(),Rotation}));
     
     Vector2D positionLaunch = getPositionofTip();
     //refence to the bullet list on the gun.
@@ -130,10 +126,7 @@ void Gun::mouseLeftPressed()
     //we want the bullet list to be added to the transform list
     SDWINDOW::transformList.push_back(new Bullet({positionLaunch.x,positionLaunch.y,15.0f,3,10,Rotation,dir}));
 
-    //std::cout<< "Mouse X: " << mouseClickX << "Mouse y: " << mouseClickY << std::endl;     
-
-    
-    //std::cout << "Mouse pos: " << mousePos << std::endl;
+   
 }
 
 Vector2D Gun::convertCenterInLocal()

@@ -49,10 +49,10 @@ class Player:public Transform{
 
         const Vector2D getPlayerPos(){return position;}
         
-
         void resetPosition(float x, float y);
 
         bool getIsDeath(){return isDeath;}
+        void handleRotations(float angle, float deltaTime=0.0f);
 
     private:
         
@@ -81,11 +81,15 @@ class Player:public Transform{
         void ProjectionAlongPlane(float deltaTime, Vector2D normal,const Transform* objectedCollided, Vector2D newMotion);
         float AngleWithPlane(Vector2D ortho, Vector2D normal);
         void ProjectVectorNormalMotion(float deltaTime, Vector2D normal,Vector2D orthographic ,const Transform* objectedCollided, Vector2D newMotion);
+        bool checkIfFloorCollision(float deltaTime,  Vector2D normal, const Transform* objectedCollided);
+        bool checkIfRotationGood(Vector2D normal);
+
+        
         const float friction = 0.9f;
 
         bool isKeyDirx = false;
         
-        bool isCollisionFloor = false;
+        bool isCollisionFloor = true;
 
         bool isDeath = false;
 

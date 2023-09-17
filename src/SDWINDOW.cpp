@@ -141,7 +141,7 @@ void SDWINDOW::setObjectsLists()
     
     setMultipleBoxes();
     //floorObject
-    floorObject = new Floor(1.0f, *SDWINDOW::WindowHeight /5);
+    floorObject = new Floor(1.0f, *SDWINDOW::WindowHeight /10);
     
     
     transformList.emplace_back(floorObject);
@@ -451,10 +451,6 @@ void SDWINDOW::updateLogicHandler()
 
     float dt = Clocker::GetInstance()->GetDelatTime();
     
-    for(auto& a : transformList){
-        a->update(dt);
-    }
-    
     //only collision for transforms with physics added to it
     for(int a=0; a < transformList.size()-1; a++){
         //store first object
@@ -480,5 +476,12 @@ void SDWINDOW::updateLogicHandler()
         
         }
     }
+    for(auto& a : transformList){
+        if(a !=nullptr){
+
+            a->update(dt);
+        }
+    }
+    
 
 }

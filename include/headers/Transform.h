@@ -22,6 +22,8 @@ class Transform{
 
         bool isBullet = false;
 
+        bool isEnemyBullet = false;
+
         Vector2D normalVectorPlane;
         
         bool lineFlag=false;

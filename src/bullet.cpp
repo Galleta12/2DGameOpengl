@@ -55,15 +55,7 @@ void Bullet::update(float deltaTime)
     //add the end we want to get the transform updates
     Transform::update(deltaTime);
 
-    
-    
- 
-    //std::cout<< "Dir update" << dir << std::endl;
-    //I will compute each of this on different component there is a problem on my vectors
-    // for(auto& a : vertices){
-
-    // }
-     
+         
     // bool isHit = Transform::getPhysics2D()->raycastParametric(this,dir,50.0f,true,deltaTime);
     
     // if(isHit){
@@ -95,15 +87,19 @@ void Bullet::update(float deltaTime)
 
     // Check if 5 seconds have passed since last print
     
-    if (elapsedTime.count() >= 4) {
+    
+    if(isEnemyBullet == true) {
+        return;
+    }
+    if (elapsedTime.count() >= 3) {
    
         lastPrintTime = currentTime;
 
        // Remove this bullet from the transformList
-        SDWINDOW::transformList.erase(std::remove(SDWINDOW::transformList.begin(), SDWINDOW::transformList.end(), this), SDWINDOW::transformList.end());
+        //SDWINDOW::transformList.erase(std::remove(SDWINDOW::transformList.begin(), SDWINDOW::transformList.end(), this), SDWINDOW::transformList.end());
 
         // Delete this bullet object
-        delete this;
+        //delete this;
  
     }
 

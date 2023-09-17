@@ -21,7 +21,7 @@ class Bullet : public Transform{
     public:
 
         
-        Bullet(float x, float y, float _radius,int newSpeed, int newPower, float rotation, Vector2D dirMouse):Transform(x,y){
+        Bullet(float x, float y, float _radius,int newSpeed, int newPower, float rotation, Vector2D dirMouse, float isEnemy=false):Transform(x,y){
             position.x = x;
             position.y = y;
             Rotation = rotation;
@@ -38,6 +38,7 @@ class Bullet : public Transform{
             b = randomFloat();
             Transform::isBullet = true;
             Transform::basisVector = false;
+            Transform::isEnemyBullet = isEnemy;
             Transform::AddPhysics2D();
             //this is a parent
             init();

@@ -4,6 +4,11 @@
 
 #include "Gizmos.h"
 
+#include "Bullet.h"
+
+
+static auto lastPrintTime = std::chrono::system_clock::now();
+
 Enemy::~Enemy()
 {
 }
@@ -39,6 +44,8 @@ void Enemy::update(float deltaTime)
     //std:: cout << "Playe ref" << player->position << std::endl;
     setEnemyPosition(deltaTime);
     enemyGun->update(deltaTime);
+
+    
 
 }
 
@@ -87,9 +94,21 @@ void Enemy::OnCollision(float deltaTime, Transform *objectCollision, Vector2D no
 void Enemy::setEnemyPosition(float deltaTime)
 {
 
+    auto currentTime = std::chrono::system_clock::now();
+    std::chrono::duration<double> elapsedTime = currentTime - lastPrintTime;
     Vector2D dir  = Vector2D::Substraction(player->position,position);
 
     enemyGun->rotateGun(Vector2D::Normalized(dir));
+
+   
+    if (elapsedTime.count() >= 3) {
+
+        
+        lastPrintTime = currentTime;
+        
+        //SDWINDOW::transformList.push_back(new Bullet({position.x,position.y,15.0f,3,10,Rotation,dir,true}));
+        
+    }
 
     
 }

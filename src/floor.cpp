@@ -52,7 +52,8 @@ void Floor::OnCollision(float deltaTime, Transform *objectCollision, Vector2D no
 {
 
     Transform::OnCollision(deltaTime,objectCollision,normalCollision,depth,unmodifiedNormalCollision);
-
+    debugNormal->RenderRay(position,Transform::normalVectorPlane,100.0f);
+    
 
 }
 

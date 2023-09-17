@@ -26,16 +26,16 @@ class Physics2D{
         };
         
 
-        struct CollisionSatInfo
-        {
-            //normal for the direction where we need to push the second object
-            Vector2D hitNormal;
-            //depth value to move away fron the collision
-            float depthValue = std::numeric_limits<float>::infinity();
-            //transform object of collision
-            Transform *collisionObject = nullptr;
+        // struct CollisionSatInfo
+        // {
+        //     //normal for the direction where we need to push the second object
+        //     Vector2D hitNormal;
+        //     //depth value to move away fron the collision
+        //     float depthValue = std::numeric_limits<float>::infinity();
+        //     //transform object of collision
+        //     Transform *collisionObject = nullptr;
 
-        };
+        // };
         
         
         Physics2D(){};
@@ -43,9 +43,9 @@ class Physics2D{
 
         std::unique_ptr<RayCastCollisionInfo> raycastHitinfo = std::make_unique<RayCastCollisionInfo>();
         
-        std::vector<std::unique_ptr<CollisionSatInfo>> collisionInfoList;
+       //std::vector<std::unique_ptr<CollisionSatInfo>> collisionInfoList;
 
-        std::unique_ptr<CollisionSatInfo> collisionSATALGINFO = std::make_unique<CollisionSatInfo>();
+        //std::unique_ptr<CollisionSatInfo> collisionSATALGINFO = std::make_unique<CollisionSatInfo>();
 
         
         

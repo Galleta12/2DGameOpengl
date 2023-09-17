@@ -290,7 +290,9 @@ Vector2D Vector2D::PositionBetween(Vector2D &a, Vector2D &b)
 
 Vector2D Vector2D::InvertVector(Vector2D &a)
 {
-    return Vector2D(-a.x,-a.y);
+    Vector2D newVec = a;
+
+    return Vector2D(-newVec.x,-newVec.y);
 }
 
 std::ostream& operator <<(std::ostream& stream, const Vector2D& vec){

@@ -36,6 +36,8 @@ class Enemy : public Transform{
         
         void startEnemyGun();
         void setEnemyPosition(float deltaTime);
-
+        float timeSinceLastShot= 0.0f;
+       
+        //std::vector<Bullet*> bulletList;
 
 };
