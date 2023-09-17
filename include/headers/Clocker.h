@@ -15,8 +15,9 @@ class Clocker
 
     private:
         Clocker(){}
+        //singleton, we only want one instace
         static Clocker* s_Instance;
-
+        
         float m_DeltaTime;
         float m_LasTime;
 

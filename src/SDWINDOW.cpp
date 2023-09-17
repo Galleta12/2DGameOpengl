@@ -8,6 +8,9 @@
 
 #include "SDWINDOW.h"
 #include "MouseHandler.h"
+#include "Clocker.h"
+//gizmos
+#include "Gizmos.h"
 
 
 #include "Player.h"
@@ -16,12 +19,9 @@
 #include "Platforms.h"
 #include "Box.h"
 #include "Enemy.h"
-#include "Clocker.h"
 
 
 
-//gizmos
-#include "Gizmos.h"
 
 
 //static variables at the beggining
@@ -34,20 +34,16 @@ SDL_Event SDWINDOW::event;
 //to know if the game is running or not
 bool SDWINDOW::isRunning = false;
 
-//float SDWINDOW::delta_time = 0.0f;
-
-
 //mousehandler class
 MouseHandler *mouseHandler = nullptr;
 
 
 //transform list
 //we want this to be static since the physics components must have access to this
-std::vector<Transform*> SDWINDOW::transformList;
+std::vector<std::shared_ptr<Transform>> SDWINDOW::transformList;
 //player object
-Player *player = nullptr;
-//floor object
-Floor *floorObject = nullptr;
+//Player *player = nullptr;
+std::shared_ptr<Player> player;
 
 //state of Game
 SDWINDOW::GameState SDWINDOW::gameState = SDWINDOW::GameState::ONGAME;
@@ -59,19 +55,19 @@ SDWINDOW::SDWINDOW() {
 SDWINDOW::~SDWINDOW() {
 
     // Clean up dynamically allocated objects
-    delete player;
-    delete floorObject;
+    //delete player;
+ 
     delete mouseHandler;
     //delete bullet;
 
     // Clean up the objects in transformList vector
-    for (Transform* transform : transformList) {
-       delete transform;
-    }
+    // for (Transform* transform : transformList) {
+    //    delete transform;
+    // }
     transformList.clear(); // Optionally, clear the vector after deleting its elements
 }
 
-
+//start sdwindow and opengl
 void SDWINDOW::init(const char* title, int posX, int posY, int width, int height, bool fullscreen) {
 
     WindowWidth = &width;
@@ -104,10 +100,9 @@ void SDWINDOW::init(const char* title, int posX, int posY, int width, int height
             
             glClearColor(0.8f, 1.0f, 1.0f, 5.0f);
 
-
-            
+ 
             isRunning = true;
-
+            //populate the world
             setObjectsLists();
 
         }
@@ -115,7 +110,6 @@ void SDWINDOW::init(const char* title, int posX, int posY, int width, int height
             std::cout << "No GL context" << std::endl;
         }
 
-        
         
     }
     else {
@@ -127,26 +121,25 @@ void SDWINDOW::init(const char* title, int posX, int posY, int width, int height
 
 void SDWINDOW::setObjectsLists()
 {
-            //start mouse class
+    //start mouse class
     mouseHandler = new MouseHandler();
-    
     //save player initial position
     initialPlayerX = 300.0f;
     initialPlayerY = 300.0f;
-    player = new Player(300.0f,300.0f,5);
+    //start the player instance
+    player = std::make_shared<Player>(300.0f,300.0f,5);
     //set the bullet for test
-    //gun data
     player->gunData(20,50);
     
-    
-    setMultipleBoxes();
     //floorObject
-    floorObject = new Floor(1.0f, *SDWINDOW::WindowHeight /10);
+    //std::unique_ptr<Floor> floorObject = std::make_unique<Floor>(1.0f, *SDWINDOW::WindowHeight /10);
+     
+    transformList.push_back(std::make_unique<Floor>(1.0f, *SDWINDOW::WindowHeight /10));
     
+    transformList.push_back(player);
     
-    transformList.emplace_back(floorObject);
-    
-    transformList.emplace_back(player);
+    //set the boxes
+    setMultipleBoxes();
     //set platforms
     setMultiplePlatforms();
 
@@ -172,8 +165,6 @@ void SDWINDOW::handleEvents() {
             //move box with keyboard
             case SDLK_m:
                 
-                
-                std::cout << "Change to the move state " << std::endl;
                 
                 break;
             //add move boxes with mouse pos
@@ -207,13 +198,13 @@ void SDWINDOW::objectsEvents(){
     int mouseClickY = 0;
     
    
-    
+    //update the camera cordinates
     updateCameraCordinates();
     
     
-    //mouse
+    //mouse set up positon relative to the camera
     mouseHandler->mousePos(cameraX ,cameraY);
-    //get mouse position
+    //get mouse position and set it up on the gun
     player->getGun()->setMousePosition(mouseHandler->getMousePos());
     //handle playerdirectionmoves
     player->keyboard();
@@ -252,18 +243,26 @@ void SDWINDOW::objectsEvents(){
 
 void SDWINDOW::setMultiplePlatforms()
 {
-    //we want for now 3 platforms
-    Platforms* p1 = new Platforms(300.0f,600.0f, 500.0f, 600.0f);
-    transformList.emplace_back(p1);
-    // // Create the second diagonal platform (p2)  
-    Platforms* p2 = new Platforms(1166.0f, 558.0f, 949.0f, 434.0f);
-    transformList.emplace_back(p2);
-    // // Create the third diagonal platform (p3)
-    Platforms* p3 = new Platforms(295.0f, 500.0f, 295.0f, 394.0f);
-    transformList.emplace_back(p3);
     
-    Platforms* p4 = new Platforms(576.0f, 501.0f, 538.0f, 425.0f);
-    transformList.emplace_back(p4);
+    
+     transformList.push_back(std::make_unique<Platforms>(300.0f,600.0f, 500.0f, 600.0f));
+     transformList.push_back(std::make_unique<Platforms>(1166.0f, 558.0f, 949.0f, 434.0f));
+     transformList.push_back(std::make_unique<Platforms>(295.0f, 500.0f, 295.0f, 394.0f));
+     transformList.push_back(std::make_unique<Platforms>(576.0f, 501.0f, 538.0f, 425.0f));
+    
+    
+    //we want for now 3 platforms
+    // Platforms* p1 = new Platforms(300.0f,600.0f, 500.0f, 600.0f);
+    // transformList.emplace_back(p1);
+    // // // Create the second diagonal platform (p2)  
+    // Platforms* p2 = new Platforms(1166.0f, 558.0f, 949.0f, 434.0f);
+    // transformList.emplace_back(p2);
+    // // // Create the third diagonal platform (p3)
+    // Platforms* p3 = new Platforms(295.0f, 500.0f, 295.0f, 394.0f);
+    // transformList.emplace_back(p3);
+    
+    // Platforms* p4 = new Platforms(576.0f, 501.0f, 538.0f, 425.0f);
+    // transformList.emplace_back(p4);
 
     // Platforms* p5 = new Platforms(576.0f, 150.0f, 538.0f, 400.0f);
     // transformList.emplace_back(p5);
@@ -273,11 +272,15 @@ void SDWINDOW::setMultiplePlatforms()
 
 void SDWINDOW::setMultipleBoxes()
 {
-    Box* p1 = new Box(600.0f,250.0f,true);
-    transformList.emplace_back(p1);
     
-    Box* p2 = new Box(100.0f,250.0f,true);
-    transformList.emplace_back(p2);
+      transformList.push_back(std::make_unique<Box>(600.0f,250.0f,true));
+      transformList.push_back(std::make_unique<Box>(100.0f,250.0f,true));
+    
+    // Box* p1 = new Box(600.0f,250.0f,true);
+    // transformList.emplace_back(p1);
+    
+    // Box* p2 = new Box(100.0f,250.0f,true);
+    // transformList.emplace_back(p2);
     
     
 
@@ -285,8 +288,10 @@ void SDWINDOW::setMultipleBoxes()
 
 void SDWINDOW::setMultipleEnemies()
 {
-    Enemy* e1 = new Enemy(1200.0f,200.0f,player);
-    transformList.emplace_back(e1);
+    
+     //transformList.push_back(std::make_unique<Enemy>(1200.0f,200.0f,player.get()));
+    // Enemy* e1 = new Enemy(1200.0f,200.0f,player);
+    // transformList.emplace_back(e1);
 
 }
 
@@ -316,14 +321,17 @@ void SDWINDOW::display()
 
 
         //render transforms objects
-
         
         float dt = Clocker::GetInstance()->GetDelatTime();
+        
         for(auto& a : transformList){
-            a->draw(dt);
+            if(a!=nullptr){
+
+                a->draw(dt);
+            }
         }
         
-
+        //render gizmos instances
         renderGizmos();
     
         // swap to new updated screen to render
@@ -345,6 +353,11 @@ void SDWINDOW::renderGizmos()
 
 void SDWINDOW::update() {
 
+    
+     
+    //handle the main loop depending on the state of the game
+    
+         
     switch (gameState)
     {
     case GameState::ONGAME:
@@ -371,7 +384,7 @@ void SDWINDOW::update() {
 
 
 
-
+//clean everything with the gizmos
 void SDWINDOW::clean() {
     SDL_DestroyWindow(window);
     window = NULL;
@@ -382,64 +395,39 @@ void SDWINDOW::clean() {
 }
 
 
-void SDWINDOW::GameStateUpdater()
-{
 
-
-}
-
+//this will restart the game and delete any bullet transform
 void SDWINDOW::restartGame()
 {
-    player->resetPosition(initialPlayerX,initialPlayerY);
-    //delete all the current bullets
+    player->resetPosition(initialPlayerX, initialPlayerY);
+
     // Create a new vector to store the updated transform list without bullets
-    std::vector<Transform*> updatedTransformList;
+    std::vector<std::shared_ptr<Transform>> updatedTransformList;
 
     // Iterate through the transformList and move non-bullet objects to the updated list
-    for (Transform* transform : transformList) {
+    for (auto& transform : transformList) {
         if (!transform->isBullet) {
             updatedTransformList.push_back(transform);
-        } else {
-            // Delete the bullet object since it's no longer needed
-            delete transform;
         }
     }
 
-    // Clear the original transformList and assign it the updated list
+    // Clear the original transformList
     transformList.clear();
-    transformList = updatedTransformList;
 
+    // Move ownership of updatedTransformList to transformList
+    transformList = updatedTransformList;
 }
 
 
 void SDWINDOW::updateCameraCordinates()
 {
 
-    
     // Calculate the camera's x-coordinate centered around the player
-    cameraX = player->getPlayerPos().x - (*WindowWidth / 4.0f);
-    cameraY = player->getPlayerPos().y - (*WindowHeight/ 2.0f);
-
-//     // Define the minimum and maximum y-coordinate limits for the camera
-//     float minYLimit = *WindowHeight / 4.0f; // Minimum y-coordinate limit
-//     float maxYLimit = *WindowHeight * 0.75f; // Maximum y-coordinate limit
-
-//    if(gameState == GameState::LOSS){
-
-//         cameraY = minYLimit - 40.0f;
-        
-//         return;
-//     }
-//     // Check if the player's y-coordinate is below the minYLimit
-//     if (player->getPlayerPos().y < minYLimit) {
-//         // Update cameraY to keep the player near the bottom of the screen
-//         cameraY = player->getPlayerPos().y - (*WindowHeight / 4.0f);
-//         return;
-//     } else if (player->getPlayerPos().y > maxYLimit) {
-//         // Update cameraY to keep the player near the top of the screen
-//         cameraY = player->getPlayerPos().y - (*WindowHeight * 0.75f);
-//         return;
-//     }
+    //the same for y
+    
+    const Vector2D playerPosition = player->getPlayerPos();
+    cameraX = 300 - (*WindowWidth / 4.0f);
+    cameraY = 300 - (*WindowHeight/ 2.0f);
 
 
 }
@@ -451,14 +439,23 @@ void SDWINDOW::updateLogicHandler()
 
     float dt = Clocker::GetInstance()->GetDelatTime();
     
+    for(auto& a : transformList){
+            if(a!=nullptr){
+
+                a->update(dt);
+            }
+    }
+        
+    
+    
     //only collision for transforms with physics added to it
     for(int a=0; a < transformList.size()-1; a++){
         //store first object
-        Transform* polygon1 = transformList[a]; 
+        Transform* polygon1 = transformList[a].get(); 
         if(polygon1->getPhysics2D() == nullptr)continue;
         
         for(int b=a+1; b<transformList.size();b++){
-            Transform* polygon2 = transformList[b]; 
+            Transform* polygon2 = transformList[b].get(); 
             
             if(polygon2->getPhysics2D() == nullptr)continue;
            
@@ -476,12 +473,6 @@ void SDWINDOW::updateLogicHandler()
         
         }
     }
-    for(auto& a : transformList){
-        if(a !=nullptr){
-
-            a->update(dt);
-        }
-    }
-    
+ 
 
 }

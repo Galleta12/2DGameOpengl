@@ -12,17 +12,17 @@ Gizmos::~Gizmos()
     // for(auto& v : pointPointers){
     //     delete v;
     // }
-    // pointPointers.clear();
+    pointPointers.clear();
 
 }
 void Gizmos::ClearPointsDebug()
 {
     
-    if(pointPointers.size()==0)return;
-    for(auto& pointer : pointPointers) {
-        delete pointer;
-    }
-    pointPointers.clear();
+    // if(pointPointers.size()==0)return;
+    // for(auto& pointer : pointPointers) {
+    //     delete pointer;
+    // }
+    //pointPointers.clear();
 }
 
 Gizmos *Gizmos::StartGizmos(float r, float g, float b)
@@ -49,7 +49,7 @@ void Gizmos::RenderRay(Vector2D start, Vector2D direction, float distance)
 
 }
 
-void Gizmos::SetPointsDebug(std::vector<Vector2D*>& points, float _radius)
+void Gizmos::SetPointsDebug(const std::vector<std::shared_ptr<Vector2D>>& points, float _radius)
 {
     
     for(auto& a : points){
@@ -65,13 +65,7 @@ void Gizmos::SetPointsDebug(std::vector<Vector2D*>& points, float _radius)
 
 }
 
-void Gizmos::SetPoint(Vector2D pos, float _radius)
-{
-    radius = _radius;
-    pointPointers.push_back(&pos);
 
-
-}
 
 void Gizmos::changeColor(float r, float g, float b)
 {
@@ -161,10 +155,7 @@ void Gizmos::DrawPoints()
 
 
 
-bool Gizmos::checkInstanceExists(Gizmos *currentInstance)
-{
-    return false;
-}
+
 
 void Gizmos::Cleanup()
 {

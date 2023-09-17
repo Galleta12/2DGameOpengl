@@ -34,9 +34,9 @@ void Bullet::init()
         float y = radius * std::sin(angle);
 
        // Create Vector2D for the point
-        Vector2D* point = new Vector2D(x + position.x, y + position.y);
+        std::unique_ptr<Vector2D> point = std::make_unique<Vector2D>(x + position.x, y + position.y);
         // Add the point to the vertices list
-        vertices.push_back(point);
+        vertices.push_back(std::move(point));
     }
 
     
@@ -95,11 +95,11 @@ void Bullet::update(float deltaTime)
    
         lastPrintTime = currentTime;
 
-       // Remove this bullet from the transformList
-        //SDWINDOW::transformList.erase(std::remove(SDWINDOW::transformList.begin(), SDWINDOW::transformList.end(), this), SDWINDOW::transformList.end());
+    //    // Remove this bullet from the transformList
+    //     SDWINDOW::transformList.erase(std::remove(SDWINDOW::transformList.begin(), SDWINDOW::transformList.end(), this), SDWINDOW::transformList.end());
 
-        // Delete this bullet object
-        //delete this;
+    //     // Delete this bullet object
+    //     delete this;
  
     }
 

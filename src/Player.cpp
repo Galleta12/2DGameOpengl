@@ -337,9 +337,19 @@ void Player::init()
     rightVertex.x = position.x + 25.0f;
     rightVertex.y = position.y - 50.0f;
     
-    vertices.push_back(&position);
-    vertices.push_back(&rightVertex);
-    vertices.push_back(&leftVertex);
+    
+    
+    std::shared_ptr<Vector2D> posPtr = std::make_shared<Vector2D>(position);
+    std::shared_ptr<Vector2D> rightPtr = std::make_shared<Vector2D>(rightVertex);
+    std::shared_ptr<Vector2D> leftPtr = std::make_shared<Vector2D>(leftVertex);
+
+    
+    
+    
+    
+    vertices.push_back(posPtr);
+    vertices.push_back(rightPtr);
+    vertices.push_back(leftPtr);
 
 
     

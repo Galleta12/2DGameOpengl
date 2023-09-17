@@ -17,15 +17,15 @@ void Enemy::init()
 {
 
         
-    Vector2D* topLeft = new Vector2D(position.x, position.y + 100.0f);
-    Vector2D* topRight = new Vector2D(position.x + 100.0f, position.y + 100.0f);
-    Vector2D* bottomRight = new Vector2D(position.x + 100.0f, position.y);
-    Vector2D* bottomLeft = new Vector2D(position.x, position.y);
+    std::unique_ptr<Vector2D>  topLeft = std::make_unique<Vector2D>(position.x, position.y + 100.0f);
+    std::unique_ptr<Vector2D>  topRight = std::make_unique<Vector2D>(position.x + 100.0f, position.y + 100.0f);
+    std::unique_ptr<Vector2D>  bottomRight = std::make_unique<Vector2D>(position.x + 100.0f, position.y);
+    std::unique_ptr<Vector2D>  bottomLeft = std::make_unique<Vector2D>(position.x, position.y);
 
-    vertices.push_back(topRight);
-    vertices.push_back(bottomRight);
-    vertices.push_back(bottomLeft);
-    vertices.push_back(topLeft);
+    vertices.push_back(std::move(topRight));
+    vertices.push_back(std::move(bottomRight));
+    vertices.push_back(std::move(bottomLeft));
+    vertices.push_back(std::move(topLeft));
     
     // vertices.push_back(topLeft);
     // vertices.push_back(bottomLeft);
@@ -106,7 +106,16 @@ void Enemy::setEnemyPosition(float deltaTime)
         
         lastPrintTime = currentTime;
         
-        //SDWINDOW::transformList.push_back(new Bullet({position.x,position.y,15.0f,3,10,Rotation,dir,true}));
+        // Bullet* b = new Bullet(position.x, position.y, 15.0f, 3, 10, Rotation, dir, true);
+        // if (b) {
+        //     SDWINDOW::transformList.emplace_back(b);
+        // } 
+        
+       //std::cout << b << std::endl;
+       
+
+
+        //std::cout<< "what the hell" << std::endl;
         
     }
 

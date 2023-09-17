@@ -46,28 +46,7 @@ class Bullet : public Transform{
           
         }
         
-        
-        Bullet(float x, float y, float _radius,int newSpeed, int newPower, Vector2D launchPos, float rotation):Transform(x,y){
-            position.x = x;
-            position.y = y;
-            Rotation = rotation;
-            radius = _radius;
-            speed = newSpeed;
-            power = newPower;
-            positionOfLaunch = launchPos;
-
-            //we want to set the color
-            r = randomFloat();
-            g = randomFloat();
-            b = randomFloat();
-            //we set the bullet as local
-            // Transform::isLocalSpace = true;
-            // Transform::basisVector = true;
-            //get the local space cordinates for the gizmos
-            //Transform::convertLocalToWorld(launchPos);
-
-            init();
-        }
+  
         ~Bullet();
 
         void launchBall();  

@@ -41,7 +41,7 @@ class Box : public Transform{
 
     private:
 
-        Gizmos *debugger = Gizmos::StartGizmos(1.0f,0.5f,1.0f);
+        //Gizmos *debugger = Gizmos::StartGizmos(1.0f,0.5f,1.0f);
         bool isMove = false;
 
 

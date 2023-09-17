@@ -6,8 +6,19 @@
 void Floor::init()
 {
 
-    vertices.push_back(&position);
-    vertices.push_back(&end);
+
+    
+    // vertices.push_back(&position);
+    // vertices.push_back(&end);
+
+
+    // Create shared pointers for vertices
+    std::shared_ptr<Vector2D> posPtr = std::make_shared<Vector2D>(position);
+    std::shared_ptr<Vector2D> endPtr = std::make_shared<Vector2D>(end);
+
+    vertices.push_back(posPtr);
+    vertices.push_back(endPtr);
+    
     Gizmos *points = Gizmos::StartGizmos(0.4f,1.0f,1.0f);
     points->SetPointsDebug(vertices, 15.0f);
 
@@ -17,7 +28,7 @@ void Floor::init()
 void Floor::update(float deltaTime)
 {
 
-      // normalVec = norm;
+    // normalVec = norm;
     Transform::normalVectorPlane = Vector2D::NormalSuperfice(position,end);
     
     

@@ -7,6 +7,9 @@
 #include <map>
 #include "cmath"
 #include "RadToDegree.h"
+#include <memory>
+
+
 
 class Gizmos{
 
@@ -24,9 +27,9 @@ class Gizmos{
         void RenderLine(Vector2D start, Vector2D end);
         void RenderRay(Vector2D start, Vector2D direction, float distance);
 
-        void SetPointsDebug(std::vector<Vector2D*>& points, float _radius);  
+        void SetPointsDebug(const std::vector<std::shared_ptr<Vector2D>>& points, float _radius);  
 
-        void SetPoint(Vector2D pos, float _radius);        
+        
         void changeColor(float r, float g, float b);
          
     
@@ -36,8 +39,8 @@ class Gizmos{
         void DrawLine();
         void DrawRay();
         void DrawPoints();
-        void DrawPoint();
-        bool checkInstanceExists(Gizmos* currentInstance);
+
+    
         
         static void Cleanup();
         void ClearPointsDebug();
@@ -52,7 +55,7 @@ class Gizmos{
         float radius;
         Vector2D lineStart, lineEnd;
         Vector2D rayStart, rayEnd;
-        std::vector<Vector2D*> pointPointers;
+        std::vector<std::shared_ptr<Vector2D>> pointPointers;
 
 };
 
