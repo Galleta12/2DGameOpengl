@@ -15,7 +15,7 @@ class EnemyGun: public Transform{
             power = newPower;
 
 
-            Transform::basisVector = true;
+            //Transform::basisVector = true;
 
         }
 
@@ -28,6 +28,8 @@ class EnemyGun: public Transform{
 
     
         void rotateGun(Vector2D dir);
+
+        void launchBullet(float deltaTime, Vector2D dir);
     
     private:
         

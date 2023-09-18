@@ -27,7 +27,7 @@ class Gizmos{
         void RenderLine(Vector2D start, Vector2D end);
         void RenderRay(Vector2D start, Vector2D direction, float distance);
 
-        void SetPointsDebug(const std::vector<std::shared_ptr<Vector2D>>& points, float _radius);  
+        void SetPointsDebug(std::vector<Vector2D*>& points, float _radius);  
 
         
         void changeColor(float r, float g, float b);
@@ -55,7 +55,7 @@ class Gizmos{
         float radius;
         Vector2D lineStart, lineEnd;
         Vector2D rayStart, rayEnd;
-        std::vector<std::shared_ptr<Vector2D>> pointPointers;
+        std::vector<Vector2D*> pointPointers;
 
 };
 

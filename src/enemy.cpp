@@ -4,28 +4,31 @@
 
 #include "Gizmos.h"
 
-#include "Bullet.h"
+//#include "BulletEnemy.h"
+
+#include <memory>
 
 
 static auto lastPrintTime = std::chrono::system_clock::now();
 
 Enemy::~Enemy()
 {
+    delete enemyGun;
 }
 
 void Enemy::init()
 {
 
         
-    std::unique_ptr<Vector2D>  topLeft = std::make_unique<Vector2D>(position.x, position.y + 100.0f);
-    std::unique_ptr<Vector2D>  topRight = std::make_unique<Vector2D>(position.x + 100.0f, position.y + 100.0f);
-    std::unique_ptr<Vector2D>  bottomRight = std::make_unique<Vector2D>(position.x + 100.0f, position.y);
-    std::unique_ptr<Vector2D>  bottomLeft = std::make_unique<Vector2D>(position.x, position.y);
+    Vector2D* topLeft = new Vector2D(position.x, position.y + 100.0f);
+    Vector2D* topRight = new Vector2D(position.x + 100.0f, position.y + 100.0f);
+    Vector2D* bottomRight = new Vector2D(position.x + 100.0f, position.y);
+    Vector2D* bottomLeft = new Vector2D(position.x, position.y);
 
-    vertices.push_back(std::move(topRight));
-    vertices.push_back(std::move(bottomRight));
-    vertices.push_back(std::move(bottomLeft));
-    vertices.push_back(std::move(topLeft));
+    vertices.push_back(topRight);
+    vertices.push_back(bottomRight);
+    vertices.push_back(bottomLeft);
+    vertices.push_back(topLeft);
     
     // vertices.push_back(topLeft);
     // vertices.push_back(bottomLeft);
@@ -34,6 +37,7 @@ void Enemy::init()
 
     Gizmos* points = Gizmos::StartGizmos(0.45f, 1.0f, 1.0f);
     points->SetPointsDebug(vertices, 4.0f);
+
 
 }
 
@@ -58,8 +62,8 @@ void Enemy::draw(float deltaTime)
     
     glBegin(GL_QUADS);
     
-    //glColor3f(0.0f, 0.0f, 0.5f);
-    glColor3f(1.0f, 1.0f, 1.0f);
+    glColor3f(0.0f, 0.5f, 0.5f);
+    //glColor3f(1.0f, 1.0f, 1.0f);
     
     //reference
     // glVertex3f(x1, y1, z1);  // Top-left
@@ -96,7 +100,7 @@ void Enemy::setEnemyPosition(float deltaTime)
 
     auto currentTime = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsedTime = currentTime - lastPrintTime;
-    Vector2D dir  = Vector2D::Substraction(player->position,position);
+    Vector2D dir  = Vector2D::Substraction(playerRef->position,position);
 
     enemyGun->rotateGun(Vector2D::Normalized(dir));
 
@@ -111,9 +115,10 @@ void Enemy::setEnemyPosition(float deltaTime)
         //     SDWINDOW::transformList.emplace_back(b);
         // } 
         
-       //std::cout << b << std::endl;
+        //std::cout << b << std::endl;
        
-
+   
+        //enemyGun->launchBullet(deltaTime, Vector2D::Normalized(dir));
 
         //std::cout<< "what the hell" << std::endl;
         
@@ -124,9 +129,7 @@ void Enemy::setEnemyPosition(float deltaTime)
 
 void Enemy::startEnemyGun()
 {
-
-    
-   enemyGun = std::make_unique<EnemyGun>(position.x,position.y, 2, 10);
+   enemyGun = new EnemyGun(position.x,position.y, 2, 10);
 
 }
 

@@ -2,16 +2,20 @@
 
 Transform::~Transform()
 {
-    // for(auto& v : vertices){
-    //                 delete v;
-    //             }
-    //           for (Vector2D* normalPtr : normalEdgesList) {
-    //                     delete normalPtr; // Deallocate the memory for each Vector2D object
-    //             }
-    normalEdgesList.clear();
-    vertices.clear();
+   
+    // Delete the vertices and normalEdgesList using smart pointers
+        for (auto& vertex : vertices) {
+            // No need to delete, smart pointers handle it
+        }
+        vertices.clear();
 
-}
+        for (auto& normal : normalEdgesList) {
+            // No need to delete, smart pointers handle it
+        }
+        normalEdgesList.clear();
+    }
+
+
 
 void Transform::OnCollision(float deltaTime, Transform *objectCollision, Vector2D normalCollision, float depth, Vector2D unmodifiedNormalCollision)
 {    

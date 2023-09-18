@@ -1,6 +1,7 @@
 #pragma once
 #include "Transform.h"
 #include "EnemyGun.h"
+#include "Player.h"
 #include <vector>
 #include <memory>
 
@@ -8,7 +9,7 @@
 class Enemy : public Transform{
 
     public:
-        Enemy(float x, float y, Transform* _player):Transform(x,y){
+        Enemy(float x, float y, std::shared_ptr<Player> _player):Transform(x,y){
             position.x = x;
             position.y = y;
             Transform::AddPhysics2D();
@@ -16,7 +17,7 @@ class Enemy : public Transform{
             startEnemyGun();
              
             Transform::isEnemy = true;
-            //player = _player;
+            playerRef = _player;
         }
 
 
@@ -28,9 +29,9 @@ class Enemy : public Transform{
     void OnCollision(float deltaTime,Transform* objectCollision,Vector2D normalCollision, float depth, Vector2D unmodifiedNormalCollision) override;
 
     private:
-        const Transform* player = nullptr;
+        std::shared_ptr<Transform> playerRef;
         //pointer to enemygu
-        std::unique_ptr<EnemyGun> enemyGun;  
+        EnemyGun* enemyGun;  
         Gizmos *debugger = Gizmos::StartGizmos(1.0f,0.5f,1.0f);
         void startEnemyGun();
         void setEnemyPosition(float deltaTime);

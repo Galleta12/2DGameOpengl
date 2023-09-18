@@ -75,9 +75,9 @@ class Transform{
 
         
         //list of points that confomr the picuture, worldpos
-        std::vector<std::shared_ptr<Vector2D>> vertices;
+        std::vector<Vector2D*> vertices;
 
-        std::vector<std::shared_ptr<Vector2D>> normalEdgesList; 
+        std::vector<Vector2D*> normalEdgesList; 
 
         //for debuggin normal collisions
         Gizmos *normalDebug = Gizmos::StartGizmos(0.7f,0.5f,0.5f);

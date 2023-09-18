@@ -125,7 +125,7 @@ void Gun::mouseLeftPressed()
     //bulletList.push_back(new Bullet({positionLaunch.x,positionLaunch.y,15.0f,1,10,Rotation,dir}));
     //we want the bullet list to be added to the transform list
     //SDWINDOW::transformList.push_back(new Bullet({positionLaunch.x,positionLaunch.y,15.0f,3,10,Rotation,dir}));
-
+    SDWINDOW::transformList.push_back(std::make_unique<Bullet>(positionLaunch.x,positionLaunch.y,15.0f,3,10,Rotation,dir));
    
 }
 

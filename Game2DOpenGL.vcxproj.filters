@@ -36,6 +36,7 @@
     <ClInclude Include="include\headers\Enemy.h" />
     <ClInclude Include="include\headers\EnemyGun.h" />
     <ClInclude Include="include\headers\Map.h" />
+    <ClInclude Include="include\headers\BulletEnemy.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -67,5 +68,6 @@
     <ClCompile Include="src\enemy.cpp" />
     <ClCompile Include="src\enemygun.cpp" />
     <ClCompile Include="src\map.cpp" />
+    <ClCompile Include="src\bulletEnemy.cpp" />
   </ItemGroup>
 </Project>

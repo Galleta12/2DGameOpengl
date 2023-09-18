@@ -324,7 +324,7 @@ void Player::init()
 {
 
     
-    //get all points and put it on the vertices
+     //get all points and put it on the vertices
     //top corner
 
     //  // Calculate positions of other two vertices
@@ -337,19 +337,9 @@ void Player::init()
     rightVertex.x = position.x + 25.0f;
     rightVertex.y = position.y - 50.0f;
     
-    
-    
-    std::shared_ptr<Vector2D> posPtr = std::make_shared<Vector2D>(position);
-    std::shared_ptr<Vector2D> rightPtr = std::make_shared<Vector2D>(rightVertex);
-    std::shared_ptr<Vector2D> leftPtr = std::make_shared<Vector2D>(leftVertex);
-
-    
-    
-    
-    
-    vertices.push_back(posPtr);
-    vertices.push_back(rightPtr);
-    vertices.push_back(leftPtr);
+    vertices.push_back(&position);
+    vertices.push_back(&rightVertex);
+    vertices.push_back(&leftVertex);
 
 
     
@@ -375,7 +365,7 @@ void Player::OnCollision(float deltaTime,Transform* objectCollision,Vector2D nor
     
     Transform::OnCollision(deltaTime,objectCollision,normalCollision,depth,unmodifiedNormalCollision);
     
-    normalDebug->RenderRay(objectCollision->position,normalCollision,100.0f);
+    //normalDebug->RenderRay(objectCollision->position,normalCollision,100.0f);
    
     //std::cout << "Collision Player" << std::endl;
     //resolve collision
@@ -387,9 +377,9 @@ void Player::OnCollision(float deltaTime,Transform* objectCollision,Vector2D nor
     
     if(objectCollision->isBullet){
         // //set flag as death
-        // isDeath = true;
+         //isDeath = true;
         // //change state of game
-        // SDWINDOW::gameState = SDWINDOW::GameState::LOSS;
+        //SDWINDOW::gameState = SDWINDOW::GameState::LOSS;
         return;
     }
     
@@ -500,9 +490,9 @@ void Player::ProjectVectorNormalMotion(float deltaTime,Vector2D orthographic ,Ve
     //motion = newProjectedMotion;
     
     
-    debuggerLine->RenderRay(objectedCollided->position,orthographic,300.0f);
+    // debuggerLine->RenderRay(objectedCollided->position,orthographic,300.0f);
     
-    debuggerMotion->RenderRay(position,projected,300.0f);
+    // debuggerMotion->RenderRay(position,projected,300.0f);
     
 
     position.x += newProjectedMotion.x * deltaTime; 

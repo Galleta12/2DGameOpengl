@@ -1,7 +1,7 @@
 #include "EnemyGun.h"
 #include "SDWINDOW.h"
 #include "RadToDegree.h"
-
+#include "BulletEnemy.h"
 
 EnemyGun::~EnemyGun()
 {
@@ -14,7 +14,7 @@ void EnemyGun::update(float deltaTime)
 
     Transform::update(deltaTime);
   
-
+    
 
 }
 
@@ -49,7 +49,7 @@ void EnemyGun::draw(float deltaTime)
 void EnemyGun::rotateGun(Vector2D dir)
 {
 
-    debugGizmos->RenderRay(position,dir,40.0f);
+    //debugGizmos->RenderRay(position,dir,40.0f);
     //update the angle player rotation
     float angle = std::atan2(dir.y,dir.x);
     anglePlayer = RadToDegree::convert(angle);
@@ -57,5 +57,12 @@ void EnemyGun::rotateGun(Vector2D dir)
 
     
 
+
+}
+
+void EnemyGun::launchBullet(float deltaTime, Vector2D dir)
+{
+
+    SDWINDOW::transformList.push_back(std::make_unique<BulletEnemy>(position.x,position.y,10.0f,3,10,Rotation,dir));
 
 }

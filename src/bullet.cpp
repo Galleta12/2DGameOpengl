@@ -23,7 +23,7 @@ void Bullet::launchBall()
 void Bullet::init()
 {
 
-    //vertices.push_back(&position);
+  //vertices.push_back(&position);
     
     // Calculate points evenly spaced around the circumference of the ball
     const int numPoints = 10; // You want four points
@@ -34,14 +34,14 @@ void Bullet::init()
         float y = radius * std::sin(angle);
 
        // Create Vector2D for the point
-        std::unique_ptr<Vector2D> point = std::make_unique<Vector2D>(x + position.x, y + position.y);
+        Vector2D* point = new Vector2D(x + position.x, y + position.y);
         // Add the point to the vertices list
-        vertices.push_back(std::move(point));
+        vertices.push_back(point);
     }
 
     
    
-    //create a dubug gizmos instance
+    // //create a dubug gizmos instance
     Gizmos *points = Gizmos::StartGizmos(1.0f,0.0f,1.0f);
     points->SetPointsDebug(vertices,2.0f);
 
@@ -87,19 +87,27 @@ void Bullet::update(float deltaTime)
 
     // Check if 5 seconds have passed since last print
     
-    
-    if(isEnemyBullet == true) {
-        return;
-    }
     if (elapsedTime.count() >= 3) {
    
         lastPrintTime = currentTime;
 
-    //    // Remove this bullet from the transformList
-    //     SDWINDOW::transformList.erase(std::remove(SDWINDOW::transformList.begin(), SDWINDOW::transformList.end(), this), SDWINDOW::transformList.end());
+        // // Use std::remove_if with a lambda function
+        //   auto it = std::remove_if(SDWINDOW::transformList.begin(), SDWINDOW::transformList.end(),
+        // [this](const std::shared_ptr<Transform>& transform) {
+        //     // Define the condition for removal here
+        //     return transform.get() == this;
+        // });
 
-    //     // Delete this bullet object
-    //     delete this;
+        // // Check if the element was found and removed
+        // if (it != SDWINDOW::transformList.end()) {
+        //     // Explicitly reset the shared pointer, which will delete the object
+        //     (*it).reset();
+
+        //     // Erase the removed element from the vector
+        //     SDWINDOW::transformList.erase(it);
+        // }
+        // delete this;
+        // return;
  
     }
 

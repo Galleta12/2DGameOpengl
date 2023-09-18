@@ -19,7 +19,7 @@
 #include "Platforms.h"
 #include "Box.h"
 #include "Enemy.h"
-
+#include "Map.h"
 
 
 
@@ -130,21 +130,20 @@ void SDWINDOW::setObjectsLists()
     player = std::make_shared<Player>(300.0f,300.0f,5);
     //set the bullet for test
     player->gunData(20,50);
-    
-    //floorObject
-    //std::unique_ptr<Floor> floorObject = std::make_unique<Floor>(1.0f, *SDWINDOW::WindowHeight /10);
-     
-    transformList.push_back(std::make_unique<Floor>(1.0f, *SDWINDOW::WindowHeight /10));
-    
+  
     transformList.push_back(player);
     
-    //set the boxes
-    setMultipleBoxes();
-    //set platforms
-    setMultiplePlatforms();
+    //map1
+    Map::Level1(player);
+    
+    
+    // //set the boxes
+    // setMultipleBoxes();
+    // //set platforms
+    // setMultiplePlatforms();
 
-    //set enemies
-    setMultipleEnemies();
+    // //set enemies
+    // setMultipleEnemies();
 
 
 }
@@ -162,24 +161,27 @@ void SDWINDOW::handleEvents() {
         case SDL_KEYDOWN:
             switch (event.key.keysym.sym)
             {
-            //move box with keyboard
-            case SDLK_m:
+
+            case SDLK_1:
                 
-                
+                cleanMap();
+                Map::Level1(player);
                 break;
-            //add move boxes with mouse pos
-            case SDLK_a:
-                
-                
+
+            case SDLK_2:
+                cleanMap();
+                Map::Level2(player);
+
                 break;
-            //bounce box
-            case SDLK_b:
+            case SDLK_3:
                 
                 
                 break;
             
+
             default:
                 break;
+
             }
         
         
@@ -219,7 +221,7 @@ void SDWINDOW::objectsEvents(){
 
             std::cout<< "Mouse X: " << mouseClickX << "Mouse y: " << mouseClickY << std::endl;
 
-             std::cout<<  "Mouse y in gl context: " << cameraX << "Y" << cameraY << std::endl;        
+             std::cout<<  "Mouse X in gl context: " << cameraX << "Y" << cameraY << std::endl;        
             
             player->getGun()->mouseLeftPressed();
             
@@ -289,7 +291,7 @@ void SDWINDOW::setMultipleBoxes()
 void SDWINDOW::setMultipleEnemies()
 {
     
-     //transformList.push_back(std::make_unique<Enemy>(1200.0f,200.0f,player.get()));
+     transformList.push_back(std::make_unique<Enemy>(1200.0f,200.0f,player));
     // Enemy* e1 = new Enemy(1200.0f,200.0f,player);
     // transformList.emplace_back(e1);
 
@@ -401,21 +403,11 @@ void SDWINDOW::restartGame()
 {
     player->resetPosition(initialPlayerX, initialPlayerY);
 
-    // Create a new vector to store the updated transform list without bullets
-    std::vector<std::shared_ptr<Transform>> updatedTransformList;
+   transformList.erase(std::remove_if(transformList.begin(), transformList.end(),
+    [](const std::shared_ptr<Transform>& transform) {
+        return transform->isBullet;
+    }), transformList.end());
 
-    // Iterate through the transformList and move non-bullet objects to the updated list
-    for (auto& transform : transformList) {
-        if (!transform->isBullet) {
-            updatedTransformList.push_back(transform);
-        }
-    }
-
-    // Clear the original transformList
-    transformList.clear();
-
-    // Move ownership of updatedTransformList to transformList
-    transformList = updatedTransformList;
 }
 
 
@@ -426,8 +418,8 @@ void SDWINDOW::updateCameraCordinates()
     //the same for y
     
     const Vector2D playerPosition = player->getPlayerPos();
-    cameraX = 300 - (*WindowWidth / 4.0f);
-    cameraY = 300 - (*WindowHeight/ 2.0f);
+    cameraX =  playerPosition.x - (*WindowWidth / 4.0f);
+    cameraY = playerPosition.y - (*WindowHeight/ 2.0f);
 
 
 }
@@ -475,4 +467,17 @@ void SDWINDOW::updateLogicHandler()
     }
  
 
+}
+
+void SDWINDOW::cleanMap()
+{
+
+    transformList.erase(std::remove_if(transformList.begin(), transformList.end(),
+    [](const std::shared_ptr<Transform>& transform) {
+            // Return true if transform is not a Player instance
+        return dynamic_cast<Player*>(transform.get()) == nullptr;
+    }), transformList.end());
+
+    //clear gizmos
+    
 }

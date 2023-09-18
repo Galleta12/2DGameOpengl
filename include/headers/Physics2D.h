@@ -66,7 +66,7 @@ class Physics2D{
         static void ProjecAxis(const Transform* currentPolygon, Vector2D axis, float &min, float &max);
 
         //arimetic mean to get center of polygon
-        static Vector2D  FindCenterMean(const std::vector<std::shared_ptr<Vector2D>> vertices);
+        static Vector2D  FindCenterMean(const std::vector<Vector2D*> vertices);
 
 
 };

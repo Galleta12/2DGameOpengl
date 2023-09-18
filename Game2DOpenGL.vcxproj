@@ -180,6 +180,7 @@
   <ItemGroup>
     <ClInclude Include="include\headers\Box.h" />
     <ClInclude Include="include\headers\Bullet.h" />
+    <ClInclude Include="include\headers\BulletEnemy.h" />
     <ClInclude Include="include\headers\Clocker.h" />
     <ClInclude Include="include\headers\Enemy.h" />
     <ClInclude Include="include\headers\EnemyGun.h" />
@@ -199,6 +200,7 @@
   <ItemGroup>
     <ClCompile Include="src\box.cpp" />
     <ClCompile Include="src\bullet.cpp" />
+    <ClCompile Include="src\bulletEnemy.cpp" />
     <ClCompile Include="src\clocker.cpp" />
     <ClCompile Include="src\enemy.cpp" />
     <ClCompile Include="src\enemygun.cpp" />

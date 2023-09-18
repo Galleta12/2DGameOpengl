@@ -94,13 +94,13 @@ bool Physics2D::raycastParametric(const Transform *me, Vector2D direction, float
                 
             //std::cout << "line" << std::endl;
                 
-                const std::vector<std::shared_ptr<Vector2D>>& verticesList = t->vertices;
+                const std::vector<Vector2D*>& verticesList = t->vertices;
          
                 
                 for(int i=0; i < verticesList.size(); i++){
                     
-                    Vector2D* b1 = verticesList[i].get(); 
-                    Vector2D* b2 = verticesList[(i+1)%verticesList.size()].get(); 
+                    Vector2D* b1 = verticesList[i]; 
+                    Vector2D* b2 = verticesList[(i+1)%verticesList.size()]; 
 
                     Vector2D n = Vector2D::NormalSuperfice(*b1,*b2);
                    //B - A
@@ -194,8 +194,8 @@ bool Physics2D::satColliderChecker(const Transform* p1, const Transform* p2, flo
     //normalCollision.Zero();
     
 
-   const std::vector<std::shared_ptr<Vector2D>>& verticesListA = p1->vertices;
-   const std::vector<std::shared_ptr<Vector2D>>& verticesListB = p2->vertices;
+   const std::vector<Vector2D*>& verticesListA = p1->vertices;
+   const std::vector<Vector2D*>& verticesListB = p2->vertices;
 
     const Transform* polygon1 = p1;
     const Transform* polygon2 = p2;
@@ -205,11 +205,11 @@ bool Physics2D::satColliderChecker(const Transform* p1, const Transform* p2, flo
         std::swap(polygon1, polygon2); 
         }
         
-       const std::vector<std::shared_ptr<Vector2D>>& verticesList = polygon1->vertices;
+       const std::vector<Vector2D*>& verticesList = polygon1->vertices;
         for(int i=0; i < verticesList.size(); i ++){
             //get the normals
-            Vector2D *pointA = verticesList[i].get();
-            Vector2D *pointB = verticesList[(i+1) % verticesList.size()].get();
+            Vector2D *pointA = verticesList[i];
+            Vector2D *pointB = verticesList[(i+1) % verticesList.size()];
 
             Vector2D axis = Vector2D::NormalSuperfice(*pointA,*pointB);
 		    
@@ -271,9 +271,9 @@ bool Physics2D::satColliderChecker(const Transform* p1, const Transform* p2, flo
 
 void Physics2D::ProjecAxis(const Transform* currentPolygon, Vector2D axis, float &min, float &max)
 {
-    const std::vector<std::shared_ptr<Vector2D>>& verticesList = currentPolygon->vertices;
+    const std::vector<Vector2D*>& verticesList = currentPolygon->vertices;
     for(int i=0; i < verticesList.size(); i++){
-        Vector2D *vertex = verticesList[i].get();
+        Vector2D *vertex = verticesList[i];
         float proj = Vector2D::Dot(*vertex,axis);
         if(proj < min){min=proj;}
         if(proj > max){max=proj;}
@@ -281,12 +281,12 @@ void Physics2D::ProjecAxis(const Transform* currentPolygon, Vector2D axis, float
 
 }
 
-Vector2D Physics2D::FindCenterMean(const std::vector<std::shared_ptr<Vector2D>> vertices)
+Vector2D Physics2D::FindCenterMean(const std::vector<Vector2D*> vertices)
 {
     float sumX = 0.0f;
     float sumY = 0.0f;
     for(int i=0; i < vertices.size();i++){
-        Vector2D *vec = vertices[i].get();
+        Vector2D *vec = vertices[i];
         sumX+= vec->x;
         sumY+= vec->y;
     }

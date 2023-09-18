@@ -12,7 +12,7 @@ Gizmos::~Gizmos()
     // for(auto& v : pointPointers){
     //     delete v;
     // }
-    pointPointers.clear();
+    // pointPointers.clear();
 
 }
 void Gizmos::ClearPointsDebug()
@@ -49,7 +49,7 @@ void Gizmos::RenderRay(Vector2D start, Vector2D direction, float distance)
 
 }
 
-void Gizmos::SetPointsDebug(const std::vector<std::shared_ptr<Vector2D>>& points, float _radius)
+void Gizmos::SetPointsDebug(std::vector<Vector2D*>& points, float _radius)
 {
     
     for(auto& a : points){

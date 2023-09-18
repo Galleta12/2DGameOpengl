@@ -84,6 +84,8 @@ private:
     void updateLogicHandler();
     //update the camera
     void updateCameraCordinates();
+
+    void cleanMap();
         
 
 };
