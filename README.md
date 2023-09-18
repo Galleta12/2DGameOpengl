@@ -16,7 +16,8 @@ Rules of Game
 With 1 and 2, you can change the maps.
 With r you can active the player death and with t you can unactive the player death. The player dies
 if it collides with the ball.
-With g you can shoot bullets from the enemy.
+You move the player with the wasd keys. The player is the traingle.
+With g you can shoot bullets from the enemy. Dont shoot more than 3 bullets with the enemy to avoid crashes.
 This is just a simple physics simulation you can shoot and push and move boxes. Is just a physics
 simulation of collision a vector reflection. There is a lot of code, and it can be mess up.
 
