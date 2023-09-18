@@ -27,7 +27,8 @@ class Enemy : public Transform{
     void update(float deltaTime)override;
     void draw(float deltaTime)override;
     void OnCollision(float deltaTime,Transform* objectCollision,Vector2D normalCollision, float depth, Vector2D unmodifiedNormalCollision) override;
-
+    void eventForEnemy(float deltaTime) override;    
+    
     private:
         std::shared_ptr<Transform> playerRef;
         //pointer to enemygu
@@ -36,6 +37,7 @@ class Enemy : public Transform{
         void startEnemyGun();
         void setEnemyPosition(float deltaTime);
         float timeSinceLastShot= 0.0f;
+        Vector2D currentDir;
        
 
 };

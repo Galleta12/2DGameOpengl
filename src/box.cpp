@@ -30,8 +30,8 @@ void Box::init()
     // vertices.push_back(bottomRight);
     // vertices.push_back(topRight);
 
-    Gizmos* points = Gizmos::StartGizmos(0.45f, 0.9f, 0.2f);
-    points->SetPointsDebug(vertices, 4.0f);
+    //Gizmos* points = Gizmos::StartGizmos(0.45f, 0.9f, 0.2f);
+    //points->SetPointsDebug(vertices, 4.0f);
     computeNormalEdges();
 
 }

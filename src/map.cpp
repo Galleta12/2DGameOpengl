@@ -97,7 +97,7 @@ void Map::Level2(std::shared_ptr<Player> player)
     
     
     SDWINDOW::transformList.push_back(std::make_unique<Box>( 2500.945f,700.0f,false));
-    SDWINDOW::transformList.push_back(std::make_unique<Box>( 2500.945f,1000.0f,false));
+    //SDWINDOW::transformList.push_back(std::make_unique<Box>( 2500.945f,000.0f,false));
 
     //enemy   
     SDWINDOW::transformList.push_back(std::make_unique<Enemy>(1200.0f,200.0f,player));

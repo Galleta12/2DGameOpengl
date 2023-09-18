@@ -75,7 +75,13 @@ void BulletEnemy::draw(float deltaTime)
 
 void BulletEnemy::OnCollision(float deltaTime, Transform *objectCollision, Vector2D normalCollision, float depth, Vector2D unmodifiedNormalCollision)
 {
+    //dont check collsiion with the own enemy
+    if(objectCollision->isEnemy){
+        return;
+    }
+
     Transform::OnCollision(deltaTime,objectCollision,normalCollision,depth,unmodifiedNormalCollision);
+    
     Vector2D normal = normalCollision;
     Vector2D reflec = Vector2D::Reflection(dir, normal);
     dir = Vector2D::Normalized(reflec);

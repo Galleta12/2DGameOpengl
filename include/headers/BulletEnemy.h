@@ -15,6 +15,7 @@ class BulletEnemy : public Transform{
             power = newPower;
             dir = newDir;
             Transform::isEnemyBullet = true;
+            Transform::isBullet = true;
             Transform::AddPhysics2D();
             init();
             launchBall();

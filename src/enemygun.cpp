@@ -49,9 +49,14 @@ void EnemyGun::draw(float deltaTime)
 void EnemyGun::rotateGun(Vector2D dir)
 {
 
-    //debugGizmos->RenderRay(position,dir,40.0f);
+    
+    //a little offset to y cordinate to be more precise
+    Vector2D newDir = dir;
+    
+    
+    //debugGizmos->RenderRay(position,newDir,540.0f);
     //update the angle player rotation
-    float angle = std::atan2(dir.y,dir.x);
+    float angle = std::atan2(newDir.y,newDir.x);
     anglePlayer = RadToDegree::convert(angle);
     Rotation = anglePlayer;
 
@@ -63,6 +68,6 @@ void EnemyGun::rotateGun(Vector2D dir)
 void EnemyGun::launchBullet(float deltaTime, Vector2D dir)
 {
 
-    SDWINDOW::transformList.push_back(std::make_unique<BulletEnemy>(position.x,position.y,10.0f,3,10,Rotation,dir));
+    SDWINDOW::transformList.push_back(std::make_unique<BulletEnemy>(position.x + 80.0f,position.y,20.0f,3,10,Rotation,dir));
 
 }

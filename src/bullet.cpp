@@ -42,8 +42,8 @@ void Bullet::init()
     
    
     // //create a dubug gizmos instance
-    Gizmos *points = Gizmos::StartGizmos(1.0f,0.0f,1.0f);
-    points->SetPointsDebug(vertices,2.0f);
+    // Gizmos *points = Gizmos::StartGizmos(1.0f,0.0f,1.0f);
+    // points->SetPointsDebug(vertices,2.0f);
 
 }
 

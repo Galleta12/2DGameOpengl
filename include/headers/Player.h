@@ -54,6 +54,9 @@ class Player:public Transform{
         bool getIsDeath(){return isDeath;}
         void handleRotations(float angle, float deltaTime=0.0f);
 
+        bool activeDeath = false;
+
+
     private:
         
         //gun pointer    

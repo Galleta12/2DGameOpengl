@@ -247,11 +247,11 @@ void Player::keyboard()
         
         case SDLK_SPACE:
             
-            
+            handleRotations(0.0f);
 
                 isCollisionFloor = false;
-                isJumping = true;
-                jumpForce = 6.0f;
+                //isJumping = true;
+                //jumpForce = 6.0f;
 
 
                 
@@ -375,12 +375,16 @@ void Player::OnCollision(float deltaTime,Transform* objectCollision,Vector2D nor
     
     
     
-    if(objectCollision->isBullet){
+    if(objectCollision->isBullet == true || objectCollision->isEnemyBullet == true ){
+        
         // //set flag as death
-         //isDeath = true;
-        // //change state of game
-        //SDWINDOW::gameState = SDWINDOW::GameState::LOSS;
+        if(activeDeath){
+            isDeath = true;
+            //change state of game
+            SDWINDOW::gameState = SDWINDOW::GameState::LOSS;
         return;
+
+        }
     }
     
     
@@ -490,6 +494,8 @@ void Player::ProjectVectorNormalMotion(float deltaTime,Vector2D orthographic ,Ve
     //motion = newProjectedMotion;
     
     
+
+    //uncomment this for visualizing the projections
     // debuggerLine->RenderRay(objectedCollided->position,orthographic,300.0f);
     
     // debuggerMotion->RenderRay(position,projected,300.0f);
@@ -498,7 +504,11 @@ void Player::ProjectVectorNormalMotion(float deltaTime,Vector2D orthographic ,Ve
     position.x += newProjectedMotion.x * deltaTime; 
     position.y += newProjectedMotion.y * deltaTime; 
     
+    //uncomment for doing rotation
+    //handleRotations(angle);
     
+    
+    //comment the next 4 lines of code if u want to do rotations
     leftVertex.x += newProjectedMotion.x * deltaTime ;
     leftVertex.y += newProjectedMotion.y * deltaTime;
     rightVertex.x += newProjectedMotion.x * deltaTime;

@@ -173,8 +173,13 @@ void SDWINDOW::handleEvents() {
                 Map::Level2(player);
 
                 break;
-            case SDLK_3:
+            case SDLK_r:
                 
+                player->activeDeath = true;
+                break;
+            case SDLK_t:
+                
+                player->activeDeath = false;
                 
                 break;
             
@@ -219,9 +224,9 @@ void SDWINDOW::objectsEvents(){
             mouseClickX = SDWINDOW::event.button.x;
             mouseClickY = SDWINDOW::event.button.y;
 
-            std::cout<< "Mouse X: " << mouseClickX << "Mouse y: " << mouseClickY << std::endl;
+            // std::cout<< "Mouse X: " << mouseClickX << "Mouse y: " << mouseClickY << std::endl;
 
-             std::cout<<  "Mouse X in gl context: " << cameraX << "Y" << cameraY << std::endl;        
+            //  std::cout<<  "Mouse X in gl context: " << cameraX << "Y" << cameraY << std::endl;        
             
             player->getGun()->mouseLeftPressed();
             
@@ -435,6 +440,11 @@ void SDWINDOW::updateLogicHandler()
             if(a!=nullptr){
 
                 a->update(dt);
+                // //this is just for the enemy
+                 if(a->isEnemy){
+                    
+                     a->eventForEnemy(dt);
+                 }
             }
     }
         
@@ -456,7 +466,8 @@ void SDWINDOW::updateLogicHandler()
             
             bool isIntersection = Physics2D::satColliderChecker(polygon1,polygon2,depth,normalCollision);
             if (isIntersection) {
-                //std::cout << "Collision" << std::endl;
+               
+                //we inver the normal since we want to move in opposite directions, the depth/2 is only how far we have to move
                 polygon1->OnCollision(dt,polygon2,Vector2D::InvertVector(normalCollision),depth/2.0f,normalCollision);
                 
                 polygon2->OnCollision(dt,polygon1,normalCollision,depth/2.0f,normalCollision);

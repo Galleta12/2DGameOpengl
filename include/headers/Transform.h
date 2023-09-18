@@ -58,6 +58,10 @@ class Transform{
         virtual void update(float deltaTime);
         virtual void draw(float deltaTime){}
 
+        //use this for shooting bullets with the enemy
+        virtual void eventForEnemy(float deltaTime){}
+
+
         virtual void computeNormalEdges(){}
 
         virtual void OnCollision(float deltaTime,Transform* objectCollision,Vector2D normalCollision, float depth, Vector2D unmodifiedNormalCollision);

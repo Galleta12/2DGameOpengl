@@ -95,6 +95,27 @@ void Enemy::OnCollision(float deltaTime, Transform *objectCollision, Vector2D no
 
 }
 
+void Enemy::eventForEnemy(float deltaTime)
+{
+
+    //if(SDWINDOW::)
+    if(SDWINDOW::event.type == SDL_KEYDOWN){
+        switch (SDWINDOW::event.key.keysym.sym)
+        {
+        case SDLK_g:
+            
+            std::cout << "Enemy Bullet" << std::endl;
+            enemyGun->launchBullet(deltaTime, currentDir);
+                        
+            break;
+        
+        default:
+            break;
+        }
+    }
+
+}
+
 void Enemy::setEnemyPosition(float deltaTime)
 {
 
@@ -102,9 +123,14 @@ void Enemy::setEnemyPosition(float deltaTime)
     std::chrono::duration<double> elapsedTime = currentTime - lastPrintTime;
     Vector2D dir  = Vector2D::Substraction(playerRef->position,position);
 
+
+
     enemyGun->rotateGun(Vector2D::Normalized(dir));
 
-   
+    //save dir for enemy
+    Vector2D dirToPlayer = Vector2D::Normalized(dir);
+    currentDir = dirToPlayer;
+
     if (elapsedTime.count() >= 3) {
 
         

@@ -200,25 +200,25 @@ bool Physics2D::satColliderChecker(const Transform* p1, const Transform* p2, flo
     const Transform* polygon1 = p1;
     const Transform* polygon2 = p2;
     for(int number=0; number < 2; number++){
-
+        //this is for checking each object, since we first check one object normal axis and then we check the other object normal axis
         if(number == 1){
         std::swap(polygon1, polygon2); 
         }
         
        const std::vector<Vector2D*>& verticesList = polygon1->vertices;
         for(int i=0; i < verticesList.size(); i ++){
-            //get the normals
+            //get the vertices
             Vector2D *pointA = verticesList[i];
             Vector2D *pointB = verticesList[(i+1) % verticesList.size()];
-
+            //get the normal of the edge
             Vector2D axis = Vector2D::NormalSuperfice(*pointA,*pointB);
-		    
+		    //keep track of the min and max projection of each vertex on the normal axis
             float minA = std::numeric_limits<float>::infinity();
             float maxA = -std::numeric_limits<float>::infinity();
 		    
             float minB = std::numeric_limits<float>::infinity();
 		    float maxB = -std::numeric_limits<float>::infinity();
-            //project each the axis on the vertex of each polygon
+            //project each vertex on the current normal
             Physics2D::ProjecAxis(polygon1,axis,minA,maxA);
             Physics2D::ProjecAxis(polygon2,axis,minB,maxB);
 
@@ -228,9 +228,9 @@ bool Physics2D::satColliderChecker(const Transform* p1, const Transform* p2, flo
             }
             //there is overlap
             //when there is no seperation both max are greater than the minimun 
-            //compute the deltas and use the small value to get the depth
+            //compute the deltas  and use the small value to get the depth
             float axisDepth = std::min(maxB - minA, maxA - minB);
-            
+            //update the depth and the normal of collision
             if(axisDepth < depth){
                 depth = axisDepth;
                 normalCollision = axis;
@@ -241,19 +241,20 @@ bool Physics2D::satColliderChecker(const Transform* p1, const Transform* p2, flo
     }
 
    
-    
+    //just get the depth and the normalize the normal if it was not normalized beofre
     Vector2D mag = normalCollision;
 
     depth /= mag.Magnitude();
     normalCollision = Vector2D::Normalized(normalCollision);
-
+    //with the find cernter mean formula we can get an estimation of the center of the polygon
     Vector2D centerA = Physics2D::FindCenterMean(verticesListA);
     Vector2D centerB = Physics2D::FindCenterMean(verticesListB);
-
+    //get the direction to know where the normal should be
     Vector2D direction = Vector2D::Substraction(centerB,centerA);
     // direction.x = centerA.x - centerB.x;
     // direction.y = centerA.y - centerB.y;
-    //opposite invert normal
+    
+    //opposite direction invert normal
     if(Vector2D::Dot(direction,normalCollision) < 0.0f){
         normalCollision.x   =  -normalCollision.x ; 
         normalCollision.y  = -normalCollision.y ;
